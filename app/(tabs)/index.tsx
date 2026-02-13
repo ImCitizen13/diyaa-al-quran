@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
-import Animated, { FadeIn, FadeInUp, FadeOut } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeInLeft, FadeInUp, FadeOut, FadeOutRight } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/constants/colors';
 import { useMemorization } from '@/lib/memorization-context';
@@ -140,17 +140,19 @@ export default function HomeScreen() {
         contentContainerStyle={[styles.gridContainer, { paddingBottom: Platform.OS === 'web' ? 34 + 84 : 100 }]}
         showsVerticalScrollIndicator={false}
       >
-        {viewMode === 'juz' ? (
-          <SkiaOrbGrid
-            data={juzOrbData}
-            orbSize={56}
-          />
-        ) : (
-          <SkiaOrbGrid
-            data={surahOrbData}
-            orbSize={44}
-          />
-        )}
+        <Animated.View key={viewMode} entering={FadeInLeft.springify().damping(16).stiffness(140)} exiting={FadeOutRight.duration(150)}>
+          {viewMode === 'juz' ? (
+            <SkiaOrbGrid
+              data={juzOrbData}
+              orbSize={56}
+            />
+          ) : (
+            <SkiaOrbGrid
+              data={surahOrbData}
+              orbSize={44}
+            />
+          )}
+        </Animated.View>
       </ScrollView>
 
       <Modal
