@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useRef } from "react";
+import React, { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -20,6 +20,9 @@ import Animated, {
   withTiming,
   withSequence,
   withSpring,
+  useSharedValue,
+  withDelay,
+  Easing,
 } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
@@ -335,12 +338,7 @@ export default function SurahDetailScreen() {
               {meta.juzList[0]?.index || "?"}
             </Text>
             <View style={styles.progressBar}>
-              <View
-                style={[
-                  styles.progressFill,
-                  { width: `${Math.round(progress.percentage * 100)}%` },
-                ]}
-              />
+              <AnimatedProgressFill percentage={progress.percentage} />
             </View>
             <Text style={styles.progressText}>
               {progress.memorized} / {progress.total} memorized
@@ -473,6 +471,26 @@ export default function SurahDetailScreen() {
       )}
     </View>
   );
+}
+
+function AnimatedProgressFill({ percentage }: { percentage: number }) {
+  const widthPct = useSharedValue(0);
+
+  useEffect(() => {
+    widthPct.value = withDelay(
+      400,
+      withTiming(Math.round(percentage * 100), {
+        duration: 800,
+        easing: Easing.out(Easing.cubic),
+      })
+    );
+  }, [percentage]);
+
+  const fillStyle = useAnimatedStyle(() => ({
+    width: `${widthPct.value}%` as any,
+  }));
+
+  return <Animated.View style={[styles.progressFill, fillStyle]} />;
 }
 
 function AyahRow({

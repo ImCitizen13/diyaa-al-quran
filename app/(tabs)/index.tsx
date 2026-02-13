@@ -1,10 +1,10 @@
-import React, { useState, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView, Pressable, Platform, Dimensions, Modal } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
-import Animated, { FadeIn, FadeInLeft, FadeInUp, FadeOut, FadeOutRight } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeInDown, FadeInLeft, FadeInUp, FadeOut, FadeOutRight } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/constants/colors';
 import { useMemorization } from '@/lib/memorization-context';
@@ -12,6 +12,34 @@ import { getAllSurahs, getAllJuz } from '@/lib/quran-data';
 import SkiaOrbGrid, { type OrbData } from '@/components/SkiaOrbGrid';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+function useCountUp(target: number, duration: number = 800, delay: number = 0) {
+  const [value, setValue] = useState(0);
+  const rafRef = useRef<number>(0);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const start = performance.now();
+      const animate = (now: number) => {
+        const elapsed = now - start;
+        const t = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        setValue(Math.round(eased * target));
+        if (t < 1) {
+          rafRef.current = requestAnimationFrame(animate);
+        }
+      };
+      rafRef.current = requestAnimationFrame(animate);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeout);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [target, duration, delay]);
+
+  return value;
+}
 
 type ViewMode = 'juz' | 'surah';
 
@@ -111,24 +139,29 @@ export default function HomeScreen() {
         <Text style={styles.appSubtitle}>ضياء القرآن</Text>
       </Animated.View>
 
-      <View style={styles.statsRow}>
-        <View style={styles.statItem}>
-          <Text style={styles.statValue}>{Math.round(overall.percentage * 100)}%</Text>
-          <Text style={styles.statLabel}>Memorized</Text>
-        </View>
+      <Animated.View entering={FadeInDown.delay(200).duration(500)} style={styles.statsRow}>
+        <AnimatedStat
+          value={Math.round(overall.percentage * 100)}
+          suffix="%"
+          label="Memorized"
+          delay={400}
+        />
         <View style={styles.statDivider} />
-        <View style={styles.statItem}>
-          <Text style={styles.statValue}>{streak}</Text>
-          <Text style={styles.statLabel}>Day Streak</Text>
-        </View>
+        <AnimatedStat
+          value={streak}
+          label="Day Streak"
+          delay={500}
+        />
         <View style={styles.statDivider} />
-        <View style={styles.statItem}>
-          <Text style={styles.statValue}>{todayCount}/{settings.dailyGoal}m</Text>
-          <Text style={styles.statLabel}>Today</Text>
-        </View>
-      </View>
+        <AnimatedStat
+          value={todayCount}
+          suffix={`/${settings.dailyGoal}m`}
+          label="Today"
+          delay={600}
+        />
+      </Animated.View>
 
-      <View style={styles.toggleRow}>
+      <Animated.View entering={FadeInDown.delay(400).duration(400)} style={styles.toggleRow}>
         <Pressable
           onPress={toggleView}
           style={[styles.toggleBtn, viewMode === 'juz' && styles.toggleActive]}
@@ -141,7 +174,7 @@ export default function HomeScreen() {
         >
           <Text style={[styles.toggleText, viewMode === 'surah' && styles.toggleTextActive]}>Surah</Text>
         </Pressable>
-      </View>
+      </Animated.View>
 
       <ScrollView
         style={styles.scrollView}
@@ -246,6 +279,29 @@ export default function HomeScreen() {
         </Pressable>
       )}
     </View>
+  );
+}
+
+function AnimatedStat({
+  value,
+  suffix = '',
+  label,
+  delay,
+}: {
+  value: number;
+  suffix?: string;
+  label: string;
+  delay: number;
+}) {
+  const displayValue = useCountUp(value, 800, delay);
+
+  return (
+    <Animated.View entering={FadeInUp.delay(delay).duration(400)} style={styles.statItem}>
+      <Text style={styles.statValue}>
+        {displayValue}{suffix}
+      </Text>
+      <Text style={styles.statLabel}>{label}</Text>
+    </Animated.View>
   );
 }
 

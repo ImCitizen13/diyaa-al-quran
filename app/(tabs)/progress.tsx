@@ -1,13 +1,51 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useState, useRef, useCallback } from 'react';
 import { StyleSheet, Text, View, ScrollView, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeInUp,
+  ZoomIn,
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withDelay,
+  Easing,
+} from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/constants/colors';
 import { useMemorization } from '@/lib/memorization-context';
 import { TOTAL_AYAHS, TOTAL_SURAHS, TOTAL_JUZ } from '@/lib/quran-data';
 import ProgressRing from '@/components/ProgressRing';
 import GlowOrb from '@/components/GlowOrb';
+
+function useCountUp(target: number, duration: number = 800, delay: number = 0) {
+  const [value, setValue] = useState(0);
+  const rafRef = useRef<number>(0);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const start = performance.now();
+      const animate = (now: number) => {
+        const elapsed = now - start;
+        const t = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+        setValue(Math.round(eased * target));
+        if (t < 1) {
+          rafRef.current = requestAnimationFrame(animate);
+        }
+      };
+      rafRef.current = requestAnimationFrame(animate);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeout);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [target, duration, delay]);
+
+  return value;
+}
 
 export default function ProgressScreen() {
   const insets = useSafeAreaInsets();
@@ -58,60 +96,57 @@ export default function ProgressScreen() {
             progress={overall.percentage}
             label="Memorized"
             sublabel={`${overall.memorized} / ${TOTAL_AYAHS} Ayahs`}
+            fillDelay={500}
           />
         </Animated.View>
 
-        <Animated.View entering={FadeInDown.delay(200).duration(500)} style={styles.statsGrid}>
-          <StatCard
+        <View style={styles.statsGrid}>
+          <AnimatedStatCard
             icon="book"
-            value={`${overall.surahsComplete}`}
+            target={overall.surahsComplete}
             label={`/ ${TOTAL_SURAHS} Surahs`}
             color={colors.gold.primary}
+            index={0}
           />
-          <StatCard
+          <AnimatedStatCard
             icon="layers"
-            value={`${overall.juzComplete}`}
+            target={overall.juzComplete}
             label={`/ ${TOTAL_JUZ} Juz`}
             color={colors.gold.bright}
+            index={1}
           />
-          <StatCard
+          <AnimatedStatCard
             icon="flame"
-            value={`${streak}`}
+            target={streak}
             label="Day Streak"
             color="#FF6B35"
+            index={2}
           />
-          <StatCard
+          <AnimatedStatCard
             icon="today"
-            value={`${todayCount}`}
+            target={todayCount}
             label={`/ ${settings.dailyGoal}m Goal`}
             color="#4CAF50"
+            index={3}
           />
-        </Animated.View>
+        </View>
 
-        <Animated.View entering={FadeInDown.delay(300).duration(500)} style={styles.section}>
+        <Animated.View entering={FadeInDown.delay(500).duration(500)} style={styles.section}>
           <Text style={styles.sectionTitle}>Last 7 Days</Text>
           <View style={styles.chartContainer}>
-            {last7Days.map((day) => (
-              <View key={day.date} style={styles.chartBar}>
-                <View style={styles.barWrapper}>
-                  <View
-                    style={[
-                      styles.bar,
-                      {
-                        height: `${Math.max((day.count / maxDayCount) * 100, 4)}%`,
-                        backgroundColor: day.count > 0 ? colors.gold.primary : colors.bg.elevated,
-                      },
-                    ]}
-                  />
-                </View>
-                <Text style={styles.barCount}>{day.count}</Text>
-                <Text style={styles.barLabel}>{day.label}</Text>
-              </View>
+            {last7Days.map((day, i) => (
+              <AnimatedBar
+                key={day.date}
+                count={day.count}
+                label={day.label}
+                maxCount={maxDayCount}
+                delay={600 + i * 80}
+              />
             ))}
           </View>
         </Animated.View>
 
-        <Animated.View entering={FadeInDown.delay(400).duration(500)} style={styles.section}>
+        <Animated.View entering={FadeInDown.delay(700).duration(500)} style={styles.section}>
           <Text style={styles.sectionTitle}>Juz Overview</Text>
           <View style={styles.juzGrid}>
             {juzProgressList.map((j) => (
@@ -130,13 +165,65 @@ export default function ProgressScreen() {
   );
 }
 
-function StatCard({ icon, value, label, color }: { icon: string; value: string; label: string; color: string }) {
+function AnimatedStatCard({
+  icon,
+  target,
+  label,
+  color,
+  index,
+}: {
+  icon: string;
+  target: number;
+  label: string;
+  color: string;
+  index: number;
+}) {
+  const delay = 250 + index * 100;
+  const countDelay = delay + 200;
+  const displayValue = useCountUp(target, 800, countDelay);
+
   return (
-    <View style={styles.statCard}>
-      <Ionicons name={icon as any} size={20} color={color} />
-      <Text style={[styles.statValue, { color }]}>{value}</Text>
+    <Animated.View entering={FadeInUp.delay(delay).duration(400)} style={styles.statCard}>
+      <Animated.View entering={ZoomIn.delay(delay + 100).springify().damping(10)}>
+        <Ionicons name={icon as any} size={20} color={color} />
+      </Animated.View>
+      <Text style={[styles.statValue, { color }]}>{displayValue}</Text>
       <Text style={styles.statLabel}>{label}</Text>
-    </View>
+    </Animated.View>
+  );
+}
+
+function AnimatedBar({
+  count,
+  label,
+  maxCount,
+  delay,
+}: {
+  count: number;
+  label: string;
+  maxCount: number;
+  delay: number;
+}) {
+  const heightPct = useSharedValue(4);
+
+  useEffect(() => {
+    const target = Math.max((count / maxCount) * 100, 4);
+    heightPct.value = withDelay(delay, withTiming(target, { duration: 600, easing: Easing.out(Easing.cubic) }));
+  }, [count, maxCount, delay]);
+
+  const barStyle = useAnimatedStyle(() => ({
+    height: `${heightPct.value}%` as any,
+    backgroundColor: count > 0 ? colors.gold.primary : colors.bg.elevated,
+  }));
+
+  return (
+    <Animated.View entering={FadeInUp.delay(delay).duration(300)} style={styles.chartBar}>
+      <View style={styles.barWrapper}>
+        <Animated.View style={[styles.bar, barStyle]} />
+      </View>
+      <Text style={styles.barCount}>{count}</Text>
+      <Text style={styles.barLabel}>{label}</Text>
+    </Animated.View>
   );
 }
 
