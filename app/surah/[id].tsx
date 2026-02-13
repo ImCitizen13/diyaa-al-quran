@@ -11,15 +11,24 @@ import { getSurahMeta, getSurahAyahs, BISMILLAH, type Ayah } from '@/lib/quran-d
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
+const INTENSITY_LEVELS = [
+  { value: 0.25, label: 'Just Started', icon: 'sparkles-outline' as const, color: 'rgba(212, 175, 55, 0.4)' },
+  { value: 0.5, label: 'Learning', icon: 'book-outline' as const, color: 'rgba(212, 175, 55, 0.6)' },
+  { value: 0.75, label: 'Almost There', icon: 'flame-outline' as const, color: 'rgba(212, 175, 55, 0.8)' },
+  { value: 1.0, label: 'Fully Memorized', icon: 'star' as const, color: colors.gold.primary },
+];
+
 export default function SurahDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const surahNumber = parseInt(id, 10);
   const insets = useSafeAreaInsets();
-  const { isMemorized, memorizeAyahs, unmemorizeAyah, getSurahProgress } = useMemorization();
+  const { isMemorized, getAyahIntensity, memorizeAyahs, unmemorizeAyah, getSurahProgress } = useMemorization();
   const webTopInset = Platform.OS === 'web' ? 67 : 0;
 
   const [isSelecting, setIsSelecting] = useState(false);
   const [selectedAyahs, setSelectedAyahs] = useState<Set<number>>(new Set());
+  const [selectedIntensity, setSelectedIntensity] = useState(1.0);
+  const [showIntensityPicker, setShowIntensityPicker] = useState(false);
   const [undoEntries, setUndoEntries] = useState<{ surahNumber: number; ayahNumber: number }[] | null>(null);
   const undoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -46,11 +55,14 @@ export default function SurahDetailScreen() {
     if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setIsSelecting(true);
     setSelectedAyahs(new Set());
+    setShowIntensityPicker(false);
+    setSelectedIntensity(1.0);
   }, []);
 
   const cancelSelection = useCallback(() => {
     setIsSelecting(false);
     setSelectedAyahs(new Set());
+    setShowIntensityPicker(false);
   }, []);
 
   const selectAll = useCallback(() => {
@@ -58,6 +70,17 @@ export default function SurahDetailScreen() {
     const unmemorized = ayahs.filter((a) => !isMemorized(surahNumber, a.ayahNumber));
     setSelectedAyahs(new Set(unmemorized.map((a) => a.ayahNumber)));
   }, [ayahs, isMemorized, surahNumber]);
+
+  const handleShowIntensityPicker = useCallback(() => {
+    if (selectedAyahs.size === 0) return;
+    if (Platform.OS !== 'web') Haptics.selectionAsync();
+    setShowIntensityPicker(true);
+  }, [selectedAyahs]);
+
+  const handleIntensitySelect = useCallback((value: number) => {
+    if (Platform.OS !== 'web') Haptics.selectionAsync();
+    setSelectedIntensity(value);
+  }, []);
 
   const confirmMemorization = useCallback(async () => {
     const entries = Array.from(selectedAyahs).map((ayahNumber) => ({
@@ -67,16 +90,18 @@ export default function SurahDetailScreen() {
 
     if (entries.length === 0) return;
 
-    await memorizeAyahs(entries);
+    await memorizeAyahs(entries, selectedIntensity);
     if (Platform.OS !== 'web') Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
     setUndoEntries(entries);
     setIsSelecting(false);
     setSelectedAyahs(new Set());
+    setShowIntensityPicker(false);
+    setSelectedIntensity(1.0);
 
     if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
     undoTimerRef.current = setTimeout(() => setUndoEntries(null), 5000);
-  }, [selectedAyahs, surahNumber, memorizeAyahs]);
+  }, [selectedAyahs, surahNumber, memorizeAyahs, selectedIntensity]);
 
   const handleUndo = useCallback(async () => {
     if (!undoEntries) return;
@@ -116,6 +141,7 @@ export default function SurahDetailScreen() {
   const renderAyah = useCallback(({ item, index }: { item: Ayah; index: number }) => {
     const memorized = isMemorized(surahNumber, item.ayahNumber);
     const selected = selectedAyahs.has(item.ayahNumber);
+    const intensity = getAyahIntensity(surahNumber, item.ayahNumber);
 
     return (
       <AyahRow
@@ -123,6 +149,7 @@ export default function SurahDetailScreen() {
         memorized={memorized}
         selected={selected}
         isSelecting={isSelecting}
+        intensity={intensity}
         onPress={() => {
           if (isSelecting) {
             toggleSelect(item.ayahNumber);
@@ -131,7 +158,7 @@ export default function SurahDetailScreen() {
         onLongPress={() => handleAyahLongPress(item.ayahNumber)}
       />
     );
-  }, [isMemorized, surahNumber, selectedAyahs, isSelecting, toggleSelect, handleAyahLongPress]);
+  }, [isMemorized, getAyahIntensity, surahNumber, selectedAyahs, isSelecting, toggleSelect, handleAyahLongPress]);
 
   if (!meta) {
     return (
@@ -140,6 +167,8 @@ export default function SurahDetailScreen() {
       </View>
     );
   }
+
+  const currentLevel = INTENSITY_LEVELS.find(l => l.value === selectedIntensity) || INTENSITY_LEVELS[3];
 
   return (
     <View style={[styles.container, { paddingTop: insets.top + webTopInset }]}>
@@ -175,7 +204,7 @@ export default function SurahDetailScreen() {
         data={ayahs}
         renderItem={renderAyah}
         keyExtractor={(item) => `${item.surahNumber}:${item.ayahNumber}`}
-        contentContainerStyle={{ paddingBottom: isSelecting ? 100 : 40 }}
+        contentContainerStyle={{ paddingBottom: isSelecting ? 200 : 40 }}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <Animated.View entering={FadeIn.duration(500)} style={styles.surahHeader}>
@@ -199,15 +228,54 @@ export default function SurahDetailScreen() {
         <Animated.View
           entering={FadeInUp.duration(300)}
           exiting={FadeOut.duration(200)}
-          style={[styles.fab, { bottom: insets.bottom + 20 }]}
+          style={[styles.fabContainer, { bottom: insets.bottom + 16 }]}
         >
-          <Pressable
-            onPress={confirmMemorization}
-            style={({ pressed }) => [styles.fabBtn, { transform: [{ scale: pressed ? 0.95 : 1 }] }]}
-          >
-            <Ionicons name="checkmark" size={22} color="#fff" />
-            <Text style={styles.fabText}>Mark as Memorized ({selectedAyahs.size})</Text>
-          </Pressable>
+          {showIntensityPicker ? (
+            <View style={styles.intensityPanel}>
+              <Text style={styles.intensityTitle}>How well do you know these?</Text>
+              <View style={styles.intensityGrid}>
+                {INTENSITY_LEVELS.map((level) => (
+                  <Pressable
+                    key={level.value}
+                    onPress={() => handleIntensitySelect(level.value)}
+                    style={[
+                      styles.intensityOption,
+                      selectedIntensity === level.value && styles.intensityOptionActive,
+                      selectedIntensity === level.value && { borderColor: level.color },
+                    ]}
+                  >
+                    <Ionicons
+                      name={level.icon}
+                      size={20}
+                      color={selectedIntensity === level.value ? level.color : colors.text.muted}
+                    />
+                    <Text style={[
+                      styles.intensityLabel,
+                      selectedIntensity === level.value && { color: level.color },
+                    ]}>
+                      {level.label}
+                    </Text>
+                    <View style={[styles.intensityBar, { width: `${level.value * 100}%`, backgroundColor: level.color }]} />
+                  </Pressable>
+                ))}
+              </View>
+              <Pressable
+                onPress={confirmMemorization}
+                style={({ pressed }) => [styles.confirmBtn, { transform: [{ scale: pressed ? 0.97 : 1 }], backgroundColor: currentLevel.color }]}
+              >
+                <Ionicons name="checkmark" size={20} color={colors.bg.primary} />
+                <Text style={styles.confirmText}>Confirm ({selectedAyahs.size} Ayahs)</Text>
+              </Pressable>
+            </View>
+          ) : (
+            <Pressable
+              onPress={handleShowIntensityPicker}
+              style={({ pressed }) => [styles.fabBtn, { transform: [{ scale: pressed ? 0.95 : 1 }] }]}
+            >
+              <Ionicons name="checkmark" size={22} color="#fff" />
+              <Text style={styles.fabText}>Mark as Memorized ({selectedAyahs.size})</Text>
+            </Pressable>
+          )}
         </Animated.View>
       )}
 
@@ -227,25 +295,31 @@ export default function SurahDetailScreen() {
   );
 }
 
-function AyahRow({ ayah, memorized, selected, isSelecting, onPress, onLongPress }: {
+function AyahRow({ ayah, memorized, selected, isSelecting, intensity, onPress, onLongPress }: {
   ayah: Ayah;
   memorized: boolean;
   selected: boolean;
   isSelecting: boolean;
+  intensity: number;
   onPress: () => void;
   onLongPress: () => void;
 }) {
+  const intensityAlpha = memorized ? Math.max(0.04, intensity * 0.12) : 0;
+  const borderAlpha = memorized ? Math.max(0.08, intensity * 0.3) : 0;
+
   const bgColor = selected
     ? 'rgba(255, 215, 0, 0.12)'
     : memorized
-      ? 'rgba(212, 175, 55, 0.06)'
+      ? `rgba(212, 175, 55, ${intensityAlpha})`
       : 'transparent';
 
   const borderColor = selected
     ? 'rgba(255, 215, 0, 0.3)'
     : memorized
-      ? colors.glow.cardBorder
+      ? `rgba(212, 175, 55, ${borderAlpha})`
       : 'transparent';
+
+  const intensityLevel = INTENSITY_LEVELS.find(l => Math.abs(l.value - intensity) < 0.01);
 
   return (
     <Pressable
@@ -264,11 +338,19 @@ function AyahRow({ ayah, memorized, selected, isSelecting, onPress, onLongPress 
       <View style={styles.ayahContent}>
         <Text style={[styles.ayahText, memorized && styles.ayahTextMemorized]}>{ayah.text}</Text>
         <View style={styles.ayahFooter}>
-          <View style={[styles.ayahNumberBadge, memorized && styles.ayahNumberMemorized]}>
-            <Text style={[styles.ayahNumber, memorized && { color: colors.gold.bright }]}>{ayah.ayahNumber}</Text>
+          <View style={styles.ayahFooterLeft}>
+            <View style={[styles.ayahNumberBadge, memorized && styles.ayahNumberMemorized]}>
+              <Text style={[styles.ayahNumber, memorized && { color: colors.gold.bright }]}>{ayah.ayahNumber}</Text>
+            </View>
+            {memorized && !isSelecting && intensityLevel && intensity < 1 && (
+              <View style={styles.intensityBadge}>
+                <Ionicons name={intensityLevel.icon} size={12} color={intensityLevel.color} />
+                <Text style={[styles.intensityBadgeText, { color: intensityLevel.color }]}>{intensityLevel.label}</Text>
+              </View>
+            )}
           </View>
           {memorized && !isSelecting && (
-            <Ionicons name="checkmark-circle" size={16} color={colors.gold.primary} />
+            <Ionicons name="checkmark-circle" size={16} color={intensity >= 1 ? colors.gold.primary : `rgba(212, 175, 55, ${Math.max(0.4, intensity)})`} />
           )}
           {isSelecting && (
             <View style={[styles.checkbox, selected && styles.checkboxSelected]}>
@@ -413,6 +495,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 8,
   },
+  ayahFooterLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   ayahNumberBadge: {
     width: 28,
     height: 28,
@@ -429,6 +516,19 @@ const styles = StyleSheet.create({
     fontWeight: '600' as const,
     color: colors.text.muted,
   },
+  intensityBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    backgroundColor: 'rgba(212, 175, 55, 0.08)',
+  },
+  intensityBadgeText: {
+    fontSize: 10,
+    fontWeight: '500' as const,
+  },
   checkbox: {
     width: 24,
     height: 24,
@@ -442,10 +542,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gold.primary,
     borderColor: colors.gold.primary,
   },
-  fab: {
+  fabContainer: {
     position: 'absolute',
-    left: 20,
-    right: 20,
+    left: 16,
+    right: 16,
   },
   fabBtn: {
     flexDirection: 'row',
@@ -463,6 +563,65 @@ const styles = StyleSheet.create({
   },
   fabText: {
     fontSize: 16,
+    fontWeight: '700' as const,
+    color: colors.bg.primary,
+  },
+  intensityPanel: {
+    backgroundColor: colors.bg.card,
+    borderRadius: 20,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: colors.glow.cardBorder,
+    gap: 12,
+  },
+  intensityTitle: {
+    fontSize: 15,
+    fontWeight: '600' as const,
+    color: colors.text.primary,
+    textAlign: 'center' as const,
+  },
+  intensityGrid: {
+    gap: 6,
+  },
+  intensityOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderRadius: 12,
+    backgroundColor: colors.bg.elevated,
+    borderWidth: 1.5,
+    borderColor: 'transparent',
+    overflow: 'hidden',
+  },
+  intensityOptionActive: {
+    backgroundColor: 'rgba(212, 175, 55, 0.08)',
+  },
+  intensityLabel: {
+    fontSize: 14,
+    fontWeight: '500' as const,
+    color: colors.text.muted,
+    flex: 1,
+  },
+  intensityBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    height: 2,
+    borderRadius: 1,
+  },
+  confirmBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 14,
+    borderRadius: 14,
+    marginTop: 4,
+  },
+  confirmText: {
+    fontSize: 15,
     fontWeight: '700' as const,
     color: colors.bg.primary,
   },
