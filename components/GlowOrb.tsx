@@ -4,7 +4,7 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import { colors } from '@/constants/colors';
 
 let Canvas: any, Circle: any, RadialGradient: any, vec: any, BlurMask: any, Group: any;
-let Fill: any, Paint: any, Blur: any, PathOp: any, Skia: any, SweepGradient: any;
+let Fill: any, Paint: any, Blur: any, PathOp: any, Skia: any, SweepGradient: any, SkiaPath: any;
 let skiaAvailable = false;
 
 try {
@@ -22,13 +22,14 @@ try {
     PathOp = skia.PathOp;
     Skia = skia.Skia;
     SweepGradient = skia.SweepGradient;
+    SkiaPath = skia.Path;
     skiaAvailable = true;
   }
 } catch (e) {
   skiaAvailable = false;
 }
 
-export { skiaAvailable, Canvas, Circle, RadialGradient, vec, BlurMask, Group };
+export { skiaAvailable, Canvas, Circle, RadialGradient, vec, BlurMask, Group, Skia, SkiaPath };
 
 export interface GlowOrbProps {
   intensity: number;

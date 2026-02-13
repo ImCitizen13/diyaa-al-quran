@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, useRef } from 'react';
-import { StyleSheet, Text, View, FlatList, Pressable, Platform, Alert } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Pressable, Platform, Alert, Dimensions } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeInDown, FadeInUp, FadeOut, useAnimatedStyle, withTiming, withSequence, withSpring } from 'react-native-reanimated';
@@ -8,6 +8,9 @@ import * as Haptics from 'expo-haptics';
 import { colors } from '@/constants/colors';
 import { useMemorization } from '@/lib/memorization-context';
 import { getSurahMeta, getSurahAyahs, BISMILLAH, type Ayah } from '@/lib/quran-data';
+import IslamicPattern from '@/components/IslamicPattern';
+
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -171,7 +174,8 @@ export default function SurahDetailScreen() {
   const currentLevel = INTENSITY_LEVELS.find(l => l.value === selectedIntensity) || INTENSITY_LEVELS[3];
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top + webTopInset }]}>
+    <View style={[styles.container, { paddingTop: insets.top + webTopInset, overflow: 'hidden' }]}>
+      <IslamicPattern width={SCREEN_WIDTH} height={SCREEN_HEIGHT} />
       <View style={styles.topBar}>
         <Pressable
           onPress={() => router.back()}

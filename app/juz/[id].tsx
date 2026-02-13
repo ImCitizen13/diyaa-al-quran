@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, Text, View, ScrollView, Pressable, Platform } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Pressable, Platform, Dimensions } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
@@ -10,6 +10,9 @@ import { useMemorization } from '@/lib/memorization-context';
 import { getSurahsInJuz, getSurahMeta, getTotalAyahsInJuz } from '@/lib/quran-data';
 import GlowOrb from '@/components/GlowOrb';
 import ProgressRing from '@/components/ProgressRing';
+import IslamicPattern from '@/components/IslamicPattern';
+
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function JuzDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -32,7 +35,8 @@ export default function JuzDetailScreen() {
   }, [surahsInJuz]);
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top + webTopInset }]}>
+    <View style={[styles.container, { paddingTop: insets.top + webTopInset, overflow: 'hidden' }]}>
+      <IslamicPattern width={SCREEN_WIDTH} height={SCREEN_HEIGHT} tileSize={100} />
       <View style={styles.topBar}>
         <Pressable
           onPress={() => router.back()}

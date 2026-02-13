@@ -145,11 +145,13 @@ export default function HomeScreen() {
             <SkiaOrbGrid
               data={juzOrbData}
               orbSize={56}
+              showPattern
             />
           ) : (
             <SkiaOrbGrid
               data={surahOrbData}
               orbSize={44}
+              showPattern
             />
           )}
         </Animated.View>

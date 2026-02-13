@@ -23,7 +23,7 @@ import {
 } from '@/lib/biometric-auth';
 import { resetWalkthrough } from '@/lib/walkthrough';
 
-const DAILY_GOALS = [1, 3, 5, 10, 15, 20, 30];
+const DAILY_GOALS = [15, 30, 45, 60, 90, 120, 180];
 const REMINDER_HOURS = [5, 6, 7, 8, 9, 17, 18, 19, 20, 21, 22];
 
 function formatTime(hour: number, minute: number): string {
@@ -175,7 +175,7 @@ export default function SettingsScreen() {
       >
         <Animated.View entering={FadeInDown.delay(100).duration(500)} style={styles.section}>
           <Text style={styles.sectionTitle}>Daily Goal</Text>
-          <Text style={styles.sectionDesc}>Set how many Ayahs you want to memorize each day</Text>
+          <Text style={styles.sectionDesc}>Set how long you want to memorize Quran each day</Text>
           <View style={styles.goalGrid}>
             {DAILY_GOALS.map((goal) => (
               <Pressable

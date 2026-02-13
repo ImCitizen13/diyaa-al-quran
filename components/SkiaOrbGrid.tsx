@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet, Platform, Dimensions } from 'react-n
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { colors } from '@/constants/colors';
 import { skiaAvailable, Canvas, SkiaOrbShape, getGlowColors } from '@/components/GlowOrb';
+import IslamicPattern from '@/components/IslamicPattern';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -19,6 +20,7 @@ interface SkiaOrbGridProps {
   data: OrbData[];
   orbSize: number;
   paddingHorizontal?: number;
+  showPattern?: boolean;
 }
 
 interface OrbPosition {
@@ -28,7 +30,7 @@ interface OrbPosition {
   col: number;
 }
 
-export default function SkiaOrbGrid({ data, orbSize, paddingHorizontal = 12 }: SkiaOrbGridProps) {
+export default function SkiaOrbGrid({ data, orbSize, paddingHorizontal = 12, showPattern }: SkiaOrbGridProps) {
   const cellWidth = orbSize + 20;
   const canvasOrbSize = orbSize * 2;
   const cellHeight = canvasOrbSize + 30;
@@ -62,7 +64,8 @@ export default function SkiaOrbGrid({ data, orbSize, paddingHorizontal = 12 }: S
   }
 
   return (
-    <Animated.View entering={FadeIn.duration(400)} style={{ width: availableWidth, alignSelf: 'center' }}>
+    <Animated.View entering={FadeIn.duration(400)} style={{ width: availableWidth, alignSelf: 'center', overflow: 'hidden' }}>
+      {showPattern && <IslamicPattern width={availableWidth} height={canvasHeight} />}
       <Canvas style={{ width: availableWidth, height: canvasHeight }}>
         {data.map((orb, index) => {
           const pos = positions[index];

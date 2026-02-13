@@ -223,11 +223,14 @@ const surahFiles: Record<number, any> = {
 export function getSurahAyahs(surahNumber: number): Ayah[] {
   if (surahDataCache.has(surahNumber)) {
     const verses = surahDataCache.get(surahNumber)!;
-    return Object.entries(verses).map(([key, text]) => ({
-      surahNumber,
-      ayahNumber: parseInt(key.replace('verse_', ''), 10),
-      text,
-    })).sort((a, b) => a.ayahNumber - b.ayahNumber);
+    return Object.entries(verses)
+      .map(([key, text]) => ({
+        surahNumber,
+        ayahNumber: parseInt(key.replace('verse_', ''), 10),
+        text,
+      }))
+      .filter((a) => a.ayahNumber > 0)
+      .sort((a, b) => a.ayahNumber - b.ayahNumber);
   }
 
   const data = surahFiles[surahNumber];
@@ -236,11 +239,14 @@ export function getSurahAyahs(surahNumber: number): Ayah[] {
   const verses: Record<string, string> = data.verse || {};
   surahDataCache.set(surahNumber, verses);
 
-  return Object.entries(verses).map(([key, text]) => ({
-    surahNumber,
-    ayahNumber: parseInt(key.replace('verse_', ''), 10),
-    text,
-  })).sort((a, b) => a.ayahNumber - b.ayahNumber);
+  return Object.entries(verses)
+    .map(([key, text]) => ({
+      surahNumber,
+      ayahNumber: parseInt(key.replace('verse_', ''), 10),
+      text,
+    }))
+    .filter((a) => a.ayahNumber > 0)
+    .sort((a, b) => a.ayahNumber - b.ayahNumber);
 }
 
 export const TOTAL_AYAHS = 6236;
