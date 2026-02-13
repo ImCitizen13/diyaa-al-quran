@@ -36,6 +36,12 @@
           "origin": "https://replit.com/"
         }
       ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow Diyaa Al-Quran to use Face ID."
+        }
+      ],
       "expo-font",
       "expo-web-browser"
     ],
