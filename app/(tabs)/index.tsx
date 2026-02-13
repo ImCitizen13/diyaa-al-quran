@@ -9,7 +9,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/constants/colors';
 import { useMemorization } from '@/lib/memorization-context';
 import { getAllSurahs, getAllJuz } from '@/lib/quran-data';
-import GlowOrb from '@/components/GlowOrb';
 import SkiaOrbGrid, { type OrbData } from '@/components/SkiaOrbGrid';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -140,7 +139,6 @@ export default function HomeScreen() {
         style={styles.scrollView}
         contentContainerStyle={[styles.gridContainer, { paddingBottom: Platform.OS === 'web' ? 34 + 84 : 100 }]}
         showsVerticalScrollIndicator={false}
-        contentInsetAdjustmentBehavior="automatic"
       >
         {viewMode === 'juz' ? (
           <SkiaOrbGrid
