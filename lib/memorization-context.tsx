@@ -11,6 +11,7 @@ export interface MemorizedEntry {
   ayahNumber: number;
   juzNumber: number;
   memorizedAt: string;
+  intensity: number;
 }
 
 export interface DailyLog {
@@ -24,9 +25,10 @@ export interface AppSettings {
 interface MemorizationContextValue {
   memorizedAyahs: Map<string, MemorizedEntry>;
   isLoading: boolean;
-  memorizeAyahs: (entries: { surahNumber: number; ayahNumber: number }[]) => Promise<void>;
+  memorizeAyahs: (entries: { surahNumber: number; ayahNumber: number }[], intensity?: number) => Promise<void>;
   unmemorizeAyah: (surahNumber: number, ayahNumber: number) => Promise<void>;
   isMemorized: (surahNumber: number, ayahNumber: number) => boolean;
+  getAyahIntensity: (surahNumber: number, ayahNumber: number) => number;
   getSurahProgress: (surahNumber: number) => { memorized: number; total: number; percentage: number };
   getJuzProgress: (juzNumber: number) => { memorized: number; total: number; percentage: number };
   getOverallProgress: () => { memorized: number; total: number; percentage: number; surahsComplete: number; juzComplete: number };
@@ -93,7 +95,7 @@ export function MemorizationProvider({ children }: { children: ReactNode }) {
     await AsyncStorage.setItem(DAILY_LOG_KEY, JSON.stringify(log));
   }, []);
 
-  const memorizeAyahs = useCallback(async (entries: { surahNumber: number; ayahNumber: number }[]) => {
+  const memorizeAyahs = useCallback(async (entries: { surahNumber: number; ayahNumber: number }[], intensity: number = 1) => {
     setMemorizedAyahs((prev) => {
       const newMap = new Map(prev);
       const now = new Date().toISOString();
@@ -101,19 +103,22 @@ export function MemorizationProvider({ children }: { children: ReactNode }) {
 
       entries.forEach(({ surahNumber, ayahNumber }) => {
         const key = `${surahNumber}:${ayahNumber}`;
-        if (!newMap.has(key)) {
+        const existing = newMap.get(key);
+        if (!existing) {
           newMap.set(key, {
             surahNumber,
             ayahNumber,
             juzNumber: getJuzForAyah(surahNumber, ayahNumber),
             memorizedAt: now,
+            intensity,
           });
           newCount++;
+        } else {
+          newMap.set(key, { ...existing, intensity, memorizedAt: now });
         }
       });
 
       if (newCount > 0) {
-        saveMemorized(newMap);
         const dateKey = getDateKey();
         setDailyLog((prevLog) => {
           const newLog = { ...prevLog, [dateKey]: (prevLog[dateKey] || 0) + newCount };
@@ -122,6 +127,7 @@ export function MemorizationProvider({ children }: { children: ReactNode }) {
         });
       }
 
+      saveMemorized(newMap);
       return newMap;
     });
   }, [saveMemorized, saveDailyLog]);
@@ -137,6 +143,11 @@ export function MemorizationProvider({ children }: { children: ReactNode }) {
 
   const isMemorized = useCallback((surahNumber: number, ayahNumber: number): boolean => {
     return memorizedAyahs.has(`${surahNumber}:${ayahNumber}`);
+  }, [memorizedAyahs]);
+
+  const getAyahIntensity = useCallback((surahNumber: number, ayahNumber: number): number => {
+    const entry = memorizedAyahs.get(`${surahNumber}:${ayahNumber}`);
+    return entry ? (entry.intensity ?? 1) : 0;
   }, [memorizedAyahs]);
 
   const getSurahProgress = useCallback((surahNumber: number) => {
@@ -262,6 +273,7 @@ export function MemorizationProvider({ children }: { children: ReactNode }) {
     memorizeAyahs,
     unmemorizeAyah,
     isMemorized,
+    getAyahIntensity,
     getSurahProgress,
     getJuzProgress,
     getOverallProgress,
@@ -272,7 +284,7 @@ export function MemorizationProvider({ children }: { children: ReactNode }) {
     updateSettings,
     exportData,
     resetAllData,
-  }), [memorizedAyahs, isLoading, memorizeAyahs, unmemorizeAyah, isMemorized, getSurahProgress, getJuzProgress, getOverallProgress, getStreak, getTodayCount, dailyLog, settings, updateSettings, exportData, resetAllData]);
+  }), [memorizedAyahs, isLoading, memorizeAyahs, unmemorizeAyah, isMemorized, getAyahIntensity, getSurahProgress, getJuzProgress, getOverallProgress, getStreak, getTodayCount, dailyLog, settings, updateSettings, exportData, resetAllData]);
 
   return (
     <MemorizationContext.Provider value={value}>
