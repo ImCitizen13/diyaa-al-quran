@@ -155,14 +155,19 @@ export function MemorizationProvider({ children }: { children: ReactNode }) {
     if (!surah) return { memorized: 0, total: 0, percentage: 0 };
 
     let memorized = 0;
+    let weightedSum = 0;
     for (let i = 1; i <= surah.count; i++) {
-      if (memorizedAyahs.has(`${surahNumber}:${i}`)) memorized++;
+      const entry = memorizedAyahs.get(`${surahNumber}:${i}`);
+      if (entry) {
+        memorized++;
+        weightedSum += (entry.intensity ?? 1);
+      }
     }
 
     return {
       memorized,
       total: surah.count,
-      percentage: surah.count > 0 ? memorized / surah.count : 0,
+      percentage: surah.count > 0 ? weightedSum / surah.count : 0,
     };
   }, [memorizedAyahs]);
 
@@ -170,18 +175,23 @@ export function MemorizationProvider({ children }: { children: ReactNode }) {
     const surahsInJuz = getSurahsInJuz(juzNumber);
     let memorized = 0;
     let total = 0;
+    let weightedSum = 0;
 
     surahsInJuz.forEach(({ surahNumber, startVerse, endVerse }) => {
       for (let i = startVerse; i <= endVerse; i++) {
         total++;
-        if (memorizedAyahs.has(`${surahNumber}:${i}`)) memorized++;
+        const entry = memorizedAyahs.get(`${surahNumber}:${i}`);
+        if (entry) {
+          memorized++;
+          weightedSum += (entry.intensity ?? 1);
+        }
       }
     });
 
     return {
       memorized,
       total,
-      percentage: total > 0 ? memorized / total : 0,
+      percentage: total > 0 ? weightedSum / total : 0,
     };
   }, [memorizedAyahs]);
 
@@ -189,11 +199,17 @@ export function MemorizationProvider({ children }: { children: ReactNode }) {
     const memorized = memorizedAyahs.size;
     const allSurahs = getAllSurahs();
 
+    let weightedSum = 0;
+    memorizedAyahs.forEach((entry) => {
+      weightedSum += (entry.intensity ?? 1);
+    });
+
     let surahsComplete = 0;
     allSurahs.forEach((s) => {
       let complete = true;
       for (let i = 1; i <= s.count; i++) {
-        if (!memorizedAyahs.has(`${s.index}:${i}`)) {
+        const entry = memorizedAyahs.get(`${s.index}:${i}`);
+        if (!entry || (entry.intensity ?? 1) < 1) {
           complete = false;
           break;
         }
@@ -210,7 +226,7 @@ export function MemorizationProvider({ children }: { children: ReactNode }) {
     return {
       memorized,
       total: TOTAL_AYAHS,
-      percentage: TOTAL_AYAHS > 0 ? memorized / TOTAL_AYAHS : 0,
+      percentage: TOTAL_AYAHS > 0 ? weightedSum / TOTAL_AYAHS : 0,
       surahsComplete,
       juzComplete,
     };
