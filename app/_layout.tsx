@@ -5,7 +5,6 @@ import React, { useEffect, useState, useCallback } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { useFonts, Amiri_400Regular, Amiri_700Bold } from "@expo-google-fonts/amiri";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { queryClient } from "@/lib/query-client";
 import { MemorizationProvider } from "@/lib/memorization-context";
@@ -13,8 +12,7 @@ import { colors } from "@/constants/colors";
 import BiometricLock from "@/components/BiometricLock";
 import Walkthrough from "@/components/Walkthrough";
 import { initializeNotifications } from "@/lib/notifications";
-
-const WALKTHROUGH_KEY = "@diyaa_walkthrough_completed";
+import { isWalkthroughCompleted, completeWalkthrough, onWalkthroughReset } from "@/lib/walkthrough";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -66,13 +64,20 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    AsyncStorage.getItem(WALKTHROUGH_KEY).then((value) => {
-      setWalkthroughState(value === "true" ? "done" : "show");
+    isWalkthroughCompleted().then((completed) => {
+      setWalkthroughState(completed ? "done" : "show");
     });
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = onWalkthroughReset(() => {
+      setWalkthroughState("show");
+    });
+    return unsubscribe;
+  }, []);
+
   const handleWalkthroughComplete = useCallback(async () => {
-    await AsyncStorage.setItem(WALKTHROUGH_KEY, "true");
+    await completeWalkthrough();
     setWalkthroughState("done");
   }, []);
 

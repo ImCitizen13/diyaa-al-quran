@@ -21,6 +21,7 @@ import {
   getBiometricType,
   authenticateWithBiometrics,
 } from '@/lib/biometric-auth';
+import { resetWalkthrough } from '@/lib/walkthrough';
 
 const DAILY_GOALS = [1, 3, 5, 10, 15, 20, 30];
 const REMINDER_HOURS = [5, 6, 7, 8, 9, 17, 18, 19, 20, 21, 22];
@@ -278,6 +279,19 @@ export default function SettingsScreen() {
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(300).duration(500)} style={styles.section}>
+          <Text style={styles.sectionTitle}>Help</Text>
+          <SettingsRow
+            icon="play-circle-outline"
+            label="Replay Walkthrough"
+            sublabel="See the app introduction again"
+            onPress={() => {
+              if (Platform.OS !== 'web') Haptics.selectionAsync();
+              resetWalkthrough();
+            }}
+          />
+        </Animated.View>
+
+        <Animated.View entering={FadeInDown.delay(350).duration(500)} style={styles.section}>
           <Text style={styles.sectionTitle}>About</Text>
           <View style={styles.aboutCard}>
             <Text style={styles.aboutTitle}>Diyaa Al-Quran</Text>
