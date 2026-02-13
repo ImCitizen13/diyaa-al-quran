@@ -1,12 +1,6 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, Pressable, StyleSheet, Platform, Dimensions } from 'react-native';
-import Animated, {
-  FadeIn,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-  Easing,
-} from 'react-native-reanimated';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import { colors } from '@/constants/colors';
 import { skiaAvailable, Canvas, SkiaOrbShape, getGlowColors } from '@/components/GlowOrb';
 
@@ -38,17 +32,6 @@ export default function SkiaOrbGrid({ data, orbSize, paddingHorizontal = 12 }: S
   const cellWidth = orbSize + 20;
   const canvasOrbSize = orbSize * 2;
   const cellHeight = canvasOrbSize + 30;
-
-  // Shared pulse animation for all orbs in the grid
-  const pulseOpacity = useSharedValue(1);
-
-  useEffect(() => {
-    pulseOpacity.value = withRepeat(
-      withTiming(0.4, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
-      -1,
-      true
-    );
-  }, []);
 
   const availableWidth = SCREEN_WIDTH - paddingHorizontal * 2;
   const orbsPerRow = Math.floor(availableWidth / cellWidth);
@@ -90,7 +73,6 @@ export default function SkiaOrbGrid({ data, orbSize, paddingHorizontal = 12 }: S
               size={orbSize}
               cx={pos.x}
               cy={pos.y}
-              pulseOpacity={pulseOpacity}
             />
           );
         })}
