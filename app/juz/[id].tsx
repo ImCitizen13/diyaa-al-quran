@@ -59,6 +59,7 @@ export default function JuzDetailScreen() {
             strokeWidth={8}
             progress={juzProgress.percentage}
             sublabel={`${juzProgress.memorized} / ${juzProgress.total} Ayahs`}
+            fillDelay={400}
           />
           <Text style={styles.headerLabel}>Juz {juzNumber}</Text>
           <Text style={styles.headerSub}>{uniqueSurahs.length} Surahs</Text>

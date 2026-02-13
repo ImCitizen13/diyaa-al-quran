@@ -52,11 +52,11 @@ export async function scheduleDailyReminder(hour: number, minute: number): Promi
   await Notifications.cancelAllScheduledNotificationsAsync();
 
   const messages = [
-    'Time for your daily Quran memorization! Your streak awaits.',
+    'Time for your daily Quran reading! Your streak awaits.',
     'Keep the light growing. Open Diyaa Al-Quran to continue your Hifz journey.',
-    'Your memorization goal for today is waiting. Let\'s keep the streak alive!',
-    'A few minutes of Hifz can light your path. Start now!',
-    'Don\'t break your streak! Open the app to memorize today\'s Ayahs.',
+    'Your reading goal for today is waiting. Let\'s keep the streak alive!',
+    'A few minutes of Quran can light your path. Start now!',
+    'Don\'t break your streak! Open the app for your daily reading.',
   ];
 
   const randomMessage = messages[Math.floor(Math.random() * messages.length)];

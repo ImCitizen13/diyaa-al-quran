@@ -175,7 +175,7 @@ export default function SettingsScreen() {
       >
         <Animated.View entering={FadeInDown.delay(100).duration(500)} style={styles.section}>
           <Text style={styles.sectionTitle}>Daily Goal</Text>
-          <Text style={styles.sectionDesc}>Set how long you want to memorize Quran each day</Text>
+          <Text style={styles.sectionDesc}>How long do you want to read Quran each day?</Text>
           <View style={styles.goalGrid}>
             {DAILY_GOALS.map((goal) => (
               <Pressable
@@ -183,7 +183,9 @@ export default function SettingsScreen() {
                 onPress={() => handleGoalChange(goal)}
                 style={[styles.goalBtn, settings.dailyGoal === goal && styles.goalBtnActive]}
               >
-                <Text style={[styles.goalText, settings.dailyGoal === goal && styles.goalTextActive]}>{goal}</Text>
+                <Text style={[styles.goalText, settings.dailyGoal === goal && styles.goalTextActive]}>
+                  {goal >= 60 ? `${goal / 60}h` : `${goal}m`}
+                </Text>
               </Pressable>
             ))}
           </View>

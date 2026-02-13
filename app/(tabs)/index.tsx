@@ -123,7 +123,7 @@ export default function HomeScreen() {
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
-          <Text style={styles.statValue}>{todayCount}/{settings.dailyGoal}</Text>
+          <Text style={styles.statValue}>{todayCount}/{settings.dailyGoal}m</Text>
           <Text style={styles.statLabel}>Today</Text>
         </View>
       </View>

@@ -83,7 +83,7 @@ export default function ProgressScreen() {
           <StatCard
             icon="today"
             value={`${todayCount}`}
-            label={`/ ${settings.dailyGoal} Goal`}
+            label={`/ ${settings.dailyGoal}m Goal`}
             color="#4CAF50"
           />
         </Animated.View>

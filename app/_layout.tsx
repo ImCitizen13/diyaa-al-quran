@@ -11,7 +11,8 @@ import { MemorizationProvider } from "@/lib/memorization-context";
 import { colors } from "@/constants/colors";
 import BiometricLock from "@/components/BiometricLock";
 import Walkthrough from "@/components/Walkthrough";
-import { initializeNotifications } from "@/lib/notifications";
+import { initializeNotifications, saveNotificationSettings, scheduleDailyReminder, requestNotificationPermissions } from "@/lib/notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { isWalkthroughCompleted, completeWalkthrough, onWalkthroughReset } from "@/lib/walkthrough";
 
 SplashScreen.preventAutoHideAsync();
@@ -76,8 +77,22 @@ export default function RootLayout() {
     return unsubscribe;
   }, []);
 
-  const handleWalkthroughComplete = useCallback(async () => {
+  const handleWalkthroughComplete = useCallback(async (settings?: { pace?: number; notificationsEnabled?: boolean }) => {
     await completeWalkthrough();
+
+    // Save daily goal from walkthrough
+    if (settings?.pace) {
+      await AsyncStorage.setItem('@diyaa_settings', JSON.stringify({ dailyGoal: settings.pace }));
+    }
+
+    // Enable notifications if user granted permission
+    if (settings?.notificationsEnabled) {
+      const defaultHour = 20;
+      const defaultMinute = 0;
+      await saveNotificationSettings({ enabled: true, hour: defaultHour, minute: defaultMinute });
+      await scheduleDailyReminder(defaultHour, defaultMinute);
+    }
+
     setWalkthroughState("done");
   }, []);
 

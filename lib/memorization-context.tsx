@@ -50,7 +50,7 @@ function getDateKey(): string {
 export function MemorizationProvider({ children }: { children: ReactNode }) {
   const [memorizedAyahs, setMemorizedAyahs] = useState<Map<string, MemorizedEntry>>(new Map());
   const [dailyLog, setDailyLog] = useState<DailyLog>({});
-  const [settings, setSettings] = useState<AppSettings>({ dailyGoal: 5 });
+  const [settings, setSettings] = useState<AppSettings>({ dailyGoal: 30 });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -280,7 +280,7 @@ export function MemorizationProvider({ children }: { children: ReactNode }) {
     ]);
     setMemorizedAyahs(new Map());
     setDailyLog({});
-    setSettings({ dailyGoal: 5 });
+    setSettings({ dailyGoal: 30 });
   }, []);
 
   const value = useMemo(() => ({
