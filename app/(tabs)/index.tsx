@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useRef } from 'react';
 import { StyleSheet, Text, View, ScrollView, Pressable, Platform, Dimensions, Modal } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -36,6 +36,8 @@ export default function HomeScreen() {
 
   const [pickerSurah, setPickerSurah] = useState<{ index: number; title: string; titleAr: string; count: number } | null>(null);
   const [selectedIntensity, setSelectedIntensity] = useState(1.0);
+  const [congratsInfo, setCongratsInfo] = useState<{ count: number; title: string } | null>(null);
+  const congratsTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const toggleView = useCallback(() => {
     if (Platform.OS !== 'web') Haptics.selectionAsync();
@@ -89,7 +91,13 @@ export default function HomeScreen() {
     }));
     await memorizeAyahs(entries, selectedIntensity);
     if (Platform.OS !== 'web') Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
+    const info = { count: pickerSurah.count, title: pickerSurah.titleAr };
     setPickerSurah(null);
+
+    setCongratsInfo(info);
+    if (congratsTimerRef.current) clearTimeout(congratsTimerRef.current);
+    congratsTimerRef.current = setTimeout(() => setCongratsInfo(null), 3000);
   }, [pickerSurah, selectedIntensity, memorizeAyahs]);
 
   const webTopInset = Platform.OS === 'web' ? 67 : 0;
@@ -221,6 +229,22 @@ export default function HomeScreen() {
           </Pressable>
         </Pressable>
       </Modal>
+
+      {congratsInfo && (
+        <Pressable style={styles.congratsOverlay} onPress={() => setCongratsInfo(null)}>
+          <Animated.View entering={FadeIn.duration(300)} exiting={FadeOut.duration(200)} style={styles.congratsCard}>
+            <Ionicons name="star" size={48} color={colors.gold.bright} />
+            <Text style={styles.congratsTitle}>MashaAllah!</Text>
+            <Text style={styles.congratsSubtitle}>
+              You memorized {congratsInfo.title}
+            </Text>
+            <Text style={styles.congratsDetail}>
+              {congratsInfo.count} {congratsInfo.count === 1 ? 'Ayah' : 'Ayahs'}
+            </Text>
+            <Text style={styles.congratsDismiss}>Tap to dismiss</Text>
+          </Animated.View>
+        </Pressable>
+      )}
     </View>
   );
 }
@@ -409,5 +433,43 @@ const styles = StyleSheet.create({
   cancelText: {
     fontSize: 14,
     color: colors.text.muted,
+  },
+  congratsOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    zIndex: 100,
+  },
+  congratsCard: {
+    alignItems: 'center',
+    backgroundColor: colors.bg.card,
+    borderRadius: 24,
+    paddingVertical: 32,
+    paddingHorizontal: 40,
+    borderWidth: 1,
+    borderColor: colors.glow.cardBorder,
+    gap: 8,
+  },
+  congratsTitle: {
+    fontSize: 24,
+    fontWeight: '700' as const,
+    color: colors.gold.bright,
+    marginTop: 8,
+  },
+  congratsSubtitle: {
+    fontSize: 18,
+    color: colors.text.primary,
+    fontFamily: 'Amiri_700Bold',
+    textAlign: 'center' as const,
+  },
+  congratsDetail: {
+    fontSize: 14,
+    color: colors.text.secondary,
+  },
+  congratsDismiss: {
+    fontSize: 11,
+    color: colors.text.label,
+    marginTop: 8,
   },
 });

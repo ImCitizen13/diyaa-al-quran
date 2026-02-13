@@ -84,7 +84,9 @@ export default function SurahDetailScreen() {
   const [undoEntries, setUndoEntries] = useState<
     { surahNumber: number; ayahNumber: number }[] | null
   >(null);
+  const [congratsCount, setCongratsCount] = useState(0);
   const undoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const congratsTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const meta = useMemo(() => getSurahMeta(surahNumber), [surahNumber]);
   const ayahs = useMemo(() => getSurahAyahs(surahNumber), [surahNumber]);
@@ -154,11 +156,17 @@ export default function SurahDetailScreen() {
     if (Platform.OS !== "web")
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
+    const count = entries.length;
     setUndoEntries(entries);
     setIsSelecting(false);
     setSelectedAyahs(new Set());
     setShowIntensityPicker(false);
     setSelectedIntensity(1.0);
+
+    // Show congrats dialog
+    setCongratsCount(count);
+    if (congratsTimerRef.current) clearTimeout(congratsTimerRef.current);
+    congratsTimerRef.current = setTimeout(() => setCongratsCount(0), 3000);
 
     if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
     undoTimerRef.current = setTimeout(() => setUndoEntries(null), 5000);
@@ -350,9 +358,9 @@ export default function SurahDetailScreen() {
           style={[styles.fabContainer, { bottom: insets.bottom + 16 }]}
         >
           {showIntensityPicker ? (
-            <View style={styles.intensityPanel}>
+            <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(150)} style={styles.intensityPanel}>
               <Text style={styles.intensityTitle}>
-                How well do you know these?
+                How well do you know these Ayahs?
               </Text>
               <View style={styles.intensityGrid}>
                 {INTENSITY_LEVELS.map((level) => (
@@ -418,7 +426,7 @@ export default function SurahDetailScreen() {
                   Confirm ({selectedAyahs.size} Ayahs)
                 </Text>
               </Pressable>
-            </View>
+            </Animated.View>
           ) : (
             <Pressable
               onPress={handleShowIntensityPicker}
@@ -449,6 +457,19 @@ export default function SurahDetailScreen() {
             <Text style={styles.undoBtn}>Undo</Text>
           </Pressable>
         </Animated.View>
+      )}
+
+      {congratsCount > 0 && (
+        <Pressable style={styles.congratsOverlay} onPress={() => setCongratsCount(0)}>
+          <Animated.View entering={FadeIn.duration(300)} exiting={FadeOut.duration(200)} style={styles.congratsCard}>
+            <Ionicons name="star" size={48} color={colors.gold.bright} />
+            <Text style={styles.congratsTitle}>MashaAllah!</Text>
+            <Text style={styles.congratsSubtitle}>
+              You memorized {congratsCount} {congratsCount === 1 ? 'Ayah' : 'Ayahs'}
+            </Text>
+            <Text style={styles.congratsDismiss}>Tap to dismiss</Text>
+          </Animated.View>
+        </Pressable>
       )}
     </View>
   );
@@ -851,5 +872,38 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "700" as const,
     color: colors.gold.bright,
+  },
+  congratsOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    zIndex: 100,
+  },
+  congratsCard: {
+    alignItems: "center",
+    backgroundColor: colors.bg.card,
+    borderRadius: 24,
+    paddingVertical: 32,
+    paddingHorizontal: 40,
+    borderWidth: 1,
+    borderColor: colors.glow.cardBorder,
+    gap: 8,
+  },
+  congratsTitle: {
+    fontSize: 24,
+    fontWeight: "700" as const,
+    color: colors.gold.bright,
+    marginTop: 8,
+  },
+  congratsSubtitle: {
+    fontSize: 15,
+    color: colors.text.secondary,
+    textAlign: "center" as const,
+  },
+  congratsDismiss: {
+    fontSize: 11,
+    color: colors.text.label,
+    marginTop: 8,
   },
 });
