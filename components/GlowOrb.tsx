@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { View, Text, Pressable, StyleSheet, Platform } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  useSharedValue,
+  useDerivedValue,
+  withRepeat,
+  withTiming,
+  Easing,
+} from 'react-native-reanimated';
+import type { SharedValue } from 'react-native-reanimated';
 import { colors } from '@/constants/colors';
 
 let Canvas: any, Circle: any, RadialGradient: any, vec: any, BlurMask: any, Group: any;
+let Fill: any, Paint: any, Blur: any, PathOp: any, Skia: any, SweepGradient: any;
 let skiaAvailable = false;
 
 try {
@@ -15,6 +24,12 @@ try {
     vec = skia.vec;
     BlurMask = skia.BlurMask;
     Group = skia.Group;
+    Fill = skia.Fill;
+    Paint = skia.Paint;
+    Blur = skia.Blur;
+    PathOp = skia.PathOp;
+    Skia = skia.Skia;
+    SweepGradient = skia.SweepGradient;
     skiaAvailable = true;
   }
 } catch (e) {
@@ -42,37 +57,70 @@ export function getGlowColors(intensity: number) {
   return { core: [255, 215, 0], glow: [255, 230, 100], alpha: 1.0 };
 }
 
-export function SkiaOrbShape({ intensity, size, cx, cy }: { intensity: number; size: number; cx: number; cy: number }) {
+export function SkiaOrbShape({
+  intensity,
+  size,
+  cx,
+  cy,
+  pulseOpacity,
+}: {
+  intensity: number;
+  size: number;
+  cx: number;
+  cy: number;
+  pulseOpacity?: SharedValue<number>;
+}) {
   if (!skiaAvailable) return null;
 
   const glowColors = getGlowColors(intensity);
   const coreColor = `rgba(${glowColors.core[0]}, ${glowColors.core[1]}, ${glowColors.core[2]}, 1)`;
-  const glowColor = `rgba(${glowColors.glow[0]}, ${glowColors.glow[1]}, ${glowColors.glow[2]}, ${glowColors.alpha})`;
-  const outerGlow = `rgba(${glowColors.glow[0]}, ${glowColors.glow[1]}, ${glowColors.glow[2]}, ${glowColors.alpha * 0.3})`;
+
+  // Ring clip path: outer circle minus inner circle
+  const ringPath = useMemo(() => {
+    if (intensity <= 0 || !Skia) return null;
+    const outer = Skia.Path.Make();
+    outer.addCircle(cx, cy, size * 0.85);
+    const inner = Skia.Path.Make();
+    inner.addCircle(cx, cy, size * 0.55);
+    return Skia.Path.MakeFromOp(outer, inner, PathOp.Difference);
+  }, [cx, cy, size, intensity > 0]);
+
+  // Sweep gradient colors (alternating bright/dim gold)
+  const sweepColors = useMemo(() => {
+    if (intensity <= 0) return [];
+    const g = glowColors.glow;
+    const a = glowColors.alpha;
+    return [
+      `rgba(${g[0]}, ${g[1]}, ${g[2]}, ${a})`,
+      `rgba(${g[0]}, ${g[1]}, ${g[2]}, ${a * 0.3})`,
+      `rgba(${g[0]}, ${g[1]}, ${g[2]}, ${a})`,
+      `rgba(${g[0]}, ${g[1]}, ${g[2]}, ${a * 0.3})`,
+      `rgba(${g[0]}, ${g[1]}, ${g[2]}, ${a})`,
+    ];
+  }, [intensity, glowColors.glow[0], glowColors.glow[1], glowColors.glow[2], glowColors.alpha]);
+
+  // Animated ring opacity: pulse * base alpha
+  const ringOpacity = useDerivedValue(() => {
+    const pulse = pulseOpacity ? pulseOpacity.value : 1;
+    return pulse * glowColors.alpha;
+  });
 
   return (
     <Group>
-      {intensity > 0 && (
-        <Group>
-          <Circle cx={cx} cy={cy} r={size * 0.9}>
-            <RadialGradient
-              c={vec(cx, cy)}
-              r={size * 0.9}
-              colors={[outerGlow, 'transparent']}
-            />
-          </Circle>
-
-          <Circle cx={cx} cy={cy} r={size * 0.65}>
-            <BlurMask blur={size * 0.15 * intensity} style="normal" />
-            <RadialGradient
-              c={vec(cx, cy)}
-              r={size * 0.65}
-              colors={[glowColor, 'transparent']}
-            />
-          </Circle>
+      {/* Ring glow with blur */}
+      {intensity > 0 && ringPath && (
+        <Group opacity={ringOpacity}>
+          <Group layer={<Paint><Blur blur={size * 0.2} /></Paint>}>
+            <Group clip={ringPath}>
+              <Fill>
+                <SweepGradient c={vec(cx, cy)} colors={sweepColors} />
+              </Fill>
+            </Group>
+          </Group>
         </Group>
       )}
 
+      {/* Core orb circle */}
       <Circle cx={cx} cy={cy} r={size / 2}>
         <RadialGradient
           c={vec(cx - size * 0.1, cy - size * 0.1)}
@@ -87,6 +135,7 @@ export function SkiaOrbShape({ intensity, size, cx, cy }: { intensity: number; s
         />
       </Circle>
 
+      {/* Highlight specular */}
       {intensity >= 0.5 && (
         <Circle cx={cx - size * 0.08} cy={cy - size * 0.08} r={size * 0.15}>
           <RadialGradient
@@ -145,6 +194,21 @@ export default function GlowOrb({ intensity, label, sublabel, size = 56, onPress
   const percentage = Math.round(intensity * 100);
   const canvasSize = size * 2;
 
+  // Local pulse animation for standalone usage
+  const pulseOpacity = useSharedValue(1);
+
+  useEffect(() => {
+    if (intensity > 0) {
+      pulseOpacity.value = withRepeat(
+        withTiming(0.4, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
+        -1,
+        true
+      );
+    } else {
+      pulseOpacity.value = 1;
+    }
+  }, [intensity > 0]);
+
   return (
     <Animated.View
       entering={FadeIn.delay(delay).duration(400)}
@@ -161,7 +225,13 @@ export default function GlowOrb({ intensity, label, sublabel, size = 56, onPress
         <View style={{ width: canvasSize, height: canvasSize, alignItems: 'center', justifyContent: 'center' }}>
           {skiaAvailable ? (
             <Canvas style={{ width: canvasSize, height: canvasSize }}>
-              <SkiaOrbShape intensity={intensity} size={size} cx={canvasSize / 2} cy={canvasSize / 2} />
+              <SkiaOrbShape
+                intensity={intensity}
+                size={size}
+                cx={canvasSize / 2}
+                cy={canvasSize / 2}
+                pulseOpacity={pulseOpacity}
+              />
             </Canvas>
           ) : (
             <FallbackGlowOrb intensity={intensity} size={size} />
