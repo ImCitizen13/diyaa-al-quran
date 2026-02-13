@@ -9,6 +9,8 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { queryClient } from "@/lib/query-client";
 import { MemorizationProvider } from "@/lib/memorization-context";
 import { colors } from "@/constants/colors";
+import BiometricLock from "@/components/BiometricLock";
+import { initializeNotifications } from "@/lib/notifications";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -53,17 +55,23 @@ export default function RootLayout() {
     }
   }, [fontsLoaded]);
 
+  useEffect(() => {
+    initializeNotifications();
+  }, []);
+
   if (!fontsLoaded) return null;
 
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <MemorizationProvider>
-          <GestureHandlerRootView>
-            <KeyboardProvider>
-              <RootLayoutNav />
-            </KeyboardProvider>
-          </GestureHandlerRootView>
+          <BiometricLock>
+            <GestureHandlerRootView>
+              <KeyboardProvider>
+                <RootLayoutNav />
+              </KeyboardProvider>
+            </GestureHandlerRootView>
+          </BiometricLock>
         </MemorizationProvider>
       </QueryClientProvider>
     </ErrorBoundary>

@@ -1,23 +1,118 @@
-import React, { useState, useCallback } from 'react';
-import { StyleSheet, Text, View, ScrollView, Pressable, Alert, Platform, Share } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { StyleSheet, Text, View, ScrollView, Pressable, Alert, Platform, Share, Switch } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { colors } from '@/constants/colors';
 import { useMemorization } from '@/lib/memorization-context';
+import {
+  getNotificationSettings,
+  saveNotificationSettings,
+  requestNotificationPermissions,
+  scheduleDailyReminder,
+  cancelAllReminders,
+  type NotificationSettings,
+} from '@/lib/notifications';
+import {
+  isBiometricAvailable,
+  isBiometricEnabled,
+  setBiometricEnabled,
+  getBiometricType,
+  authenticateWithBiometrics,
+} from '@/lib/biometric-auth';
 
 const DAILY_GOALS = [1, 3, 5, 10, 15, 20, 30];
+const REMINDER_HOURS = [5, 6, 7, 8, 9, 17, 18, 19, 20, 21, 22];
+
+function formatTime(hour: number, minute: number): string {
+  const period = hour >= 12 ? 'PM' : 'AM';
+  const displayHour = hour % 12 || 12;
+  const displayMinute = minute.toString().padStart(2, '0');
+  return `${displayHour}:${displayMinute} ${period}`;
+}
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const { settings, updateSettings, exportData, resetAllData, getOverallProgress } = useMemorization();
   const webTopInset = Platform.OS === 'web' ? 67 : 0;
 
+  const [notifSettings, setNotifSettings] = useState<NotificationSettings>({ enabled: false, hour: 20, minute: 0 });
+  const [biometricAvailable, setBiometricAvailable] = useState(false);
+  const [biometricOn, setBiometricOn] = useState(false);
+  const [biometricLabel, setBiometricLabel] = useState('Biometric');
+
+  useEffect(() => {
+    loadSettings();
+  }, []);
+
+  const loadSettings = async () => {
+    const ns = await getNotificationSettings();
+    setNotifSettings(ns);
+
+    const available = await isBiometricAvailable();
+    setBiometricAvailable(available);
+
+    if (available) {
+      const enabled = await isBiometricEnabled();
+      setBiometricOn(enabled);
+      const type = await getBiometricType();
+      setBiometricLabel(type);
+    }
+  };
+
   const handleGoalChange = useCallback((goal: number) => {
     if (Platform.OS !== 'web') Haptics.selectionAsync();
     updateSettings({ dailyGoal: goal });
   }, [updateSettings]);
+
+  const handleNotificationToggle = useCallback(async (value: boolean) => {
+    if (Platform.OS !== 'web') Haptics.selectionAsync();
+
+    if (value) {
+      const granted = await requestNotificationPermissions();
+      if (!granted) {
+        Alert.alert('Permission Required', 'Please allow notifications in your device settings to enable daily reminders.');
+        return;
+      }
+      const newSettings = { ...notifSettings, enabled: true };
+      setNotifSettings(newSettings);
+      await saveNotificationSettings(newSettings);
+      await scheduleDailyReminder(newSettings.hour, newSettings.minute);
+    } else {
+      const newSettings = { ...notifSettings, enabled: false };
+      setNotifSettings(newSettings);
+      await saveNotificationSettings(newSettings);
+      await cancelAllReminders();
+    }
+  }, [notifSettings]);
+
+  const handleReminderTimeChange = useCallback(async (hour: number) => {
+    if (Platform.OS !== 'web') Haptics.selectionAsync();
+    const newSettings = { ...notifSettings, hour, minute: 0 };
+    setNotifSettings(newSettings);
+    await saveNotificationSettings(newSettings);
+    if (newSettings.enabled) {
+      await scheduleDailyReminder(hour, 0);
+    }
+  }, [notifSettings]);
+
+  const handleBiometricToggle = useCallback(async (value: boolean) => {
+    if (Platform.OS !== 'web') Haptics.selectionAsync();
+
+    if (value) {
+      const success = await authenticateWithBiometrics();
+      if (success) {
+        await setBiometricEnabled(true);
+        setBiometricOn(true);
+      } else {
+        Alert.alert('Authentication Failed', `Could not verify your ${biometricLabel}. Please try again.`);
+      }
+    } else {
+      await setBiometricEnabled(false);
+      setBiometricOn(false);
+    }
+  }, [biometricLabel]);
 
   const handleExport = useCallback(async () => {
     try {
@@ -93,7 +188,79 @@ export default function SettingsScreen() {
           </View>
         </Animated.View>
 
+        <Animated.View entering={FadeInDown.delay(150).duration(500)} style={styles.section}>
+          <Text style={styles.sectionTitle}>Reminders</Text>
+          <View style={styles.toggleRow}>
+            <Ionicons name="notifications-outline" size={22} color={colors.gold.primary} />
+            <View style={styles.toggleRowText}>
+              <Text style={styles.settingsLabel}>Daily Reminder</Text>
+              <Text style={styles.settingsSublabel}>
+                {notifSettings.enabled
+                  ? `Reminder set for ${formatTime(notifSettings.hour, notifSettings.minute)}`
+                  : 'Get reminded to memorize each day'}
+              </Text>
+            </View>
+            <Switch
+              value={notifSettings.enabled}
+              onValueChange={handleNotificationToggle}
+              trackColor={{ false: colors.bg.elevated, true: 'rgba(212, 175, 55, 0.4)' }}
+              thumbColor={notifSettings.enabled ? colors.gold.primary : colors.text.muted}
+            />
+          </View>
+
+          {notifSettings.enabled && (
+            <View style={styles.timePickerContainer}>
+              <Text style={styles.timePickerLabel}>Reminder Time</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.timeScroll}>
+                {REMINDER_HOURS.map((hour) => (
+                  <Pressable
+                    key={hour}
+                    onPress={() => handleReminderTimeChange(hour)}
+                    style={[styles.timeChip, notifSettings.hour === hour && styles.timeChipActive]}
+                  >
+                    <Text style={[styles.timeChipText, notifSettings.hour === hour && styles.timeChipTextActive]}>
+                      {formatTime(hour, 0)}
+                    </Text>
+                  </Pressable>
+                ))}
+              </ScrollView>
+            </View>
+          )}
+        </Animated.View>
+
         <Animated.View entering={FadeInDown.delay(200).duration(500)} style={styles.section}>
+          <Text style={styles.sectionTitle}>Security</Text>
+          <View style={[styles.toggleRow, !biometricAvailable && styles.disabledRow]}>
+            <Ionicons
+              name={biometricLabel === 'Face ID' ? 'scan-outline' : 'finger-print-outline'}
+              size={22}
+              color={biometricAvailable ? colors.gold.primary : colors.text.label}
+            />
+            <View style={styles.toggleRowText}>
+              <Text style={[styles.settingsLabel, !biometricAvailable && { color: colors.text.label }]}>
+                {biometricLabel} Lock
+              </Text>
+              <Text style={styles.settingsSublabel}>
+                {biometricAvailable
+                  ? biometricOn
+                    ? `App locked with ${biometricLabel}`
+                    : `Protect your data with ${biometricLabel}`
+                  : Platform.OS === 'web'
+                    ? 'Not available on web'
+                    : 'No biometric hardware detected'}
+              </Text>
+            </View>
+            <Switch
+              value={biometricOn}
+              onValueChange={handleBiometricToggle}
+              disabled={!biometricAvailable}
+              trackColor={{ false: colors.bg.elevated, true: 'rgba(212, 175, 55, 0.4)' }}
+              thumbColor={biometricOn ? colors.gold.primary : colors.text.muted}
+            />
+          </View>
+        </Animated.View>
+
+        <Animated.View entering={FadeInDown.delay(250).duration(500)} style={styles.section}>
           <Text style={styles.sectionTitle}>Data Management</Text>
           <SettingsRow
             icon="download-outline"
@@ -204,6 +371,62 @@ const styles = StyleSheet.create({
     color: colors.text.muted,
   },
   goalTextActive: {
+    color: colors.gold.primary,
+  },
+  toggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    backgroundColor: colors.bg.card,
+    borderRadius: 12,
+    marginTop: 8,
+    borderWidth: 1,
+    borderColor: colors.glow.cardBorder,
+    gap: 12,
+  },
+  disabledRow: {
+    opacity: 0.5,
+  },
+  toggleRowText: {
+    flex: 1,
+  },
+  timePickerContainer: {
+    marginTop: 8,
+    backgroundColor: colors.bg.card,
+    borderRadius: 12,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: colors.glow.cardBorder,
+  },
+  timePickerLabel: {
+    fontSize: 12,
+    color: colors.text.muted,
+    marginBottom: 8,
+    marginLeft: 4,
+  },
+  timeScroll: {
+    gap: 8,
+    paddingHorizontal: 4,
+  },
+  timeChip: {
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: colors.bg.elevated,
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  timeChipActive: {
+    backgroundColor: 'rgba(212, 175, 55, 0.15)',
+    borderColor: colors.gold.primary,
+  },
+  timeChipText: {
+    fontSize: 13,
+    fontWeight: '500' as const,
+    color: colors.text.muted,
+  },
+  timeChipTextActive: {
     color: colors.gold.primary,
   },
   settingsRow: {

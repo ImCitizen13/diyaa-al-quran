@@ -1,8 +1,25 @@
 import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, Text, Pressable, StyleSheet, Platform } from 'react-native';
 import Animated, { useAnimatedStyle, withTiming, FadeIn } from 'react-native-reanimated';
 import { colors } from '@/constants/colors';
+
+let Canvas: any, Circle: any, RadialGradient: any, vec: any, BlurMask: any, Group: any;
+let skiaAvailable = false;
+
+try {
+  if (Platform.OS !== 'web') {
+    const skia = require('@shopify/react-native-skia');
+    Canvas = skia.Canvas;
+    Circle = skia.Circle;
+    RadialGradient = skia.RadialGradient;
+    vec = skia.vec;
+    BlurMask = skia.BlurMask;
+    Group = skia.Group;
+    skiaAvailable = true;
+  }
+} catch (e) {
+  skiaAvailable = false;
+}
 
 interface GlowOrbProps {
   intensity: number;
@@ -14,35 +31,118 @@ interface GlowOrbProps {
   delay?: number;
 }
 
-function getOrbColors(intensity: number): { core: string; glow: string; border: string } {
-  if (intensity <= 0) {
-    return { core: colors.orb.empty, glow: 'transparent', border: 'rgba(255,255,255,0.05)' };
-  }
-  if (intensity < 0.25) {
-    return { core: `rgba(212, 175, 55, ${0.15 + intensity})`, glow: colors.orb.dimGlow, border: 'rgba(212, 175, 55, 0.15)' };
-  }
-  if (intensity < 0.5) {
-    return { core: `rgba(212, 175, 55, ${0.3 + intensity})`, glow: colors.orb.midGlow, border: 'rgba(212, 175, 55, 0.25)' };
-  }
-  if (intensity < 0.75) {
-    return { core: colors.gold.primary, glow: colors.orb.strongGlow, border: 'rgba(212, 175, 55, 0.4)' };
-  }
-  if (intensity < 1) {
-    return { core: colors.gold.bright, glow: colors.gold.primary, border: 'rgba(255, 215, 0, 0.5)' };
-  }
-  return { core: colors.gold.bright, glow: colors.gold.bright, border: 'rgba(255, 215, 0, 0.7)' };
+function getGlowColors(intensity: number) {
+  if (intensity <= 0) return { core: [42, 42, 58], glow: [42, 42, 58], alpha: 0 };
+  if (intensity < 0.25) return { core: [120, 100, 40], glow: [212, 175, 55], alpha: 0.2 };
+  if (intensity < 0.5) return { core: [180, 150, 50], glow: [212, 175, 55], alpha: 0.4 };
+  if (intensity < 0.75) return { core: [212, 175, 55], glow: [255, 215, 0], alpha: 0.6 };
+  if (intensity < 1) return { core: [240, 200, 40], glow: [255, 215, 0], alpha: 0.8 };
+  return { core: [255, 215, 0], glow: [255, 230, 100], alpha: 1.0 };
+}
+
+function SkiaGlowOrb({ intensity, size }: { intensity: number; size: number }) {
+  const canvasSize = size * 2;
+  const center = canvasSize / 2;
+  const glowColors = getGlowColors(intensity);
+
+  const coreColor = `rgba(${glowColors.core[0]}, ${glowColors.core[1]}, ${glowColors.core[2]}, 1)`;
+  const glowColor = `rgba(${glowColors.glow[0]}, ${glowColors.glow[1]}, ${glowColors.glow[2]}, ${glowColors.alpha})`;
+  const outerGlow = `rgba(${glowColors.glow[0]}, ${glowColors.glow[1]}, ${glowColors.glow[2]}, ${glowColors.alpha * 0.3})`;
+
+  return (
+    <Canvas style={{ width: canvasSize, height: canvasSize }}>
+      {intensity > 0 && (
+        <Group>
+          <Circle cx={center} cy={center} r={size * 0.9}>
+            <RadialGradient
+              c={vec(center, center)}
+              r={size * 0.9}
+              colors={[outerGlow, 'transparent']}
+            />
+          </Circle>
+
+          <Circle cx={center} cy={center} r={size * 0.65}>
+            <BlurMask blur={size * 0.15 * intensity} style="normal" />
+            <RadialGradient
+              c={vec(center, center)}
+              r={size * 0.65}
+              colors={[glowColor, 'transparent']}
+            />
+          </Circle>
+        </Group>
+      )}
+
+      <Circle cx={center} cy={center} r={size / 2}>
+        <RadialGradient
+          c={vec(center - size * 0.1, center - size * 0.1)}
+          r={size / 2}
+          colors={
+            intensity >= 1
+              ? ['rgba(255, 240, 180, 1)', coreColor, `rgba(${glowColors.core[0]}, ${glowColors.core[1]}, ${glowColors.core[2]}, 0.7)`]
+              : intensity > 0
+                ? [`rgba(${glowColors.core[0] + 30}, ${glowColors.core[1] + 20}, ${glowColors.core[2] + 10}, 1)`, coreColor]
+                : ['#3a3a4f', '#2a2a3a']
+          }
+        />
+      </Circle>
+
+      {intensity >= 0.5 && (
+        <Circle cx={center - size * 0.08} cy={center - size * 0.08} r={size * 0.15}>
+          <RadialGradient
+            c={vec(center - size * 0.08, center - size * 0.08)}
+            r={size * 0.15}
+            colors={['rgba(255, 255, 255, 0.25)', 'transparent']}
+          />
+        </Circle>
+      )}
+    </Canvas>
+  );
+}
+
+function FallbackGlowOrb({ intensity, size }: { intensity: number; size: number }) {
+  const glowSize = size * 1.6;
+  const glowColors = getGlowColors(intensity);
+  const bgColor = intensity <= 0
+    ? colors.orb.empty
+    : intensity >= 1
+      ? colors.gold.bright
+      : `rgba(${glowColors.core[0]}, ${glowColors.core[1]}, ${glowColors.core[2]}, 1)`;
+  const borderColor = intensity > 0
+    ? `rgba(${glowColors.glow[0]}, ${glowColors.glow[1]}, ${glowColors.glow[2]}, ${glowColors.alpha * 0.5})`
+    : 'rgba(255,255,255,0.05)';
+
+  return (
+    <View style={[styles.orbWrapper, { width: glowSize, height: glowSize }]}>
+      {intensity > 0 && (
+        <View
+          style={{
+            position: 'absolute',
+            width: glowSize,
+            height: glowSize,
+            borderRadius: glowSize / 2,
+            backgroundColor: `rgba(${glowColors.glow[0]}, ${glowColors.glow[1]}, ${glowColors.glow[2]}, ${glowColors.alpha * 0.3})`,
+          }}
+        />
+      )}
+      <View
+        style={{
+          width: size,
+          height: size,
+          borderRadius: size / 2,
+          backgroundColor: bgColor,
+          borderWidth: 1,
+          borderColor,
+        }}
+      />
+    </View>
+  );
 }
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export default function GlowOrb({ intensity, label, sublabel, size = 56, onPress, onLongPress, delay = 0 }: GlowOrbProps) {
-  const orbColors = getOrbColors(intensity);
-  const glowSize = size * 1.6;
   const percentage = Math.round(intensity * 100);
-
-  const animatedGlowStyle = useAnimatedStyle(() => ({
-    opacity: withTiming(intensity > 0 ? Math.min(intensity * 1.2, 1) : 0, { duration: 500 }),
-  }));
+  const canvasSize = size * 2;
 
   return (
     <Animated.View
@@ -57,55 +157,24 @@ export default function GlowOrb({ intensity, label, sublabel, size = 56, onPress
           { opacity: pressed ? 0.8 : 1, transform: [{ scale: pressed ? 0.92 : 1 }] },
         ]}
       >
-        <View style={[styles.orbWrapper, { width: glowSize, height: glowSize }]}>
-          <Animated.View
-            style={[
-              styles.glowLayer,
-              {
-                width: glowSize,
-                height: glowSize,
-                borderRadius: glowSize / 2,
-                backgroundColor: orbColors.glow,
-              },
-              animatedGlowStyle,
-            ]}
-          />
-
-          {intensity >= 1 ? (
-            <LinearGradient
-              colors={['#ffd700', colors.gold.primary, 'rgba(212, 175, 55, 0.6)']}
-              style={[
-                styles.orbCircle,
-                {
-                  width: size,
-                  height: size,
-                  borderRadius: size / 2,
-                  borderColor: orbColors.border,
-                },
-              ]}
-            >
-              <View style={[styles.innerGlow, { width: size * 0.4, height: size * 0.4, borderRadius: size * 0.2 }]} />
-              <Text style={[styles.orbLabel, { fontSize: size * 0.22 }]}>{label}</Text>
-            </LinearGradient>
+        <View style={{ width: canvasSize, height: canvasSize, alignItems: 'center', justifyContent: 'center' }}>
+          {skiaAvailable ? (
+            <SkiaGlowOrb intensity={intensity} size={size} />
           ) : (
-            <View
-              style={[
-                styles.orbCircle,
-                {
-                  width: size,
-                  height: size,
-                  borderRadius: size / 2,
-                  backgroundColor: intensity > 0 ? orbColors.core : colors.orb.empty,
-                  borderColor: orbColors.border,
-                },
-              ]}
-            >
-              {intensity >= 0.5 && (
-                <View style={[styles.innerGlow, { width: size * 0.3, height: size * 0.3, borderRadius: size * 0.15, opacity: intensity }]} />
-              )}
-              <Text style={[styles.orbLabel, { fontSize: size * 0.22, color: intensity > 0.3 ? '#fff' : colors.text.muted }]}>{label}</Text>
-            </View>
+            <FallbackGlowOrb intensity={intensity} size={size} />
           )}
+          <Text
+            style={[
+              styles.orbLabel,
+              {
+                fontSize: size * 0.22,
+                position: 'absolute',
+                color: intensity > 0.3 ? '#fff' : colors.text.muted,
+              },
+            ]}
+          >
+            {label}
+          </Text>
         </View>
       </AnimatedPressable>
       {sublabel && (
@@ -130,18 +199,6 @@ const styles = StyleSheet.create({
   orbWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  glowLayer: {
-    position: 'absolute',
-  },
-  orbCircle: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-  },
-  innerGlow: {
-    position: 'absolute',
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
   },
   orbLabel: {
     color: '#fff',
