@@ -65,6 +65,14 @@ The mobile app operates independently of the backend server for all core functio
 - **Database:** `db:push` uses Drizzle Kit to push schema to PostgreSQL
 - **Path aliases:** `@/*` maps to project root, `@shared/*` maps to `./shared/*`
 
+### Onboarding Walkthrough
+
+- **Component:** `components/Walkthrough.tsx` — 5-step onboarding with animated transitions
+- **State management:** `lib/walkthrough.ts` — AsyncStorage flag (`@diyaa_walkthrough_completed`), event-based reset system
+- **Integration:** Shown in `app/_layout.tsx` before the main app on first launch
+- **Replay:** Available in Settings under "Help" section via `resetWalkthrough()`
+- **Steps:** Welcome → Browse & Navigate → Mark Your Progress → Watch It Glow → Stay Consistent
+
 ### Recent Changes (Feb 2026)
 
 - **Skia GlowOrb**: Rebuilt GlowOrb component with `@shopify/react-native-skia` for native shader-based rendering with radial gradients, blur masks, and layered glow circles. Web fallback uses View-based rendering.
