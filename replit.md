@@ -25,8 +25,14 @@ Preferred communication style: Simple, everyday language.
 
 ### Key UI Components
 
-- **GlowOrb** (`components/GlowOrb.tsx`): Circle representing a Surah or Juz with glow intensity proportional to memorization progress (0-1 scale). Uses `expo-linear-gradient` for glow effects.
+- **GlowOrb** (`components/GlowOrb.tsx`): Circle representing a Surah or Juz with glow intensity proportional to memorization progress (0-1 scale). Uses `@shopify/react-native-skia` for shader-based radial gradient glow effects on native platforms, with a View-based fallback on web. Skia renders animated blur masks, radial gradients, and layered glow circles.
+- **BiometricLock** (`components/BiometricLock.tsx`): App-level lock screen that wraps the entire app. Uses `expo-local-authentication` for Face ID/Fingerprint/Iris authentication. Shows a lock screen on app launch and when returning from background (if enabled). Auto-detects biometric type and labels accordingly. No-op on web.
 - **ProgressRing** (`components/ProgressRing.tsx`): SVG-based animated circular progress indicator using `react-native-svg` with Reanimated animated props.
+
+### Notifications & Reminders
+
+- **Notification system** (`lib/notifications.ts`): Daily push notification reminders using `expo-notifications`. Configurable reminder time (5 AM–10 PM). 5 rotating motivational messages. Settings stored in AsyncStorage under `@diyaa_notification_settings`. Notifications disabled on web platform.
+- **Biometric auth** (`lib/biometric-auth.ts`): Wrapper around `expo-local-authentication`. Detects hardware availability, enrolled biometrics, and biometric type (Face ID, Fingerprint, Iris). Settings stored in AsyncStorage under `@diyaa_biometric_enabled`.
 
 ### Quran Data Layer
 
@@ -59,9 +65,16 @@ The mobile app operates independently of the backend server for all core functio
 - **Database:** `db:push` uses Drizzle Kit to push schema to PostgreSQL
 - **Path aliases:** `@/*` maps to project root, `@shared/*` maps to `./shared/*`
 
+### Recent Changes (Feb 2026)
+
+- **Skia GlowOrb**: Rebuilt GlowOrb component with `@shopify/react-native-skia` for native shader-based rendering with radial gradients, blur masks, and layered glow circles. Web fallback uses View-based rendering.
+- **Push Notifications**: Added daily reminder system with `expo-notifications`. Configurable time (5 AM–10 PM), toggle on/off in Settings. Initializes on app launch.
+- **Biometric Lock**: Added Face ID/Fingerprint lock screen with `expo-local-authentication`. Wraps entire app, prompts on launch and background return. Toggle in Settings.
+- **IMPORTANT**: Skia requires a development build (NOT Expo Go compatible). User accepted this trade-off.
+
 ### Future Architecture Notes (from FUTURE_ENHANCEMENTS.md)
 
-The codebase is designed for an eventual migration path: AsyncStorage → expo-sqlite, React Context → Zustand, gradient-based GlowOrb → Skia shaders. These are documented but not yet implemented. The current MVP is Expo Go compatible.
+The codebase is designed for an eventual migration path: AsyncStorage → expo-sqlite, React Context → Zustand. GlowOrb has been migrated to Skia shaders. These remaining items are documented but not yet implemented.
 
 ## External Dependencies
 
@@ -74,11 +87,14 @@ The codebase is designed for an eventual migration path: AsyncStorage → expo-s
 - `react-native-reanimated` — performant animations
 - `react-native-gesture-handler` — gesture support
 - `react-native-svg` — SVG rendering for progress rings
-- `expo-linear-gradient` — gradient effects for orb glow
+- `@shopify/react-native-skia` — native shader-based GlowOrb rendering (radial gradients, blur masks)
+- `expo-linear-gradient` — gradient effects (legacy, still used in some places)
 - `expo-blur` / `expo-glass-effect` — blur effects for tab bar
 - `expo-haptics` — haptic feedback
 - `expo-image` — optimized image loading
 - `@expo/vector-icons` / `@expo-google-fonts/amiri` — icons and Arabic typography
+- `expo-notifications` — daily push notification reminders
+- `expo-local-authentication` — biometric (Face ID/Fingerprint) app lock
 
 ### Data & State
 - `@react-native-async-storage/async-storage` — client-side key-value persistence
