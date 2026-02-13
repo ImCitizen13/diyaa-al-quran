@@ -11,7 +11,9 @@ import { colors } from "@/constants/colors";
 
 function NativeTabLayout() {
   return (
-    <NativeTabs>
+    <NativeTabs
+      tintColor={colors.gold.primary}
+    >
       <NativeTabs.Trigger name="index">
         <Icon sf={{ default: "moon.stars", selected: "moon.stars.fill" }} />
         <Label>Home</Label>
