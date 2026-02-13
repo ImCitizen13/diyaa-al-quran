@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet, Platform } from 'react-native';
-import Animated, { useAnimatedStyle, withTiming, FadeIn } from 'react-native-reanimated';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import { colors } from '@/constants/colors';
 
 let Canvas: any, Circle: any, RadialGradient: any, vec: any, BlurMask: any, Group: any;
@@ -21,7 +21,9 @@ try {
   skiaAvailable = false;
 }
 
-interface GlowOrbProps {
+export { skiaAvailable, Canvas, Circle, RadialGradient, vec, BlurMask, Group };
+
+export interface GlowOrbProps {
   intensity: number;
   label: string;
   sublabel?: string;
@@ -31,7 +33,7 @@ interface GlowOrbProps {
   delay?: number;
 }
 
-function getGlowColors(intensity: number) {
+export function getGlowColors(intensity: number) {
   if (intensity <= 0) return { core: [42, 42, 58], glow: [42, 42, 58], alpha: 0 };
   if (intensity < 0.25) return { core: [120, 100, 40], glow: [212, 175, 55], alpha: 0.2 };
   if (intensity < 0.5) return { core: [180, 150, 50], glow: [212, 175, 55], alpha: 0.4 };
@@ -40,31 +42,30 @@ function getGlowColors(intensity: number) {
   return { core: [255, 215, 0], glow: [255, 230, 100], alpha: 1.0 };
 }
 
-function SkiaGlowOrb({ intensity, size }: { intensity: number; size: number }) {
-  const canvasSize = size * 2;
-  const center = canvasSize / 2;
-  const glowColors = getGlowColors(intensity);
+export function SkiaOrbShape({ intensity, size, cx, cy }: { intensity: number; size: number; cx: number; cy: number }) {
+  if (!skiaAvailable) return null;
 
+  const glowColors = getGlowColors(intensity);
   const coreColor = `rgba(${glowColors.core[0]}, ${glowColors.core[1]}, ${glowColors.core[2]}, 1)`;
   const glowColor = `rgba(${glowColors.glow[0]}, ${glowColors.glow[1]}, ${glowColors.glow[2]}, ${glowColors.alpha})`;
   const outerGlow = `rgba(${glowColors.glow[0]}, ${glowColors.glow[1]}, ${glowColors.glow[2]}, ${glowColors.alpha * 0.3})`;
 
   return (
-    <Canvas style={{ width: canvasSize, height: canvasSize }}>
+    <Group>
       {intensity > 0 && (
         <Group>
-          <Circle cx={center} cy={center} r={size * 0.9}>
+          <Circle cx={cx} cy={cy} r={size * 0.9}>
             <RadialGradient
-              c={vec(center, center)}
+              c={vec(cx, cy)}
               r={size * 0.9}
               colors={[outerGlow, 'transparent']}
             />
           </Circle>
 
-          <Circle cx={center} cy={center} r={size * 0.65}>
+          <Circle cx={cx} cy={cy} r={size * 0.65}>
             <BlurMask blur={size * 0.15 * intensity} style="normal" />
             <RadialGradient
-              c={vec(center, center)}
+              c={vec(cx, cy)}
               r={size * 0.65}
               colors={[glowColor, 'transparent']}
             />
@@ -72,9 +73,9 @@ function SkiaGlowOrb({ intensity, size }: { intensity: number; size: number }) {
         </Group>
       )}
 
-      <Circle cx={center} cy={center} r={size / 2}>
+      <Circle cx={cx} cy={cy} r={size / 2}>
         <RadialGradient
-          c={vec(center - size * 0.1, center - size * 0.1)}
+          c={vec(cx - size * 0.1, cy - size * 0.1)}
           r={size / 2}
           colors={
             intensity >= 1
@@ -87,15 +88,15 @@ function SkiaGlowOrb({ intensity, size }: { intensity: number; size: number }) {
       </Circle>
 
       {intensity >= 0.5 && (
-        <Circle cx={center - size * 0.08} cy={center - size * 0.08} r={size * 0.15}>
+        <Circle cx={cx - size * 0.08} cy={cy - size * 0.08} r={size * 0.15}>
           <RadialGradient
-            c={vec(center - size * 0.08, center - size * 0.08)}
+            c={vec(cx - size * 0.08, cy - size * 0.08)}
             r={size * 0.15}
             colors={['rgba(255, 255, 255, 0.25)', 'transparent']}
           />
         </Circle>
       )}
-    </Canvas>
+    </Group>
   );
 }
 
@@ -159,7 +160,9 @@ export default function GlowOrb({ intensity, label, sublabel, size = 56, onPress
       >
         <View style={{ width: canvasSize, height: canvasSize, alignItems: 'center', justifyContent: 'center' }}>
           {skiaAvailable ? (
-            <SkiaGlowOrb intensity={intensity} size={size} />
+            <Canvas style={{ width: canvasSize, height: canvasSize }}>
+              <SkiaOrbShape intensity={intensity} size={size} cx={canvasSize / 2} cy={canvasSize / 2} />
+            </Canvas>
           ) : (
             <FallbackGlowOrb intensity={intensity} size={size} />
           )}

@@ -10,6 +10,7 @@ import { colors } from '@/constants/colors';
 import { useMemorization } from '@/lib/memorization-context';
 import { getAllSurahs, getAllJuz } from '@/lib/quran-data';
 import GlowOrb from '@/components/GlowOrb';
+import SkiaOrbGrid, { type OrbData } from '@/components/SkiaOrbGrid';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -48,6 +49,39 @@ export default function HomeScreen() {
     setPickerSurah(surah);
   }, []);
 
+  const juzOrbData = useMemo((): OrbData[] => {
+    return allJuz.map((juz) => {
+      const progress = getJuzProgress(juz.index);
+      return {
+        id: `juz-${juz.index}`,
+        intensity: progress.percentage,
+        label: `${juz.index}`,
+        sublabel: `Juz ${juz.index}`,
+        onPress: () => {
+          if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          router.push({ pathname: '/juz/[id]', params: { id: juz.index.toString() } });
+        },
+      };
+    });
+  }, [allJuz, getJuzProgress]);
+
+  const surahOrbData = useMemo((): OrbData[] => {
+    return allSurahs.map((surah) => {
+      const progress = getSurahProgress(surah.index);
+      return {
+        id: `surah-${surah.index}`,
+        intensity: progress.percentage,
+        label: `${surah.index}`,
+        sublabel: surah.titleAr,
+        onPress: () => {
+          if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          router.push({ pathname: '/surah/[id]', params: { id: surah.index.toString() } });
+        },
+        onLongPress: () => handleSurahLongPress(surah),
+      };
+    });
+  }, [allSurahs, getSurahProgress, handleSurahLongPress]);
+
   const handleConfirm = useCallback(async () => {
     if (!pickerSurah) return;
     const entries = Array.from({ length: pickerSurah.count }, (_, i) => ({
@@ -59,8 +93,6 @@ export default function HomeScreen() {
     setPickerSurah(null);
   }, [pickerSurah, selectedIntensity, memorizeAyahs]);
 
-  const orbsPerRow = viewMode === 'juz' ? 5 : 6;
-  const orbSize = viewMode === 'juz' ? 56 : 44;
   const webTopInset = Platform.OS === 'web' ? 67 : 0;
 
   const currentLevel = INTENSITY_LEVELS.find(l => l.value === selectedIntensity) || INTENSITY_LEVELS[3];
@@ -111,46 +143,15 @@ export default function HomeScreen() {
         contentInsetAdjustmentBehavior="automatic"
       >
         {viewMode === 'juz' ? (
-          <View style={styles.grid}>
-            {allJuz.map((juz, index) => {
-              const progress = getJuzProgress(juz.index);
-              return (
-                <GlowOrb
-                  key={`juz-${juz.index}`}
-                  intensity={progress.percentage}
-                  label={`${juz.index}`}
-                  sublabel={`Juz ${juz.index}`}
-                  size={orbSize}
-                  delay={index * 30}
-                  onPress={() => {
-                    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    router.push({ pathname: '/juz/[id]', params: { id: juz.index.toString() } });
-                  }}
-                />
-              );
-            })}
-          </View>
+          <SkiaOrbGrid
+            data={juzOrbData}
+            orbSize={56}
+          />
         ) : (
-          <View style={styles.grid}>
-            {allSurahs.map((surah, index) => {
-              const progress = getSurahProgress(surah.index);
-              return (
-                <GlowOrb
-                  key={`surah-${surah.index}`}
-                  intensity={progress.percentage}
-                  label={`${surah.index}`}
-                  sublabel={surah.titleAr}
-                  size={orbSize}
-                  delay={Math.min(index * 15, 1500)}
-                  onPress={() => {
-                    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    router.push({ pathname: '/surah/[id]', params: { id: surah.index.toString() } });
-                  }}
-                  onLongPress={() => handleSurahLongPress(surah)}
-                />
-              );
-            })}
-          </View>
+          <SkiaOrbGrid
+            data={surahOrbData}
+            orbSize={44}
+          />
         )}
       </ScrollView>
 
@@ -308,11 +309,6 @@ const styles = StyleSheet.create({
   gridContainer: {
     paddingHorizontal: 12,
     paddingTop: 8,
-  },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
   },
   modalOverlay: {
     flex: 1,
