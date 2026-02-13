@@ -225,13 +225,13 @@ const styles = StyleSheet.create({
     textAlign: 'center' as const,
   },
   sublabel: {
-    color: colors.text.label,
+    color: 'rgba(255, 255, 255, 1)',
     fontSize: 10,
     marginTop: 4,
     textAlign: 'center' as const,
   },
   percentLabel: {
-    color: colors.gold.dim,
+    color: colors.gold.bright,
     fontSize: 9,
     marginTop: 2,
     fontWeight: '600' as const,
