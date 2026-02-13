@@ -55,7 +55,7 @@ export default function HomeScreen() {
       const progress = getJuzProgress(juz.index);
       return {
         id: `juz-${juz.index}`,
-        intensity: progress.percentage * 0.85,
+        intensity: progress.percentage,
         label: `${juz.index}`,
         sublabel: `Juz ${juz.index}`,
         onPress: () => {
@@ -71,7 +71,7 @@ export default function HomeScreen() {
       const progress = getSurahProgress(surah.index);
       return {
         id: `surah-${surah.index}`,
-        intensity: progress.percentage * 0.85,
+        intensity: progress.percentage,
         label: `${surah.index}`,
         sublabel: surah.titleAr,
         onPress: () => {

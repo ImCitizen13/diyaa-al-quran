@@ -20,13 +20,13 @@ export const colors = {
     secondary: 'rgba(255, 255, 255, 0.7)',
   },
   bg: {
-    primary: '#0a0a0f',
-    secondary: '#12121a',
-    card: '#1a1a28',
-    elevated: '#22223a',
+    primary: '#0A0A0A',
+    secondary: '#151515',
+    card: '#1c1c1c',
+    elevated: '#242424',
   },
   orb: {
-    empty: '#2a2a3a',
+    empty: '#2a2a2a',
     dimGlow: 'rgba(212, 175, 55, 0.25)',
     midGlow: 'rgba(212, 175, 55, 0.50)',
     strongGlow: 'rgba(212, 175, 55, 0.75)',
