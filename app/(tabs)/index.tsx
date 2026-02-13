@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { StyleSheet, Text, View, ScrollView, Pressable, Platform, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Pressable, Platform, Dimensions, Modal } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeInUp, FadeOut } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/constants/colors';
 import { useMemorization } from '@/lib/memorization-context';
@@ -15,10 +15,17 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 type ViewMode = 'juz' | 'surah';
 
+const INTENSITY_LEVELS = [
+  { value: 0.25, label: 'Just Started', icon: 'sparkles-outline' as const, color: 'rgba(212, 175, 55, 0.4)' },
+  { value: 0.5, label: 'Learning', icon: 'book-outline' as const, color: 'rgba(212, 175, 55, 0.6)' },
+  { value: 0.75, label: 'Almost There', icon: 'flame-outline' as const, color: 'rgba(212, 175, 55, 0.8)' },
+  { value: 1.0, label: 'Fully Memorized', icon: 'star' as const, color: colors.gold.primary },
+];
+
 export default function HomeScreen() {
   const [viewMode, setViewMode] = useState<ViewMode>('juz');
   const insets = useSafeAreaInsets();
-  const { getSurahProgress, getJuzProgress, getOverallProgress, getStreak, getTodayCount, settings } = useMemorization();
+  const { getSurahProgress, getJuzProgress, getOverallProgress, getStreak, getTodayCount, settings, memorizeAyahs } = useMemorization();
 
   const overall = useMemo(() => getOverallProgress(), [getOverallProgress]);
   const streak = useMemo(() => getStreak(), [getStreak]);
@@ -27,14 +34,36 @@ export default function HomeScreen() {
   const allSurahs = useMemo(() => getAllSurahs(), []);
   const allJuz = useMemo(() => getAllJuz(), []);
 
+  const [pickerSurah, setPickerSurah] = useState<{ index: number; title: string; titleAr: string; count: number } | null>(null);
+  const [selectedIntensity, setSelectedIntensity] = useState(1.0);
+
   const toggleView = useCallback(() => {
     if (Platform.OS !== 'web') Haptics.selectionAsync();
     setViewMode((prev) => (prev === 'juz' ? 'surah' : 'juz'));
   }, []);
 
+  const handleSurahLongPress = useCallback((surah: typeof allSurahs[0]) => {
+    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    setSelectedIntensity(1.0);
+    setPickerSurah(surah);
+  }, []);
+
+  const handleConfirm = useCallback(async () => {
+    if (!pickerSurah) return;
+    const entries = Array.from({ length: pickerSurah.count }, (_, i) => ({
+      surahNumber: pickerSurah.index,
+      ayahNumber: i + 1,
+    }));
+    await memorizeAyahs(entries, selectedIntensity);
+    if (Platform.OS !== 'web') Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    setPickerSurah(null);
+  }, [pickerSurah, selectedIntensity, memorizeAyahs]);
+
   const orbsPerRow = viewMode === 'juz' ? 5 : 6;
   const orbSize = viewMode === 'juz' ? 56 : 44;
   const webTopInset = Platform.OS === 'web' ? 67 : 0;
+
+  const currentLevel = INTENSITY_LEVELS.find(l => l.value === selectedIntensity) || INTENSITY_LEVELS[3];
 
   return (
     <View style={[styles.container, { paddingTop: insets.top + webTopInset }]}>
@@ -117,12 +146,78 @@ export default function HomeScreen() {
                     if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                     router.push({ pathname: '/surah/[id]', params: { id: surah.index.toString() } });
                   }}
+                  onLongPress={() => handleSurahLongPress(surah)}
                 />
               );
             })}
           </View>
         )}
       </ScrollView>
+
+      <Modal
+        visible={!!pickerSurah}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setPickerSurah(null)}
+      >
+        <Pressable style={styles.modalOverlay} onPress={() => setPickerSurah(null)}>
+          <Pressable style={styles.modalContent} onPress={(e) => e.stopPropagation()}>
+            {pickerSurah && (
+              <>
+                <View style={styles.modalHeader}>
+                  <Text style={styles.modalTitleAr}>{pickerSurah.titleAr}</Text>
+                  <Text style={styles.modalTitleEn}>{pickerSurah.title}</Text>
+                  <Text style={styles.modalSubtitle}>{pickerSurah.count} Ayahs</Text>
+                </View>
+
+                <Text style={styles.intensityTitle}>How well do you know this Surah?</Text>
+
+                <View style={styles.intensityGrid}>
+                  {INTENSITY_LEVELS.map((level) => (
+                    <Pressable
+                      key={level.value}
+                      onPress={() => {
+                        if (Platform.OS !== 'web') Haptics.selectionAsync();
+                        setSelectedIntensity(level.value);
+                      }}
+                      style={[
+                        styles.intensityOption,
+                        selectedIntensity === level.value && styles.intensityOptionActive,
+                        selectedIntensity === level.value && { borderColor: level.color },
+                      ]}
+                    >
+                      <Ionicons
+                        name={level.icon}
+                        size={20}
+                        color={selectedIntensity === level.value ? level.color : colors.text.muted}
+                      />
+                      <Text style={[
+                        styles.intensityLabel,
+                        selectedIntensity === level.value && { color: level.color },
+                      ]}>
+                        {level.label}
+                      </Text>
+                      <View style={[styles.intensityBar, { width: `${level.value * 100}%`, backgroundColor: level.color }]} />
+                    </Pressable>
+                  ))}
+                </View>
+
+                <Pressable
+                  onPress={handleConfirm}
+                  style={({ pressed }) => [styles.confirmBtn, { transform: [{ scale: pressed ? 0.97 : 1 }], backgroundColor: currentLevel.color }]}
+                >
+                  <Ionicons name="checkmark" size={20} color={colors.bg.primary} />
+                  <Text style={styles.confirmText}>Mark Entire Surah</Text>
+                </Pressable>
+
+                <Pressable onPress={() => setPickerSurah(null)} style={styles.cancelBtn}>
+                  <Text style={styles.cancelText}>Cancel</Text>
+                </Pressable>
+              </>
+            )}
+          </Pressable>
+        </Pressable>
+      </Modal>
     </View>
   );
 }
@@ -218,5 +313,103 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  modalContent: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: colors.bg.card,
+    borderRadius: 24,
+    padding: 24,
+    borderWidth: 1,
+    borderColor: colors.glow.cardBorder,
+  },
+  modalHeader: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  modalTitleAr: {
+    fontSize: 28,
+    color: colors.gold.primary,
+    fontFamily: 'Amiri_700Bold',
+    textAlign: 'center' as const,
+  },
+  modalTitleEn: {
+    fontSize: 14,
+    color: colors.text.secondary,
+    marginTop: 4,
+    letterSpacing: 1,
+  },
+  modalSubtitle: {
+    fontSize: 12,
+    color: colors.text.muted,
+    marginTop: 4,
+  },
+  intensityTitle: {
+    fontSize: 15,
+    fontWeight: '600' as const,
+    color: colors.text.primary,
+    textAlign: 'center' as const,
+    marginBottom: 12,
+  },
+  intensityGrid: {
+    gap: 6,
+  },
+  intensityOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderRadius: 12,
+    backgroundColor: colors.bg.elevated,
+    borderWidth: 1.5,
+    borderColor: 'transparent',
+    overflow: 'hidden',
+  },
+  intensityOptionActive: {
+    backgroundColor: 'rgba(212, 175, 55, 0.08)',
+  },
+  intensityLabel: {
+    fontSize: 14,
+    fontWeight: '500' as const,
+    color: colors.text.muted,
+    flex: 1,
+  },
+  intensityBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    height: 2,
+    borderRadius: 1,
+  },
+  confirmBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 14,
+    borderRadius: 14,
+    marginTop: 16,
+  },
+  confirmText: {
+    fontSize: 15,
+    fontWeight: '700' as const,
+    color: colors.bg.primary,
+  },
+  cancelBtn: {
+    alignItems: 'center',
+    paddingVertical: 12,
+    marginTop: 4,
+  },
+  cancelText: {
+    fontSize: 14,
+    color: colors.text.muted,
   },
 });
