@@ -1,117 +1,245 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <title>APP_NAME_PLACEHOLDER</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
     <style>
       * {
         box-sizing: border-box;
-      }
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         margin: 0;
-        padding: 32px 20px;
-        text-align: center;
-        background: #fff;
-        color: #222;
-        line-height: 1.5;
-        min-height: 100vh;
-      }
-      .wrapper {
-        max-width: 480px;
-        margin: 0 auto;
-      }
-      h1 {
-        font-size: 26px;
-        font-weight: 600;
-        margin: 0;
-        color: #111;
-      }
-      .subtitle {
-        font-size: 15px;
-        color: #666;
-        margin-top: 8px;
-        margin-bottom: 32px;
-      }
-      .loading {
-        display: none;
-        margin: 60px 0;
-      }
-      .spinner {
-        border: 2px solid #ddd;
-        border-top-color: #333;
-        border-radius: 50%;
-        width: 32px;
-        height: 32px;
-        animation: spin 0.8s linear infinite;
-        margin: 20px auto;
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-      .loading-text {
-        font-size: 16px;
-        color: #444;
-      }
-      .content {
-        display: block;
+        padding: 0;
       }
 
-      .steps-container {
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #0a0a0f;
+        color: #e0e0e0;
+        line-height: 1.6;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .islamic-pattern {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.06;
+        background-color: #0a0a0f;
+        background-image:
+          linear-gradient(67.5deg, #0a0a0f 10%, transparent 10%),
+          linear-gradient(157.5deg, #0a0a0f 10%, transparent 10%),
+          linear-gradient(67.5deg, transparent 90%, #0a0a0f 90%),
+          linear-gradient(157.5deg, transparent 90%, #0a0a0f 90%),
+          linear-gradient(22.5deg, #0a0a0f 10%, transparent 10%),
+          linear-gradient(112.5deg, #0a0a0f 10%, transparent 10%),
+          linear-gradient(22.5deg, transparent 90%, #0a0a0f 90%),
+          linear-gradient(112.5deg, transparent 90%, #0a0a0f 90%),
+          linear-gradient(22.5deg, transparent 33%, #d4af37 33%, #d4af37 36%, transparent 36%, transparent 64%, #d4af37 64%, #d4af37 67%, transparent 67%),
+          linear-gradient(-22.5deg, transparent 33%, #d4af37 33%, #d4af37 36%, transparent 36%, transparent 64%, #d4af37 64%, #d4af37 67%, transparent 67%),
+          linear-gradient(112.5deg, transparent 33%, #d4af37 33%, #d4af37 36%, transparent 36%, transparent 64%, #d4af37 64%, #d4af37 67%, transparent 67%),
+          linear-gradient(-112.5deg, transparent 33%, #d4af37 33%, #d4af37 36%, transparent 36%, transparent 64%, #d4af37 64%, #d4af37 67%, transparent 67%);
+        background-size: 200px 200px;
+        background-position:
+          -80px 120px, -120px 120px, -120px 80px, -80px 80px,
+          -120px 80px, -80px 80px, -80px 120px, -120px 120px,
+          0 0, 0 0, 0 0, 0 0;
+      }
+
+      .page-wrapper {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero {
+        text-align: center;
+        padding: 80px 24px 48px;
+        position: relative;
+      }
+
+      .hero-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -60%);
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, rgba(212, 175, 55, 0.04) 40%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .arabic-title {
+        font-family: 'Amiri', serif;
+        font-size: 48px;
+        color: #d4af37;
+        margin-bottom: 8px;
+        direction: rtl;
+        position: relative;
+      }
+
+      .english-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.85);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        position: relative;
+      }
+
+      .divider {
+        width: 60px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        margin: 0 auto 24px;
+      }
+
+      .hero-description {
+        font-size: 17px;
+        color: rgba(255, 255, 255, 0.6);
+        max-width: 520px;
+        margin: 0 auto;
+        line-height: 1.7;
+        position: relative;
+      }
+
+      .features-section {
+        padding: 32px 24px 48px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(212, 175, 55, 0.1);
+        border-radius: 16px;
+        padding: 24px;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        transition: border-color 0.3s;
+      }
+
+      .feature-card:hover {
+        border-color: rgba(212, 175, 55, 0.25);
+      }
+
+      .feature-icon {
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: rgba(212, 175, 55, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .feature-icon svg {
+        width: 22px;
+        height: 22px;
+        color: #d4af37;
+        fill: none;
+        stroke: #d4af37;
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .feature-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 4px;
+      }
+
+      .feature-desc {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.45);
+        line-height: 1.5;
+      }
+
+      .download-section {
+        padding: 48px 24px 80px;
+        max-width: 640px;
+        margin: 0 auto;
+      }
+
+      .download-heading {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 8px;
+      }
+
+      .download-subtitle {
+        text-align: center;
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 32px;
+      }
+
+      .download-cards {
         display: flex;
         flex-direction: column;
         gap: 20px;
       }
 
-      .step {
-        padding: 24px;
-        border: 1px solid #ddd;
-        border-radius: 12px;
+      .download-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(212, 175, 55, 0.1);
+        border-radius: 16px;
+        padding: 28px;
         text-align: center;
-        background: #fafafa;
       }
-      .step-header {
-        display: flex;
+
+      .step-badge {
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
-        margin-bottom: 12px;
-      }
-      .step-number {
         width: 28px;
         height: 28px;
-        border: 1px solid #999;
         border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        color: #d4af37;
+        font-size: 13px;
         font-weight: 600;
-        font-size: 14px;
-        flex-shrink: 0;
-        color: #555;
+        margin-bottom: 12px;
       }
-      .step-title {
+
+      .download-card-title {
         font-size: 18px;
         font-weight: 600;
-        margin: 0;
-        color: #222;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 8px;
       }
-      .step-description {
+
+      .download-card-desc {
         font-size: 14px;
-        margin-bottom: 16px;
-        color: #666;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 20px;
       }
 
       .store-buttons {
         display: flex;
         flex-direction: column;
-        gap: 6px;
-        justify-content: center;
-        flex-wrap: wrap;
+        gap: 8px;
       }
+
       .store-button {
         display: inline-flex;
         align-items: center;
@@ -120,17 +248,20 @@
         padding: 12px 20px;
         font-size: 14px;
         font-weight: 500;
-        border: 1px solid #ccc;
-        border-radius: 8px;
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        border-radius: 10px;
         text-decoration: none;
-        color: #333;
-        background: #fff;
-        transition: all 0.15s;
+        color: rgba(255, 255, 255, 0.8);
+        background: rgba(212, 175, 55, 0.06);
+        transition: all 0.2s;
       }
+
       .store-button:hover {
-        background: #f5f5f5;
-        border-color: #999;
+        background: rgba(212, 175, 55, 0.12);
+        border-color: rgba(212, 175, 55, 0.35);
+        color: #fff;
       }
+
       .store-link {
         display: inline-flex;
         align-items: center;
@@ -141,213 +272,241 @@
         font-weight: 400;
         text-decoration: underline;
         text-underline-offset: 2px;
-        color: #666;
+        color: rgba(255, 255, 255, 0.35);
         background: none;
         border: none;
-        transition: color 0.15s;
+        transition: color 0.2s;
       }
+
       .store-link:hover {
-        color: #333;
+        color: rgba(255, 255, 255, 0.6);
       }
+
       .store-link .store-icon {
         width: 14px;
         height: 14px;
       }
+
       .store-icon {
         width: 18px;
         height: 18px;
       }
 
-      .qr-section {
-        background: #333;
-        color: #fff;
-        border-color: #333;
+      .qr-card {
+        background: rgba(212, 175, 55, 0.04);
+        border-color: rgba(212, 175, 55, 0.15);
       }
-      .qr-section .step-number {
-        border-color: rgba(255, 255, 255, 0.5);
-        color: #fff;
-      }
-      .qr-section .step-title {
-        color: #fff;
-      }
-      .qr-section .step-description {
-        color: rgba(255, 255, 255, 0.7);
-      }
+
       .qr-code {
         width: 180px;
         height: 180px;
-        margin: 0 auto 16px;
+        margin: 0 auto 20px;
         background: #fff;
-        border-radius: 8px;
+        border-radius: 12px;
         padding: 12px;
       }
+
       .qr-code canvas {
         width: 100%;
         height: 100%;
       }
+
       .open-button {
         display: inline-block;
-        padding: 12px 24px;
+        padding: 12px 28px;
         font-size: 14px;
-        font-weight: 500;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 8px;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
         text-decoration: none;
-        color: #333;
-        background: #fff;
-        transition: opacity 0.15s;
-      }
-      .open-button:hover {
-        opacity: 0.9;
+        color: #0a0a0f;
+        background: linear-gradient(135deg, #d4af37, #ffd700);
+        transition: opacity 0.2s;
       }
 
-      /* Desktop styles */
+      .open-button:hover {
+        opacity: 0.85;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 32px 24px;
+        border-top: 1px solid rgba(212, 175, 55, 0.06);
+      }
+
+      .footer-text {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.2);
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        padding: 120px 24px;
+      }
+
+      .spinner {
+        border: 2px solid rgba(212, 175, 55, 0.15);
+        border-top-color: #d4af37;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        animation: spin 0.8s linear infinite;
+        margin: 20px auto;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-text {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      @media (min-width: 600px) {
+        .features-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
       @media (min-width: 768px) {
-        body {
-          padding: 48px 32px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+        .hero {
+          padding: 120px 32px 64px;
         }
-        .wrapper {
-          max-width: 720px;
+
+        .arabic-title {
+          font-size: 64px;
         }
-        h1 {
-          font-size: 32px;
-          margin-bottom: 10px;
+
+        .english-title {
+          font-size: 22px;
+          letter-spacing: 4px;
         }
-        .subtitle {
-          font-size: 16px;
-          margin-bottom: 40px;
+
+        .hero-description {
+          font-size: 18px;
         }
-        .steps-container {
+
+        .hero-glow {
+          width: 600px;
+          height: 600px;
+        }
+
+        .download-cards {
           flex-direction: row;
-          gap: 20px;
+          gap: 24px;
           align-items: stretch;
         }
-        .step {
+
+        .download-card {
           flex: 1;
           display: flex;
           flex-direction: column;
-          padding: 28px;
         }
-        .step-description {
+
+        .download-card-desc {
           flex-grow: 1;
         }
+
         .store-buttons {
-          flex-direction: column;
           gap: 10px;
         }
-        .qr-code {
-          width: 200px;
-          height: 200px;
-        }
       }
 
-      /* Large desktop */
       @media (min-width: 1024px) {
-        .wrapper {
-          max-width: 800px;
+        .arabic-title {
+          font-size: 72px;
         }
-        h1 {
-          font-size: 36px;
-        }
-        .steps-container {
-          gap: 28px;
-        }
-        .step {
-          padding: 32px;
-        }
-      }
 
-      /* Dark mode */
-      @media (prefers-color-scheme: dark) {
-        body {
-          background: #0d0d0d;
-          color: #e0e0e0;
+        .features-section {
+          max-width: 900px;
         }
-        h1 {
-          color: #f5f5f5;
-        }
-        .subtitle {
-          color: #999;
-        }
-        .spinner {
-          border-color: #444;
-          border-top-color: #ccc;
-        }
-        .loading-text {
-          color: #aaa;
-        }
-        .step {
-          border-color: #333;
-          background: #1a1a1a;
-        }
-        .step-number {
-          border-color: #666;
-          color: #bbb;
-        }
-        .step-title {
-          color: #f0f0f0;
-        }
-        .step-description {
-          color: #888;
-        }
-        .store-button {
-          border-color: #444;
-          color: #e0e0e0;
-          background: #222;
-        }
-        .store-button:hover {
-          background: #2a2a2a;
-          border-color: #666;
-        }
-        .store-link {
-          color: #888;
-        }
-        .store-link:hover {
-          color: #ccc;
-        }
-        .qr-section {
-          background: #111;
-          border-color: #333;
-        }
-        .qr-section .step-number {
-          border-color: rgba(255, 255, 255, 0.4);
-        }
-        .qr-section .step-description {
-          color: rgba(255, 255, 255, 0.6);
-        }
-        .open-button {
-          background: #f0f0f0;
-          color: #111;
-        }
-        .open-button:hover {
-          background: #e0e0e0;
+
+        .islamic-pattern {
+          background-size: 250px 250px;
+          background-position:
+            -100px 150px, -150px 150px, -150px 100px, -100px 100px,
+            -150px 100px, -100px 100px, -100px 150px, -150px 150px,
+            0 0, 0 0, 0 0, 0 0;
         }
       }
     </style>
   </head>
   <body>
-    <div class="wrapper">
-      <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <div class="loading-text">Opening in Expo Go...</div>
-      </div>
+    <div class="islamic-pattern"></div>
 
-      <div class="content" id="content">
-        <h1>APP_NAME_PLACEHOLDER</h1>
-        <p class="subtitle">Preview this app on your phone</p>
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <div class="loading-text">Opening in Expo Go...</div>
+    </div>
 
-        <div class="steps-container">
-          <div class="step">
-            <div class="step-header">
-              <div class="step-number">1</div>
-              <h2 class="step-title">Download Expo Go</h2>
+    <div class="page-wrapper" id="content">
+      <section class="hero">
+        <div class="hero-glow"></div>
+        <div class="arabic-title">ضياء القرآن</div>
+        <div class="english-title">Diyaa Al-Quran</div>
+        <div class="divider"></div>
+        <p class="hero-description">
+          Track your Quran memorization journey and watch the parts you've memorized brighten with your progress. Every Ayah you learn is a light on your path.
+        </p>
+      </section>
+
+      <section class="features-section">
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
             </div>
-            <p class="step-description">
-              Expo Go is a free app to test mobile apps
-            </p>
+            <div>
+              <div class="feature-title">Glowing Orbs</div>
+              <div class="feature-desc">Each Surah and Juz is an orb that glows brighter as your mastery grows &mdash; from dim to radiant gold.</div>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            </div>
+            <div>
+              <div class="feature-title">Ayah-by-Ayah Tracking</div>
+              <div class="feature-desc">Mark individual verses with four mastery levels &mdash; from Just Started to Fully Memorized.</div>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <div>
+              <div class="feature-title">Surah & Juz Views</div>
+              <div class="feature-desc">Browse all 114 Surahs or 30 Juz. Long-press any Surah to mark it all at once.</div>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            </div>
+            <div>
+              <div class="feature-title">Daily Reminders</div>
+              <div class="feature-desc">Gentle push notifications at the time you choose to keep your memorization consistent.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="download-section">
+        <div class="download-heading">Preview on Your Phone</div>
+        <p class="download-subtitle">Download Expo Go and scan the QR code to try the app</p>
+
+        <div class="download-cards">
+          <div class="download-card">
+            <div class="step-badge">1</div>
+            <div class="download-card-title">Get Expo Go</div>
+            <p class="download-card-desc">Free app to preview mobile apps instantly</p>
             <div class="store-buttons" id="store-buttons">
               <a
                 id="app-store-btn"
@@ -378,19 +537,19 @@
             </div>
           </div>
 
-          <div class="step qr-section">
-            <div class="step-header">
-              <div class="step-number">2</div>
-              <h2 class="step-title">Scan QR Code</h2>
-            </div>
-            <p class="step-description">Use your phone's camera or Expo Go</p>
+          <div class="download-card qr-card">
+            <div class="step-badge">2</div>
+            <div class="download-card-title">Scan QR Code</div>
+            <p class="download-card-desc">Use your phone's camera or Expo Go</p>
             <div class="qr-code" id="qr-code"></div>
-            <a href="exps://EXPS_URL_PLACEHOLDER" class="open-button"
-              >Open in Expo Go</a
-            >
+            <a href="exps://EXPS_URL_PLACEHOLDER" class="open-button">Open in Expo Go</a>
           </div>
         </div>
-      </div>
+      </section>
+
+      <footer class="footer">
+        <p class="footer-text">Diyaa Al-Quran &mdash; Light of the Quran</p>
+      </footer>
     </div>
 
     <script src="https://unpkg.com/qr-code-styling@1.6.0/lib/qr-code-styling.js"></script>
@@ -407,7 +566,6 @@
 
         const deepLink = "exps://EXPS_URL_PLACEHOLDER";
 
-        // Adjust store buttons based on platform
         const appStoreBtn = document.getElementById("app-store-btn");
         const playStoreBtn = document.getElementById("play-store-btn");
         const storeButtonsContainer = document.getElementById("store-buttons");
@@ -425,7 +583,7 @@
           height: 400,
           data: deepLink,
           dotsOptions: {
-            color: "#333333",
+            color: "#d4af37",
             type: "rounded",
           },
           backgroundOptions: {
@@ -433,9 +591,11 @@
           },
           cornersSquareOptions: {
             type: "extra-rounded",
+            color: "#0a0a0f",
           },
           cornersDotOptions: {
             type: "dot",
+            color: "#0a0a0f",
           },
           qrOptions: {
             errorCorrectionLevel: "H",
