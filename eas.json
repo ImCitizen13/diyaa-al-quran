@@ -21,15 +21,19 @@
         "buildType": "apk"
       }
     },
-    "staging": {
-      "extends": "production",
-      "distribution": "internal",
-      "channel": "staging",
-      "environment": "preview",
+    "android-test": {
+      "autoIncrement": true,
+      "channel": "android-test",
       "android": {
         "buildType": "apk"
       }
     },
+    "testflight": {
+      "autoIncrement": true,
+      "environment": "testflight",
+      "channel": "testflight"
+    },
+
     "production": {
       "autoIncrement": true,
       "channel": "production",
@@ -39,6 +43,9 @@
   "submit": {
     "production": {
       "android": {},
+      "ios": {}
+    },
+    "testflight": {
       "ios": {}
     }
   }
