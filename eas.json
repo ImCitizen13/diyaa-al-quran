@@ -32,12 +32,19 @@
       "autoIncrement": true,
       "environment": "testflight",
       "channel": "testflight"
+      ,
+      "android":{
+        "buildType": "apk"
+      }
     },
 
     "production": {
       "autoIncrement": true,
       "channel": "production",
-      "environment": "production"
+      "environment": "production",
+      "android":{
+        "buildType": "apk"
+      }
     }
   },
   "submit": {
