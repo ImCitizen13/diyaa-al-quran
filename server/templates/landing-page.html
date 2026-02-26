@@ -1,632 +1,623 @@
 <!DOCTYPE html>
 <!-- saved from url=(0034)https://diyaa-al-quran.replit.app/ -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="chrome-extension://fgddmllnllkalaagkghckoinaemmogpe/src/scripts/content/location-spoofing.js"></script>
-    <title>Diyaa Al-Quran</title>
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="preconnect" href="https://fonts.googleapis.com/">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-    <link href="./Diyaa Al-Quran_files/css2" rel="stylesheet">
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+<html lang="en"><head><script src="chrome-extension://fgddmllnllkalaagkghckoinaemmogpe/src/scripts/content/location-spoofing.js"></script>
+  <title>Diyaa Al-Quran</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        background: #0a0a0f;
-        color: #e0e0e0;
-        line-height: 1.6;
-        min-height: 100vh;
-        overflow-x: hidden;
-      }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0a0a0f;
+      color: #e0e0e0;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-      .islamic-pattern {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-        pointer-events: none;
-        opacity: 0.06;
-        background-color: #0a0a0f;
-        background-image:
-          linear-gradient(67.5deg, #0a0a0f 10%, transparent 10%),
-          linear-gradient(157.5deg, #0a0a0f 10%, transparent 10%),
-          linear-gradient(67.5deg, transparent 90%, #0a0a0f 90%),
-          linear-gradient(157.5deg, transparent 90%, #0a0a0f 90%),
-          linear-gradient(22.5deg, #0a0a0f 10%, transparent 10%),
-          linear-gradient(112.5deg, #0a0a0f 10%, transparent 10%),
-          linear-gradient(22.5deg, transparent 90%, #0a0a0f 90%),
-          linear-gradient(112.5deg, transparent 90%, #0a0a0f 90%),
-          linear-gradient(22.5deg, transparent 33%, #d4af37 33%, #d4af37 36%, transparent 36%, transparent 64%, #d4af37 64%, #d4af37 67%, transparent 67%),
-          linear-gradient(-22.5deg, transparent 33%, #d4af37 33%, #d4af37 36%, transparent 36%, transparent 64%, #d4af37 64%, #d4af37 67%, transparent 67%),
-          linear-gradient(112.5deg, transparent 33%, #d4af37 33%, #d4af37 36%, transparent 36%, transparent 64%, #d4af37 64%, #d4af37 67%, transparent 67%),
-          linear-gradient(-112.5deg, transparent 33%, #d4af37 33%, #d4af37 36%, transparent 36%, transparent 64%, #d4af37 64%, #d4af37 67%, transparent 67%);
-        background-size: 200px 200px;
-        background-position:
-          -80px 120px, -120px 120px, -120px 80px, -80px 80px,
-          -120px 80px, -80px 80px, -80px 120px, -120px 120px,
-          0 0, 0 0, 0 0, 0 0;
-      }
+    .islamic-pattern {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.06;
+      background-color: #0a0a0f;
+      background-image:
+        linear-gradient(67.5deg, #0a0a0f 10%, transparent 10%),
+        linear-gradient(157.5deg, #0a0a0f 10%, transparent 10%),
+        linear-gradient(67.5deg, transparent 90%, #0a0a0f 90%),
+        linear-gradient(157.5deg, transparent 90%, #0a0a0f 90%),
+        linear-gradient(22.5deg, #0a0a0f 10%, transparent 10%),
+        linear-gradient(112.5deg, #0a0a0f 10%, transparent 10%),
+        linear-gradient(22.5deg, transparent 90%, #0a0a0f 90%),
+        linear-gradient(112.5deg, transparent 90%, #0a0a0f 90%),
+        linear-gradient(22.5deg, transparent 33%, #d4af37 33%, #d4af37 36%, transparent 36%, transparent 64%, #d4af37 64%, #d4af37 67%, transparent 67%),
+        linear-gradient(-22.5deg, transparent 33%, #d4af37 33%, #d4af37 36%, transparent 36%, transparent 64%, #d4af37 64%, #d4af37 67%, transparent 67%),
+        linear-gradient(112.5deg, transparent 33%, #d4af37 33%, #d4af37 36%, transparent 36%, transparent 64%, #d4af37 64%, #d4af37 67%, transparent 67%),
+        linear-gradient(-112.5deg, transparent 33%, #d4af37 33%, #d4af37 36%, transparent 36%, transparent 64%, #d4af37 64%, #d4af37 67%, transparent 67%);
+      background-size: 200px 200px;
+      background-position:
+        -80px 120px, -120px 120px, -120px 80px, -80px 80px,
+        -120px 80px, -80px 80px, -80px 120px, -120px 120px,
+        0 0, 0 0, 0 0, 0 0;
+    }
 
-      .page-wrapper {
-        position: relative;
-        z-index: 1;
-      }
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+    }
 
+    .hero {
+      text-align: center;
+      padding: 80px 24px 48px;
+      position: relative;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, rgba(212, 175, 55, 0.04) 40%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .arabic-title {
+      font-family: 'Amiri', serif;
+      font-size: 48px;
+      color: #d4af37;
+      margin-bottom: 8px;
+      direction: rtl;
+      position: relative;
+    }
+
+    .english-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.85);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+      margin: 0 auto 24px;
+    }
+
+    .hero-description {
+      font-size: 17px;
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+      position: relative;
+    }
+
+    .features-section {
+      padding: 32px 24px 48px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: rgb(10 10 15 / 95%);
+      border: 1px solid rgb(212 176 56 / 13%);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      transition: border-color 0.3s;
+  }
+
+    .feature-card:hover {
+      border-color: rgba(212, 175, 55, 0.25);
+    }
+
+    .feature-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(212, 175, 55, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .feature-icon svg {
+      width: 22px;
+      height: 22px;
+      color: #d4af37;
+      fill: none;
+      stroke: #d4af37;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .feature-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 4px;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.45);
+      line-height: 1.5;
+    }
+
+    .download-section {
+      padding: 48px 24px 80px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .download-heading {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 8px;
+    }
+
+    .download-subtitle {
+      text-align: center;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 32px;
+    }
+
+
+    .download-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+  }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #d4af37;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .download-card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 8px;
+    }
+
+    .download-card-desc {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 20px;
+    }
+
+    .store-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .store-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 10px;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(212, 175, 55, 0.06);
+      transition: all 0.2s;
+    }
+
+    .store-button:hover {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: rgba(212, 175, 55, 0.35);
+      color: #fff;
+    }
+
+    .store-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 0;
+      font-size: 13px;
+      font-weight: 400;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      color: rgba(255, 255, 255, 0.35);
+      background: none;
+      border: none;
+      transition: color 0.2s;
+    }
+
+    .store-link:hover {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .store-link .store-icon {
+      width: 14px;
+      height: 14px;
+    }
+
+    .store-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .qr-card {
+      background: rgba(212, 175, 55, 0.04);
+      border-color: rgba(212, 175, 55, 0.15);
+    }
+
+    .qr-code {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 20px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .qr-code canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .open-button {
+      display: inline-block;
+      padding: 12px 28px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #0a0a0f;
+      background: linear-gradient(135deg, #d4af37, #ffd700);
+      transition: opacity 0.2s;
+    }
+
+    .open-button:hover {
+      opacity: 0.85;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid rgba(212, 175, 55, 0.06);
+    }
+
+    .footer-text {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 120px 24px;
+    }
+
+    .spinner {
+      border: 2px solid rgba(212, 175, 55, 0.15);
+      border-top-color: #d4af37;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      animation: spin 0.8s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-text {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    @media (min-width: 600px) {
+      .features-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (min-width: 768px) {
       .hero {
-        text-align: center;
-        padding: 80px 24px 48px;
-        position: relative;
-      }
-
-      .hero-glow {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -60%);
-        width: 400px;
-        height: 400px;
-        background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, rgba(212, 175, 55, 0.04) 40%, transparent 70%);
-        pointer-events: none;
+        padding: 120px 32px 64px;
       }
 
       .arabic-title {
-        font-family: 'Amiri', serif;
-        font-size: 48px;
-        color: #d4af37;
-        margin-bottom: 8px;
-        direction: rtl;
-        position: relative;
+        font-size: 64px;
       }
 
       .english-title {
-        font-size: 20px;
-        font-weight: 600;
-        color: rgba(255, 255, 255, 0.85);
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        margin-bottom: 20px;
-        position: relative;
-      }
-
-      .divider {
-        width: 60px;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #d4af37, transparent);
-        margin: 0 auto 24px;
+        font-size: 22px;
+        letter-spacing: 4px;
       }
 
       .hero-description {
-        font-size: 17px;
-        color: rgba(255, 255, 255, 0.6);
-        max-width: 520px;
-        margin: 0 auto;
-        line-height: 1.7;
-        position: relative;
+        font-size: 18px;
       }
 
-      .features-section {
-        padding: 32px 24px 48px;
-        max-width: 800px;
-        margin: 0 auto;
+      .hero-glow {
+        width: 600px;
+        height: 600px;
       }
 
-      .features-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
 
-      .feature-card {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(212, 175, 55, 0.1);
-        border-radius: 16px;
-        padding: 24px;
-        display: flex;
-        align-items: flex-start;
-        gap: 16px;
-        transition: border-color 0.3s;
-      }
-
-      .feature-card:hover {
-        border-color: rgba(212, 175, 55, 0.25);
-      }
-
-      .feature-icon {
-        flex-shrink: 0;
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        background: rgba(212, 175, 55, 0.08);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .feature-icon svg {
-        width: 22px;
-        height: 22px;
-        color: #d4af37;
-        fill: none;
-        stroke: #d4af37;
-        stroke-width: 1.5;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
-
-      .feature-title {
-        font-size: 16px;
-        font-weight: 600;
-        color: rgba(255, 255, 255, 0.9);
-        margin-bottom: 4px;
-      }
-
-      .feature-desc {
-        font-size: 14px;
-        color: rgba(255, 255, 255, 0.45);
-        line-height: 1.5;
-      }
-
-      .download-section {
-        padding: 48px 24px 80px;
-        max-width: 640px;
-        margin: 0 auto;
-      }
-
-      .download-heading {
-        text-align: center;
-        font-size: 22px;
-        font-weight: 600;
-        color: rgba(255, 255, 255, 0.9);
-        margin-bottom: 8px;
-      }
-
-      .download-subtitle {
-        text-align: center;
-        font-size: 15px;
-        color: rgba(255, 255, 255, 0.4);
-        margin-bottom: 32px;
-      }
-
-      .download-cards {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
 
       .download-card {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(212, 175, 55, 0.1);
-        border-radius: 16px;
-        padding: 28px;
-        text-align: center;
-      }
-
-      .step-badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        border: 1px solid rgba(212, 175, 55, 0.3);
-        color: #d4af37;
-        font-size: 13px;
-        font-weight: 600;
-        margin-bottom: 12px;
-      }
-
-      .download-card-title {
-        font-size: 18px;
-        font-weight: 600;
-        color: rgba(255, 255, 255, 0.9);
-        margin-bottom: 8px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
       }
 
       .download-card-desc {
-        font-size: 14px;
-        color: rgba(255, 255, 255, 0.4);
-        margin-bottom: 20px;
+        flex-grow: 1;
       }
 
       .store-buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
+        gap: 10px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .arabic-title {
+        font-size: 72px;
       }
 
-      .store-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 12px 20px;
-        font-size: 14px;
-        font-weight: 500;
-        border: 1px solid rgba(212, 175, 55, 0.2);
-        border-radius: 10px;
-        text-decoration: none;
-        color: rgba(255, 255, 255, 0.8);
-        background: rgba(212, 175, 55, 0.06);
-        transition: all 0.2s;
+      .features-section {
+        max-width: 900px;
       }
 
-      .store-button:hover {
-        background: rgba(212, 175, 55, 0.12);
-        border-color: rgba(212, 175, 55, 0.35);
-        color: #fff;
+      .islamic-pattern {
+        background-size: 250px 250px;
+        background-position:
+          -100px 150px, -150px 150px, -150px 100px, -100px 100px,
+          -150px 100px, -100px 100px, -100px 150px, -150px 150px,
+          0 0, 0 0, 0 0, 0 0;
       }
+    }
+  </style>
+<script src="chrome-extension://idnnbdplmphpflfnlkomgpfbpcgelopg/inpage.js" id="xverse-wallet-provider" data-is-priority="true"></script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400..600&amp;display=swap"></head>
+<body>
+  <div class="islamic-pattern"></div>
 
-      .store-link {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        padding: 8px 0;
-        font-size: 13px;
-        font-weight: 400;
-        text-decoration: underline;
-        text-underline-offset: 2px;
-        color: rgba(255, 255, 255, 0.35);
-        background: none;
-        border: none;
-        transition: color 0.2s;
-      }
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">Opening in Expo Go...</div>
+  </div>
 
-      .store-link:hover {
-        color: rgba(255, 255, 255, 0.6);
-      }
+  <div class="page-wrapper" id="content">
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="arabic-title">ضياء القرآن</div>
+      <div class="english-title">Diyaa Al-Quran</div>
+      <div class="divider"></div>
+      <p class="hero-description">
+        Track your Quran memorization journey and watch the parts you've memorized brighten with your progress. Every Ayah you learn is a light on your path.
+      </p>
+    </section>
 
-      .store-link .store-icon {
-        width: 14px;
-        height: 14px;
-      }
-
-      .store-icon {
-        width: 18px;
-        height: 18px;
-      }
-
-      .qr-card {
-        background: rgba(212, 175, 55, 0.04);
-        border-color: rgba(212, 175, 55, 0.15);
-      }
-
-      .qr-code {
-        width: 180px;
-        height: 180px;
-        margin: 0 auto 20px;
-        background: #fff;
-        border-radius: 12px;
-        padding: 12px;
-      }
-
-      .qr-code canvas {
-        width: 100%;
-        height: 100%;
-      }
-
-      .open-button {
-        display: inline-block;
-        padding: 12px 28px;
-        font-size: 14px;
-        font-weight: 600;
-        border: none;
-        border-radius: 10px;
-        text-decoration: none;
-        color: #0a0a0f;
-        background: linear-gradient(135deg, #d4af37, #ffd700);
-        transition: opacity 0.2s;
-      }
-
-      .open-button:hover {
-        opacity: 0.85;
-      }
-
-      .footer {
-        text-align: center;
-        padding: 32px 24px;
-        border-top: 1px solid rgba(212, 175, 55, 0.06);
-      }
-
-      .footer-text {
-        font-size: 13px;
-        color: rgba(255, 255, 255, 0.2);
-      }
-
-      .loading {
-        display: none;
-        text-align: center;
-        padding: 120px 24px;
-      }
-
-      .spinner {
-        border: 2px solid rgba(212, 175, 55, 0.15);
-        border-top-color: #d4af37;
-        border-radius: 50%;
-        width: 32px;
-        height: 32px;
-        animation: spin 0.8s linear infinite;
-        margin: 20px auto;
-      }
-
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      .loading-text {
-        font-size: 16px;
-        color: rgba(255, 255, 255, 0.5);
-      }
-
-      @media (min-width: 600px) {
-        .features-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-      }
-
-      @media (min-width: 768px) {
-        .hero {
-          padding: 120px 32px 64px;
-        }
-
-        .arabic-title {
-          font-size: 64px;
-        }
-
-        .english-title {
-          font-size: 22px;
-          letter-spacing: 4px;
-        }
-
-        .hero-description {
-          font-size: 18px;
-        }
-
-        .hero-glow {
-          width: 600px;
-          height: 600px;
-        }
-
-        .download-cards {
-          flex-direction: row;
-          gap: 24px;
-          align-items: stretch;
-        }
-
-        .download-card {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-        }
-
-        .download-card-desc {
-          flex-grow: 1;
-        }
-
-        .store-buttons {
-          gap: 10px;
-        }
-      }
-
-      @media (min-width: 1024px) {
-        .arabic-title {
-          font-size: 72px;
-        }
-
-        .features-section {
-          max-width: 900px;
-        }
-
-        .islamic-pattern {
-          background-size: 250px 250px;
-          background-position:
-            -100px 150px, -150px 150px, -150px 100px, -100px 100px,
-            -150px 100px, -100px 100px, -100px 150px, -150px 150px,
-            0 0, 0 0, 0 0, 0 0;
-        }
-      }
-    </style>
-  <script src="chrome-extension://idnnbdplmphpflfnlkomgpfbpcgelopg/inpage.js" id="xverse-wallet-provider" data-is-priority="true"></script><link rel="stylesheet" href="./Diyaa Al-Quran_files/css2(1)"></head>
-  <body>
-    <div class="islamic-pattern"></div>
-
-    <div class="loading" id="loading">
-      <div class="spinner"></div>
-      <div class="loading-text">Opening in Expo Go...</div>
-    </div>
-
-    <div class="page-wrapper" id="content">
-      <section class="hero">
-        <div class="hero-glow"></div>
-        <div class="arabic-title">ضياء القرآن</div>
-        <div class="english-title">Diyaa Al-Quran</div>
-        <div class="divider"></div>
-        <p class="hero-description">
-          Track your Quran memorization journey and watch the parts you've memorized brighten with your progress. Every Ayah you learn is a light on your path.
-        </p>
-      </section>
-
-      <section class="features-section">
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-            </div>
-            <div>
-              <div class="feature-title">Glowing Orbs</div>
-              <div class="feature-desc">Each Surah and Juz is an orb that glows brighter as your mastery grows — from dim to radiant gold.</div>
-            </div>
+    <section class="features-section">
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
           </div>
-
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path></svg>
-            </div>
-            <div>
-              <div class="feature-title">Ayah-by-Ayah Tracking</div>
-              <div class="feature-desc">Mark individual verses with four mastery levels — from Just Started to Fully Memorized.</div>
-            </div>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-            </div>
-            <div>
-              <div class="feature-title">Surah &amp; Juz Views</div>
-              <div class="feature-desc">Browse all 114 Surahs or 30 Juz. Long-press any Surah to mark it all at once.</div>
-            </div>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 01-3.46 0"></path></svg>
-            </div>
-            <div>
-              <div class="feature-title">Daily Reminders</div>
-              <div class="feature-desc">Gentle push notifications at the time you choose to keep your memorization consistent.</div>
-            </div>
+          <div>
+            <div class="feature-title">Glowing Orbs</div>
+            <div class="feature-desc">Each Surah and Juz is an orb that glows brighter as your mastery grows — from dim to radiant gold.</div>
           </div>
         </div>
-      </section>
 
-      <section class="download-section">
-        <div class="download-heading">Download the App now</div>
-<div class="download-card" id="store-buttons">
-              <a id="app-store-btn" href="https://apps.apple.com/app/id982107779" class="store-button" target="_blank">
-                <svg class="store-icon" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"></path>
-                </svg>
-                App Store
-              </a>
-              <a id="play-store-btn" href="https://play.google.com/store/apps/details?id=host.exp.exponent" class="store-button" target="_blank">
-                <svg class="store-icon" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"></path>
-                </svg>
-                Google Play
-              </a>
-            </div>
-        
-
-        
-      </section>
-
-      <footer class="footer">
-        <p class="footer-text">Diyaa Al-Quran — Light of the Quran</p>
-      </footer>
-    </div>
-
-    <script src="./Diyaa Al-Quran_files/qr-code-styling.js"></script>
-    <script>
-      (function () {
-        const ua = navigator.userAgent;
-        const loadingEl = document.getElementById("loading");
-        const contentEl = document.getElementById("content");
-
-        const isAndroid = /Android/i.test(ua);
-        const isIOS =
-          /iPhone|iPad|iPod/i.test(ua) ||
-          (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-
-        const deepLink = "exps://diyaa-al-quran.replit.app";
-
-        const appStoreBtn = document.getElementById("app-store-btn");
-        const playStoreBtn = document.getElementById("play-store-btn");
-        const storeButtonsContainer = document.getElementById("store-buttons");
-
-        if (isIOS) {
-          playStoreBtn.className = "store-link";
-          storeButtonsContainer.appendChild(playStoreBtn);
-        } else if (isAndroid) {
-          appStoreBtn.className = "store-link";
-          storeButtonsContainer.insertBefore(playStoreBtn, appStoreBtn);
-        }
-
-        const qrCode = new QRCodeStyling({
-          width: 400,
-          height: 400,
-          data: deepLink,
-          dotsOptions: {
-            color: "#d4af37",
-            type: "rounded",
-          },
-          backgroundOptions: {
-            color: "#ffffff",
-          },
-          cornersSquareOptions: {
-            type: "extra-rounded",
-            color: "#0a0a0f",
-          },
-          cornersDotOptions: {
-            type: "dot",
-            color: "#0a0a0f",
-          },
-          qrOptions: {
-            errorCorrectionLevel: "H",
-          },
-        });
-
-        qrCode.append(document.getElementById("qr-code"));
-
-        if (isAndroid || isIOS) {
-          loadingEl.style.display = "block";
-          contentEl.style.display = "none";
-          window.location.href = deepLink;
-          setTimeout(function () {
-            loadingEl.style.display = "none";
-            contentEl.style.display = "block";
-          }, 500);
-        }
-      })();
-    </script>
-  <script src="./Diyaa Al-Quran_files/widget.global.js" data-deployment-id="49a1905d-53da-4784-a6a1-ea182d151c0f" data-repl-id="d717d209-6001-466b-bf82-e7943fb0715f"></script>
-
-<div id="replit-agent-inbox-widget"><template shadowrootmode="closed"><style>:host{all:initial;font-family:IBM Plex Sans,sans-serif}:focus-visible{outline:2px solid #007cf8;outline-offset:2px}.fab{display:flex;position:fixed;right:20px;bottom:20px;justify-content:center;align-items:center;z-index:2147483647;transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease,background-color .3s ease;cursor:pointer;box-shadow:0 4px 12px #00000040;border:none;border-radius:50%;background-color:#1c1d21;width:48px;height:48px;color:#f5f5f5}.fab:hover{transform:scale(1.08);box-shadow:0 6px 16px #00000059}.fab:active{transform:scale(1)}.fab svg{display:block}.fab-logo{margin-left:1px;width:17px;height:21px;color:#f26207}.fab-custom-logo{width:100%;height:100%;object-fit:cover;border-radius:50%}.fab.position-bottom-left{right:auto;left:20px}.fab.position-top-right{top:20px;bottom:auto}.fab.position-top-left{inset:20px auto auto 20px}.card,.feedback-form-card{position:fixed;right:20px;bottom:20px;flex-direction:column;z-index:2147483647;animation:slide-up .25s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px #00000026,0 0 0 1px #0000000d;border-radius:16px;background-color:#fff;padding:20px;width:320px}@keyframes slide-up{0%{transform:translateY(16px) scale(.95);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}@keyframes slide-down{0%{transform:translateY(0) scale(1);opacity:1}to{transform:translateY(12px) scale(.95);opacity:0}}.card.closing,.feedback-form-card.closing{animation:slide-down .1s cubic-bezier(.4,0,.2,1) forwards;pointer-events:none}@keyframes slide-down-open{0%{transform:translateY(-16px) scale(.95);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}@keyframes slide-up-close{0%{transform:translateY(0) scale(1);opacity:1}to{transform:translateY(-12px) scale(.95);opacity:0}}.card.position-bottom-left,.feedback-form-card.position-bottom-left{right:auto;left:20px}.card.position-top-right,.feedback-form-card.position-top-right{top:20px;bottom:auto;animation-name:slide-down-open}.card.position-top-left,.feedback-form-card.position-top-left{animation-name:slide-down-open;inset:20px auto auto 20px}.card.position-top-right.closing,.feedback-form-card.position-top-right.closing,.card.position-top-left.closing,.feedback-form-card.position-top-left.closing{animation:slide-up-close .1s cubic-bezier(.4,0,.2,1) forwards}.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.card-content{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}.form-content{align-items:stretch;text-align:left}.card-title{color:#111827;font-weight:600;font-size:18px;line-height:28px}.card-description{color:#6b7280;font-size:14px;line-height:1.5}.close-btn{display:flex;position:relative;top:auto;right:auto;flex-shrink:0;justify-content:center;align-items:center;transition:background .15s ease,color .15s ease;cursor:pointer;border:none;border-radius:50%;background:#0000000d;width:28px;height:28px;color:#6b7280;font-family:inherit}.close-btn:hover{background:#0000001a;color:#374151}.close-btn svg{display:block}.close-btn-corner{position:absolute;top:10px;right:10px}.header-actions{display:flex;align-items:center;gap:4px}.menu-container{position:relative}.menu-btn{display:flex;flex-shrink:0;justify-content:center;align-items:center;transition:background .15s ease,color .15s ease;cursor:pointer;border:none;border-radius:50%;background:transparent;width:28px;height:28px;color:#9ca3af;font-family:inherit}.menu-btn:hover{background:#0000000d;color:#6b7280}.menu-btn svg{display:block}.dropdown-menu{position:absolute;top:calc(100% + 4px);right:0;z-index:10;animation:dropdown-fade-in .15s ease;box-shadow:0 4px 16px #0000001f,0 0 0 1px #0000000d;border-radius:8px;background:#fff;padding:4px;min-width:120px}@keyframes dropdown-fade-in{0%{transform:translateY(-4px);opacity:0}to{transform:translateY(0);opacity:1}}.dropdown-item{display:flex;align-items:center;gap:8px;transition:background .1s ease,color .1s ease;cursor:pointer;border:none;border-radius:6px;background:transparent;padding:8px 12px;width:100%;color:#374151;font-weight:450;font-size:12px;font-family:inherit;text-align:left}.dropdown-item:hover{background:#f3f4f6;color:#111827}.primary-btn{display:flex;justify-content:center;align-items:center;gap:8px;transition:background .25s ease,opacity .15s ease;cursor:pointer;margin-top:8px;border:none;border-radius:8px;background:#007cf8;padding:0 16px;width:100%;height:36px;color:#fff;font-weight:450;font-size:14px;font-family:inherit}.primary-btn:disabled{opacity:.6;cursor:not-allowed}.primary-btn:hover:not(:disabled){background:#06c}.primary-btn.success{cursor:default;background:#00a11b}.primary-btn.success:hover:not(:disabled){background:#00a11b}.primary-btn .fab-checkmark{width:16px;height:16px;color:#fff}.topic-pills-small{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.topic-pill-small{transition:background .15s ease,color .15s ease;cursor:pointer;border:none;border-radius:100px;background:#f3f4f6;padding:6px 12px;color:#374151;font-weight:450;font-size:13px;font-family:inherit}.topic-pill-small:hover,.topic-pill-small.selected{background:#e6f2ff;color:#007cf8}.input-container{display:flex;position:relative;flex-direction:column;transition:border-color .15s ease,box-shadow .15s ease,background .15s ease;border:1px solid #e5e7eb;border-radius:8px;background:#fff}.input-container:focus-within{box-shadow:0 0 0 3px #007cf81a;border-color:#007cf8}.input-container.dragging{box-shadow:0 0 0 3px #007cf826;border-color:#007cf8;background:#f0f7ff}.drag-overlay{display:flex;position:absolute;justify-content:center;align-items:center;z-index:10;animation:fade-in .15s ease;top:4px;right:4px;bottom:4px;left:4px;border:2px dashed #007cf8;border-radius:6px;background:#007cf814;pointer-events:none}.drag-overlay-text{color:#007cf8;font-weight:500;font-size:14px}.feedback-textarea{box-sizing:border-box;outline:none;border:none;border-radius:8px 8px 0 0;background:transparent;padding:12px;width:100%;min-height:48px;resize:none;scrollbar-color:rgb(0 0 0 / 20%) transparent;scrollbar-width:thin;color:#111827;font-size:14px;font-family:inherit}.feedback-textarea::-webkit-scrollbar{width:6px}.feedback-textarea::-webkit-scrollbar-track{background:transparent}.feedback-textarea::-webkit-scrollbar-thumb{border-radius:3px;background:#0003}.feedback-textarea::-webkit-scrollbar-thumb:hover{background:#0000004d}.feedback-textarea::placeholder{color:#9ca3af}.input-bottom-section{display:flex;flex-direction:column;gap:8px;padding:8px 12px}.input-buttons-row{display:flex;align-items:center;gap:4px}.action-btn{display:flex;flex-shrink:0;justify-content:center;align-items:center;transition:background .15s ease,color .15s ease;cursor:pointer;border:none;border-radius:6px;background:transparent;padding:6px;color:#9ca3af;font-family:inherit}.action-btn:disabled{opacity:.5;cursor:not-allowed}.action-btn:hover:not(:disabled){background:#f3f4f6;color:#6b7280}.action-btn.active{background:#e5e7eb;color:#374151}.action-btn.busy{cursor:wait}.spinner-icon{animation:spin 1s linear infinite}@keyframes spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.screenshots-row{display:flex;flex-wrap:wrap;align-items:flex-start;gap:4px}.screenshot-thumbnail-wrapper{position:relative;flex-shrink:0}.screenshot-thumbnail{display:flex;transition:border-color .15s ease,transform .15s ease;cursor:pointer;border:1px solid #e5e7eb;border-radius:8px;background:transparent;padding:0;width:52px;height:52px;overflow:hidden;font-family:inherit}.screenshot-thumbnail:hover{transform:scale(1.05);border-color:#007cf8}.screenshot-thumbnail img{width:100%;height:100%;object-fit:cover}.screenshot-remove-btn{display:flex;position:absolute;top:-8px;right:-8px;justify-content:center;align-items:center;transition:background .15s ease,transform .15s ease;cursor:pointer;box-shadow:0 2px 4px #00000026;border:none;border-radius:50%;background:#fff;width:18px;height:18px;color:#6b7280;font-family:inherit}.screenshot-remove-btn:hover{transform:scale(1.1);background:#f3f4f6;color:#374151}.screenshot-modal-overlay{display:flex;position:fixed;justify-content:center;align-items:center;z-index:2147483647;animation:fade-in .15s ease;top:0;right:0;bottom:0;left:0}.screenshot-modal-backdrop{position:absolute;cursor:pointer;top:0;right:0;bottom:0;left:0;border:none;background:#000000b3;font-family:inherit}@keyframes fade-in{0%{opacity:0}to{opacity:1}}.screenshot-modal{display:flex;position:relative;flex-direction:column;justify-content:center;align-items:center;z-index:1;animation:modal-pop .2s cubic-bezier(.34,1.56,.64,1);box-shadow:0 16px 48px #0000004d,0 0 0 1px #00000014;border-radius:8px;background:#f6f6f6;padding:8px;max-width:min(90vw,900px);max-height:min(85vh,800px)}@keyframes modal-pop{0%{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}.screenshot-modal-close{display:flex;position:absolute;top:-10px;right:-10px;justify-content:center;align-items:center;transition:background .15s ease,transform .15s ease;cursor:pointer;box-shadow:0 2px 6px #0000002e;border:none;border-radius:50%;background:#fff;width:24px;height:24px;color:#6b7280;font-family:inherit}.screenshot-modal-close:hover{transform:scale(1.1);background:#fff;color:#374151}.screenshot-modal-image{display:block;box-shadow:0 2px 8px #0000001a;border:1px solid rgb(0 0 0 / 10%);border-radius:6px;background:#fff;max-width:min(85vw,876px);max-height:min(80vh,776px);object-fit:contain}.error-message{margin-top:8px;border-radius:8px;background:#ffdada;padding:8px;color:#8a0000;font-size:12px;line-height:1.4}.tooltip-wrapper{display:inline-flex;position:relative}.tooltip-wrapper:after{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translate(-50%);visibility:hidden;opacity:0;z-index:10;transition:opacity .15s ease,visibility .15s ease;box-shadow:0 1px 3px #00000014,0 4px 12px #0000000d;border:1px solid rgb(0 0 0 / 10%);border-radius:8px;background:#fff;padding:6px 10px;pointer-events:none;content:attr(data-tooltip);color:#374151;font-weight:400;font-size:12px;white-space:nowrap}.tooltip-wrapper:hover:after{visibility:visible;opacity:1;transition-delay:.7s}@media(max-width:480px){.fab{right:16px;bottom:16px;width:44px;height:44px}.fab.position-bottom-left{right:auto;left:16px}.fab.position-top-right{top:16px;bottom:auto}.fab.position-top-left{inset:16px auto auto 16px}.fab svg{width:20px;height:20px}.card,.feedback-form-card{right:16px;bottom:16px;left:16px;width:auto}.card.position-top-right,.feedback-form-card.position-top-right{top:16px;bottom:auto}.card.position-bottom-left,.feedback-form-card.position-bottom-left{right:16px;left:16px}.card.position-top-left,.feedback-form-card.position-top-left{inset:16px 16px auto}}</style><div><button class="fab position-bottom-right" aria-label="Open feedback"><svg class="fab-logo" viewBox="0 0 23 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.72499C0 0.772305 0.772305 0 1.72499 0H9.77495C10.7276 0 11.4999 0.772305 11.4999 1.72499V9.19996H1.72499C0.772305 9.19996 0 8.42765 0 7.47496V1.72499Z" fill="currentColor"></path><path d="M11.4999 9.19996H21.2749C22.2276 9.19996 22.9999 9.97226 22.9999 10.9249V16.6749C22.9999 17.6276 22.2276 18.3999 21.2749 18.3999H11.4999V9.19996Z" fill="currentColor"></path><path d="M0 20.1249C0 19.1722 0.772305 18.3999 1.72499 18.3999H11.4999V25.8749C11.4999 26.8276 10.7276 27.5999 9.77495 27.5999H1.72499C0.772305 27.5999 0 26.8276 0 25.8749V20.1249Z" fill="currentColor"></path></svg></button></div></template></div><div aria-hidden="true" id="replit-agent-inbox-i18n-mirror" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border: 0px; padding: 0px;"><span data-i18n-key="Close">Close</span><span data-i18n-key="Open feedback">Open feedback</span><span data-i18n-key="Share your feedback">Share your feedback</span><span data-i18n-key="Help improve this app by sharing your feedback with the creator">Help improve this app by sharing your feedback with the creator</span><span data-i18n-key="Sign in">Sign in</span><span data-i18n-key="Feedback form card">Feedback form card</span><span data-i18n-key="Add feedback here…">Add feedback here…</span><span data-i18n-key="Drop images here">Drop images here</span><span data-i18n-key="Maximum 5 attachments reached">Maximum 5 attachments reached</span><span data-i18n-key="Maximum 5 attachments">Maximum 5 attachments</span><span data-i18n-key="Attach image">Attach image</span><span data-i18n-key="Select element to capture">Select element to capture</span><span data-i18n-key="Capturing screenshot…">Capturing screenshot…</span><span data-i18n-key="Maximum screenshots reached">Maximum screenshots reached</span><span data-i18n-key="Cancel selection">Cancel selection</span><span data-i18n-key="Select element">Select element</span><span data-i18n-key="View screenshot">View screenshot</span><span data-i18n-key="Remove screenshot">Remove screenshot</span><span data-i18n-key="Screenshot preview">Screenshot preview</span><span data-i18n-key="Close modal">Close modal</span><span data-i18n-key="Select a topic">Select a topic</span><span data-i18n-key="Bug report">Bug report</span><span data-i18n-key="Feature request">Feature request</span><span data-i18n-key="Design">Design</span><span data-i18n-key="Content">Content</span><span data-i18n-key="Other">Other</span><span data-i18n-key="More options">More options</span><span data-i18n-key="Sign out">Sign out</span><span data-i18n-key="Submit">Submit</span><span data-i18n-key="Sent">Sent</span><span data-i18n-key="Select a topic to submit feedback">Select a topic to submit feedback</span><span data-i18n-key="Enter feedback text">Enter feedback text</span><span data-i18n-key="Submitting…">Submitting…</span><span data-i18n-key="Your session has expired. Please sign in again.">Your session has expired. Please sign in again.</span><span data-i18n-key="There was an issue submitting your feedback. Please try again.">There was an issue submitting your feedback. Please try again.</span></div></body><div id="KerberusLoader" style="z-index: 2147483642; position: fixed; display: none; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%;">
-    
-      <link href="chrome-extension://kglcipoddmbniebnibibkghfijekllbl/ui-loader.css" rel="stylesheet" type="text/css">
-    
-    <div class="kr_loader_container">
-      <div class="kr_popup_area">
-        <div class="kr_loader_content_area">
-          <div class="kr_ring">
-            <img src="chrome-extension://kglcipoddmbniebnibibkghfijekllbl/logo_loader.png">
-            <span></span>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path></svg>
           </div>
-          <div class="kr_loader_title">Scanning Website....</div>
-          <p class="kr_loader_textup"> Running a security test for</p>
-          <p class="kr_loader_textdown">diyaa-al-quran.replit.app</p>
+          <div>
+            <div class="feature-title">Ayah-by-Ayah Tracking</div>
+            <div class="feature-desc">Mark individual verses with four mastery levels — from Just Started to Fully Memorized.</div>
+          </div>
         </div>
-        <div class="kr_powered_by">
-          <span>powered by</span>
-          <div class="kr_logo_footer">
-            <svg width="158" height="16" viewBox="0 0 158 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M21.5518 0.216214L14.6234 7.07518L21.4903 15.7731H14.8691L10.975 10.6579L8.61636 12.9407V15.7836H3.05156V2.98517L0.766676 0.216214H8.61636V6.21913L14.5865 0.216214H21.5518Z"></path>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M0.307709 0H8.83287V5.69461L14.4964 0H22.0777L14.9131 7.09286L21.9367 15.9893H14.7617L10.9503 10.9828L8.83287 13.0323V15.9999H2.83505V3.06277L0.307709 0ZM1.22564 0.432428L3.26807 2.90756V15.5674H8.39985V12.8492L10.9996 10.333L14.9765 15.5569H21.0439L14.3337 7.0575L21.0258 0.432428H14.6767L8.39985 6.74365V0.432428H1.22564Z"></path>
-              <path d="M38.6871 3.7975H28.277V6.3359H38.0331V9.72745H28.277V12.2658H38.6871V15.7838H23.4885V0.279558H38.6871V3.7975Z"></path>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M23.272 0.063344H38.9036V4.01372H28.4935V6.11968H38.2497V9.94366H28.4935V12.0496H38.9036V16H23.272V0.063344ZM23.705 0.495772V15.5676H38.4706V12.4821H28.0604V9.51123H37.8166V6.55211H28.0604V3.58129H38.4706V0.495772H23.705Z"></path>
-              <path d="M56.7769 11.5391L59.7196 15.7838H54.5725L51.6088 11.5391H47.6958V15.7838H42.9179V0.279558H57.0933C57.5891 0.279558 58.0215 0.532345 58.3801 1.03792C58.7387 1.54349 58.918 2.14386 58.918 2.83902V8.96909C58.918 9.66425 58.7387 10.2752 58.3801 10.7702C58.0215 11.2758 57.5996 11.5286 57.0933 11.5286H56.7769V11.5391ZM53.9819 7.65249V4.16615H47.6958V7.65249H53.9819Z"></path>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M42.7013 0.063344H57.0933C57.6762 0.063344 58.1685 0.365479 58.5568 0.912942C58.9444 1.45944 59.1345 2.10478 59.1345 2.83902V8.96909C59.1345 9.70168 58.9452 10.3585 58.5561 10.8961C58.1878 11.415 57.7349 11.714 57.1813 11.7425L60.1328 16H54.4596L51.4958 11.7553H47.9123V16H42.7013V0.063344ZM43.1344 0.495772V15.5676H47.4792V11.3229H51.7218L54.6855 15.5676H59.3064L56.5604 11.6066V11.3123H57.0933C57.5117 11.3123 57.874 11.1097 58.2034 10.6452L58.2047 10.6435C58.5324 10.1911 58.7015 9.62644 58.7015 8.96909V2.83902C58.7015 2.18293 58.533 1.62754 58.2034 1.16289C57.8745 0.69921 57.5019 0.495772 57.0933 0.495772H43.1344ZM47.4792 3.94993H54.1984V7.86871H47.4792V3.94993ZM47.9123 4.38236V7.43628H53.7654V4.38236H47.9123Z"></path>
-              <path d="M99.3271 3.7975H88.917V6.3359H98.6732V9.72745H88.917V12.2658H99.3271V15.7838H84.1286V0.279558H99.3271V3.7975Z"></path>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M83.9121 0.063344H99.5436V4.01372H89.1335V6.11968H98.8897V9.94366H89.1335V12.0496H99.5436V16H83.9121V0.063344ZM84.3451 0.495772V15.5676H99.1106V12.4821H88.7005V9.51123H98.4567V6.55211H88.7005V3.58129H99.1106V0.495772H84.3451Z"></path>
-              <path d="M117.416 11.5391L120.359 15.7838H115.212L112.248 11.5391H108.335V15.7838H103.557V0.279558H117.733C118.228 0.279558 118.661 0.532345 119.019 1.03792C119.378 1.54349 119.557 2.14386 119.557 2.83902V8.96909C119.557 9.66425 119.378 10.2752 119.019 10.7702C118.661 11.2758 118.239 11.5286 117.733 11.5286H117.416V11.5391ZM114.621 7.65249V4.16615H108.335V7.65249H114.621Z"></path>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M103.341 0.063344H117.733C118.315 0.063344 118.808 0.365479 119.196 0.912942C119.584 1.45944 119.774 2.10478 119.774 2.83902V8.96909C119.774 9.70167 119.584 10.3585 119.195 10.8961C118.827 11.415 118.374 11.714 117.821 11.7425L120.772 16H115.099L112.135 11.7553H108.551V16H103.341V0.063344ZM103.774 0.495772V15.5676H108.118V11.3229H112.361L115.325 15.5676H119.946L117.2 11.6066V11.3123H117.733C118.151 11.3123 118.513 11.1097 118.843 10.6452L118.844 10.6435C119.172 10.1911 119.341 9.62644 119.341 8.96909V2.83902C119.341 2.18293 119.172 1.62754 118.843 1.16289C118.514 0.69921 118.141 0.495772 117.733 0.495772H103.774ZM108.118 3.94993H114.838V7.86871H108.118V3.94993ZM108.551 4.38236V7.43628H114.405V4.38236H108.551Z"></path>
-              <path d="M134.451 0.279558H139.229V13.2138C139.229 13.93 139.05 14.5409 138.702 15.036C138.354 15.531 137.921 15.7838 137.415 15.7838H125.855C125.349 15.7838 124.916 15.531 124.568 15.036C124.22 14.5409 124.041 13.93 124.041 13.2138V0.279558H128.819V11.8972H134.451V0.279558Z"></path>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M123.825 0.063344H129.035V11.681H134.235V0.063344H139.446V13.2138C139.446 13.967 139.257 14.6231 138.879 15.1602C138.5 15.6994 138.007 16 137.415 16H125.855C125.263 16 124.77 15.6994 124.391 15.1602C124.014 14.6231 123.825 13.967 123.825 13.2138V0.063344ZM124.258 0.495772V13.2138C124.258 13.893 124.427 14.4587 124.746 14.9117C125.063 15.3626 125.434 15.5676 125.855 15.5676H137.415C137.836 15.5676 138.208 15.3626 138.525 14.9117C138.843 14.4587 139.013 13.893 139.013 13.2138V0.495772H134.668V12.1134H128.602V0.495772H124.258Z"></path>
-              <path d="M153.837 7.11532C153.932 7.13639 154.101 7.15745 154.343 7.19958C154.596 7.24172 154.765 7.27331 154.871 7.28385C154.976 7.29438 155.134 7.33651 155.356 7.38917C155.577 7.44184 155.735 7.50503 155.841 7.56823C155.946 7.63143 156.094 7.71569 156.273 7.82102C156.463 7.92634 156.59 8.04221 156.685 8.17913C156.769 8.30553 156.875 8.47405 157.001 8.66364C157.128 8.85323 157.212 9.07442 157.265 9.2956C157.318 9.52732 157.37 9.80118 157.412 10.1172C157.455 10.4331 157.476 10.7807 157.476 11.1599V13.2138C157.476 13.93 157.296 14.5409 156.938 15.036C156.579 15.531 156.157 15.7838 155.651 15.7838H142.794V11.9077H152.687V10.4226C149.46 9.65372 147.287 9.17974 146.169 8.97962C146.085 8.95856 145.969 8.93749 145.821 8.90589C145.505 8.85323 145.273 8.82163 145.114 8.7795C144.956 8.7479 144.745 8.69524 144.471 8.61097C144.197 8.52671 143.986 8.43192 143.838 8.32659C143.691 8.22126 143.522 8.0738 143.332 7.89475C143.142 7.71569 142.994 7.51557 142.889 7.28385C142.783 7.05213 142.699 6.76774 142.625 6.43069C142.551 6.09364 142.52 5.70393 142.52 5.28262V2.83902C142.52 2.14386 142.699 1.53296 143.047 1.03792C143.395 0.532345 143.828 0.279558 144.334 0.279558H157.054V4.15562H147.298V5.64074C150.525 6.40963 152.687 6.89413 153.816 7.10479L153.837 7.11532Z"></path>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M144.334 0.495772C143.914 0.495772 143.543 0.700038 143.226 1.16041L143.224 1.16217C142.906 1.61569 142.736 2.18162 142.736 2.83902V5.28262C142.736 5.69434 142.767 6.06749 142.837 6.38449C142.909 6.71437 142.99 6.98224 143.086 7.19438C143.179 7.39838 143.309 7.57598 143.481 7.73756C143.668 7.91475 143.829 8.05407 143.964 8.15065C144.085 8.23697 144.271 8.3234 144.535 8.40432C144.804 8.48695 145.007 8.53762 145.157 8.56748L145.164 8.56882L145.17 8.57058C145.277 8.59906 145.421 8.62214 145.621 8.65429C145.692 8.66571 145.77 8.67827 145.857 8.69262L145.866 8.69425C145.917 8.70516 145.967 8.71556 146.015 8.72517C146.091 8.74068 146.16 8.75473 146.214 8.76805C147.341 8.97007 149.517 9.44497 152.738 10.2123L152.904 10.2519V12.1239H143.011V15.5676H155.651C156.07 15.5676 156.433 15.3642 156.762 14.9092C157.09 14.4574 157.259 13.893 157.259 13.2138V11.1599C157.259 10.7885 157.239 10.4507 157.198 10.1457C157.157 9.83749 157.105 9.57049 157.054 9.34461C157.005 9.14142 156.93 8.94612 156.821 8.78357C156.757 8.68733 156.698 8.59663 156.645 8.5149C156.64 8.5067 156.635 8.49861 156.63 8.49061C156.583 8.41904 156.542 8.35571 156.506 8.30073C156.432 8.19479 156.332 8.10077 156.168 8.01002L156.164 8.00744C156.088 7.96275 156.016 7.92093 155.95 7.88279C155.864 7.83309 155.789 7.78953 155.73 7.75363C155.649 7.70547 155.514 7.64899 155.306 7.59951C155.255 7.58746 155.209 7.57634 155.167 7.56624C155.014 7.52929 154.917 7.50576 154.849 7.49899C154.764 7.49053 154.643 7.46977 154.487 7.44318C154.431 7.43371 154.372 7.42351 154.308 7.41286C154.21 7.39596 154.118 7.38141 154.037 7.36884C153.933 7.35241 153.846 7.33892 153.79 7.32639L153.764 7.32062L153.746 7.31172C152.604 7.09705 150.446 6.6131 147.247 5.85105L147.081 5.81144V3.9394H156.837V0.495772H144.334ZM142.869 0.914546C143.248 0.36433 143.742 0.063344 144.334 0.063344H157.27V4.37183H147.514V5.47001C150.65 6.21606 152.753 6.68634 153.856 6.89226L153.886 6.89783L153.909 6.90943C153.953 6.91807 154.008 6.92666 154.08 6.93783C154.159 6.94991 154.256 6.965 154.38 6.98644C154.454 6.99886 154.52 7.0101 154.578 7.02005C154.725 7.04503 154.824 7.06185 154.892 7.06871C154.993 7.07874 155.131 7.11222 155.289 7.15064C155.327 7.15984 155.366 7.16933 155.406 7.17884C155.641 7.23469 155.822 7.3046 155.952 7.38283C156.011 7.4179 156.081 7.45861 156.163 7.50644C156.228 7.5441 156.301 7.58616 156.381 7.63335C156.595 7.75252 156.747 7.88937 156.863 8.05606L156.865 8.05918C156.904 8.1174 156.947 8.18415 156.993 8.25568L157.009 8.28047C157.062 8.362 157.119 8.45036 157.181 8.5437C157.326 8.76005 157.419 9.00673 157.475 9.24552L157.476 9.24768C157.53 9.48502 157.584 9.76536 157.627 10.0886C157.671 10.4156 157.692 10.7729 157.692 11.1599V13.2138C157.692 13.9671 157.503 14.6245 157.113 15.1627C156.726 15.6978 156.245 16 155.651 16H142.578V11.6915H152.471V10.5933C149.335 9.8478 147.223 9.38794 146.131 9.19244L146.124 9.19115L146.117 9.18938C146.069 9.1775 146.014 9.1663 145.944 9.15209C145.897 9.14257 145.843 9.13169 145.781 9.11836C145.709 9.10641 145.64 9.09536 145.574 9.08484C145.368 9.0518 145.195 9.02399 145.065 8.9902C144.899 8.95675 144.683 8.9024 144.407 8.81763C144.122 8.73002 143.887 8.62687 143.712 8.50253C143.552 8.38845 143.375 8.23285 143.183 8.05194C142.975 7.8554 142.81 7.63275 142.692 7.37332C142.577 7.12201 142.489 6.82111 142.414 6.4769C142.336 6.11979 142.303 5.71352 142.303 5.28262V2.83902C142.303 2.10649 142.493 1.45094 142.869 0.914546Z"></path>
-              <path d="M63.5076 0.216214H73.9599C78.1999 0.216214 79.7398 1.33269 79.7398 4.34506C79.7398 5.86178 79.4234 6.65173 78.5268 7.1889C77.8624 7.58915 77.3666 7.74714 76.5334 7.84194V7.91567C79.1913 8.10526 80.0562 8.99001 80.0562 11.6021C80.0562 14.7304 78.5585 15.7836 74.0759 15.7836H63.5076V0.216214ZM71.9454 6.45161C73.0985 6.43757 73.7735 6.3849 73.9704 6.29362C74.4345 6.12509 74.6349 5.68272 74.6349 4.96649C74.6349 3.91321 74.2868 3.66043 72.8419 3.66043H68.6863V6.46214H71.9454V6.45161ZM72.1141 12.35C74.3396 12.35 74.9197 12.0445 74.9197 10.907C74.9197 9.96955 74.7193 9.62197 74.1075 9.43238C73.9739 9.38323 73.4255 9.34461 72.4622 9.31652H68.6757V12.35H72.1141Z"></path>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M63.2911 0H73.9599C76.0866 0 77.592 0.277367 78.566 0.975331C79.5604 1.68791 79.9563 2.80291 79.9563 4.34506C79.9563 5.11474 79.8766 5.72496 79.6691 6.21808C79.4581 6.71929 79.1215 7.08469 78.6385 7.37414C78.288 7.58527 77.9803 7.73228 77.6507 7.8387C78.4287 7.9915 79.0228 8.25799 79.4478 8.70083C80.0566 9.33505 80.2727 10.2824 80.2727 11.6021C80.2727 13.1982 79.8895 14.3302 78.8713 15.043C77.8767 15.7393 76.3201 15.9999 74.0759 15.9999H63.2911V0ZM63.7241 0.432428V15.5674H74.0759C76.3143 15.5674 77.7478 15.3014 78.6227 14.6889C79.474 14.093 79.8397 13.1343 79.8397 11.6021C79.8397 10.3098 79.6234 9.50865 79.1352 9.00006C78.6454 8.48976 77.8358 8.22533 76.518 8.13133L76.3169 8.11699V7.64895L76.5089 7.62711C77.3151 7.53539 77.7803 7.38608 78.415 7.00376C78.8284 6.75606 79.0985 6.45768 79.2699 6.05054C79.4447 5.63521 79.5233 5.0921 79.5233 4.34506C79.5233 2.87484 79.1491 1.92541 78.3136 1.32666C77.4576 0.713298 76.0731 0.432428 73.9599 0.432428H63.7241ZM68.4698 3.44421H72.8419C73.2075 3.44421 73.5143 3.46005 73.768 3.50325C74.0214 3.54639 74.2367 3.6192 74.4078 3.74377C74.7664 4.00488 74.8514 4.43038 74.8514 4.96649C74.8514 5.3413 74.7995 5.66784 74.6713 5.93028C74.5405 6.19779 74.3346 6.38925 74.0524 6.4939C73.9763 6.52739 73.8767 6.55029 73.7684 6.56816C73.651 6.58754 73.5054 6.60371 73.3334 6.61714C73.0325 6.64061 72.6416 6.65636 72.1619 6.66467V6.67836H68.4698V3.44421ZM71.7288 6.24593V6.23802L71.9427 6.23541C72.5173 6.22841 72.969 6.21182 73.2996 6.18602C73.4651 6.17311 73.5972 6.15813 73.6978 6.14152C73.8031 6.12414 73.858 6.10738 73.8792 6.09751L73.8877 6.0936L73.8964 6.09042C74.0742 6.02589 74.1979 5.91297 74.2821 5.7406C74.3701 5.56068 74.4184 5.30791 74.4184 4.96649C74.4184 4.44933 74.3293 4.22179 74.1527 4.09319C74.0562 4.02291 73.9135 3.96668 73.6952 3.92952C73.4773 3.89241 73.1988 3.87664 72.8419 3.87664H68.9028V6.24593H71.7288ZM68.4592 9.10031H72.4685C72.9513 9.11439 73.3326 9.13126 73.6112 9.15087C73.7504 9.16067 73.8661 9.17133 73.9572 9.18305C74.0394 9.19362 74.118 9.20693 74.1762 9.22727C74.5113 9.33184 74.7701 9.49231 74.9323 9.78433C75.0871 10.0628 75.1362 10.4313 75.1362 10.907C75.1362 11.2068 75.0985 11.4753 74.9901 11.7046C74.8787 11.9402 74.7005 12.1182 74.4509 12.2471C74.2072 12.373 73.8976 12.4511 73.5185 12.499C73.138 12.547 72.6741 12.5662 72.1141 12.5662H68.4592V9.10031ZM68.8922 9.53274V12.1337H72.1141C72.6669 12.1337 73.11 12.1147 73.4642 12.07C73.8198 12.025 74.0725 11.9557 74.252 11.863C74.4256 11.7733 74.5315 11.6617 74.5985 11.52C74.6684 11.3722 74.7032 11.1759 74.7032 10.907C74.7032 10.4452 74.6521 10.1712 74.5537 9.99415C74.4636 9.83193 74.3178 9.72394 74.0434 9.63888L74.0326 9.63554C74.0326 9.63554 74.0296 9.6342 74.0235 9.63263C74.0169 9.63094 74.008 9.6289 73.9963 9.62661C73.9728 9.622 73.9416 9.61704 73.9019 9.61193C73.8225 9.60171 73.7159 9.59174 73.5808 9.58223C73.3115 9.56327 72.938 9.54673 72.459 9.53274H68.8922Z"></path>
-            </svg>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          </div>
+          <div>
+            <div class="feature-title">Surah &amp; Juz Views</div>
+            <div class="feature-desc">Browse all 114 Surahs or 30 Juz. Long-press any Surah to mark it all at once.</div>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 01-3.46 0"></path></svg>
+          </div>
+          <div>
+            <div class="feature-title">Daily Reminders</div>
+            <div class="feature-desc">Gentle push notifications at the time you choose to keep your memorization consistent.</div>
           </div>
         </div>
       </div>
+    </section>
+
+    <section class="download-section">
+      <div class="download-heading">Download the App Now!</div>
+<div class="download-card" id="store-buttons">
+            <a id="app-store-btn" href="https://testflight.apple.com/join/SYFN8GSN" class="store-button" target="_blank">
+              <svg class="store-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"></path>
+              </svg>
+              App Store
+            </a>
+            <a id="play-store-btn" href="https://play.google.com/apps/internaltest/4701130617058336131" class="store-button" target="_blank">
+              <svg class="store-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"></path>
+              </svg>
+              Google Play
+            </a>
+          </div>
+      
+
+      
+    </section>
+
+    <footer class="footer">
+      <p class="footer-text">Diyaa Al-Quran — Light of the Quran</p>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/qr-code-styling@1.6.0/lib/qr-code-styling.js"></script>
+  <script>
+    (function () {
+      const ua = navigator.userAgent;
+      const loadingEl = document.getElementById("loading");
+      const contentEl = document.getElementById("content");
+
+      const isAndroid = /Android/i.test(ua);
+      const isIOS =
+        /iPhone|iPad|iPod/i.test(ua) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+      const deepLink = "exps://diyaa-al-quran.replit.app";
+
+      const appStoreBtn = document.getElementById("app-store-btn");
+      const playStoreBtn = document.getElementById("play-store-btn");
+      const storeButtonsContainer = document.getElementById("store-buttons");
+
+      if (isIOS) {
+        playStoreBtn.className = "store-link";
+        storeButtonsContainer.appendChild(playStoreBtn);
+      } else if (isAndroid) {
+        appStoreBtn.className = "store-link";
+        storeButtonsContainer.insertBefore(playStoreBtn, appStoreBtn);
+      }
+
+      const qrCode = new QRCodeStyling({
+        width: 400,
+        height: 400,
+        data: deepLink,
+        dotsOptions: {
+          color: "#d4af37",
+          type: "rounded",
+        },
+        backgroundOptions: {
+          color: "#ffffff",
+        },
+        cornersSquareOptions: {
+          type: "extra-rounded",
+          color: "#0a0a0f",
+        },
+        cornersDotOptions: {
+          type: "dot",
+          color: "#0a0a0f",
+        },
+        qrOptions: {
+          errorCorrectionLevel: "H",
+        },
+      });
+
+      qrCode.append(document.getElementById("qr-code"));
+
+      if (isAndroid || isIOS) {
+        loadingEl.style.display = "block";
+        contentEl.style.display = "none";
+        window.location.href = deepLink;
+        setTimeout(function () {
+          loadingEl.style.display = "none";
+          contentEl.style.display = "block";
+        }, 500);
+      }
+    })();
+  </script>
+<script src="https://replit-cdn.com/feedback-widget/widget.global.js" data-deployment-id="49a1905d-53da-4784-a6a1-ea182d151c0f" data-repl-id="d717d209-6001-466b-bf82-e7943fb0715f"></script>
+
+<div id="replit-agent-inbox-widget"><template shadowrootmode="closed"><style>:host{all:initial;font-family:IBM Plex Sans,sans-serif}:focus-visible{outline:2px solid #007cf8;outline-offset:2px}.fab{display:flex;position:fixed;right:20px;bottom:20px;justify-content:center;align-items:center;z-index:2147483647;transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease,background-color .3s ease;cursor:pointer;box-shadow:0 4px 12px #00000040;border:none;border-radius:50%;background-color:#1c1d21;width:48px;height:48px;color:#f5f5f5}.fab:hover{transform:scale(1.08);box-shadow:0 6px 16px #00000059}.fab:active{transform:scale(1)}.fab svg{display:block}.fab-logo{margin-left:1px;width:17px;height:21px;color:#f26207}.fab-custom-logo{width:100%;height:100%;object-fit:cover;border-radius:50%}.fab.position-bottom-left{right:auto;left:20px}.fab.position-top-right{top:20px;bottom:auto}.fab.position-top-left{inset:20px auto auto 20px}.card,.feedback-form-card{position:fixed;right:20px;bottom:20px;flex-direction:column;z-index:2147483647;animation:slide-up .25s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px #00000026,0 0 0 1px #0000000d;border-radius:16px;background-color:#fff;padding:20px;width:320px}@keyframes slide-up{0%{transform:translateY(16px) scale(.95);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}@keyframes slide-down{0%{transform:translateY(0) scale(1);opacity:1}to{transform:translateY(12px) scale(.95);opacity:0}}.card.closing,.feedback-form-card.closing{animation:slide-down .1s cubic-bezier(.4,0,.2,1) forwards;pointer-events:none}@keyframes slide-down-open{0%{transform:translateY(-16px) scale(.95);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}@keyframes slide-up-close{0%{transform:translateY(0) scale(1);opacity:1}to{transform:translateY(-12px) scale(.95);opacity:0}}.card.position-bottom-left,.feedback-form-card.position-bottom-left{right:auto;left:20px}.card.position-top-right,.feedback-form-card.position-top-right{top:20px;bottom:auto;animation-name:slide-down-open}.card.position-top-left,.feedback-form-card.position-top-left{animation-name:slide-down-open;inset:20px auto auto 20px}.card.position-top-right.closing,.feedback-form-card.position-top-right.closing,.card.position-top-left.closing,.feedback-form-card.position-top-left.closing{animation:slide-up-close .1s cubic-bezier(.4,0,.2,1) forwards}.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.card-content{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}.form-content{align-items:stretch;text-align:left}.card-title{color:#111827;font-weight:600;font-size:18px;line-height:28px}.card-description{color:#6b7280;font-size:14px;line-height:1.5}.close-btn{display:flex;position:relative;top:auto;right:auto;flex-shrink:0;justify-content:center;align-items:center;transition:background .15s ease,color .15s ease;cursor:pointer;border:none;border-radius:50%;background:#0000000d;width:28px;height:28px;color:#6b7280;font-family:inherit}.close-btn:hover{background:#0000001a;color:#374151}.close-btn svg{display:block}.close-btn-corner{position:absolute;top:10px;right:10px}.header-actions{display:flex;align-items:center;gap:4px}.menu-container{position:relative}.menu-btn{display:flex;flex-shrink:0;justify-content:center;align-items:center;transition:background .15s ease,color .15s ease;cursor:pointer;border:none;border-radius:50%;background:transparent;width:28px;height:28px;color:#9ca3af;font-family:inherit}.menu-btn:hover{background:#0000000d;color:#6b7280}.menu-btn svg{display:block}.dropdown-menu{position:absolute;top:calc(100% + 4px);right:0;z-index:10;animation:dropdown-fade-in .15s ease;box-shadow:0 4px 16px #0000001f,0 0 0 1px #0000000d;border-radius:8px;background:#fff;padding:4px;min-width:120px}@keyframes dropdown-fade-in{0%{transform:translateY(-4px);opacity:0}to{transform:translateY(0);opacity:1}}.dropdown-item{display:flex;align-items:center;gap:8px;transition:background .1s ease,color .1s ease;cursor:pointer;border:none;border-radius:6px;background:transparent;padding:8px 12px;width:100%;color:#374151;font-weight:450;font-size:12px;font-family:inherit;text-align:left}.dropdown-item:hover{background:#f3f4f6;color:#111827}.primary-btn{display:flex;justify-content:center;align-items:center;gap:8px;transition:background .25s ease,opacity .15s ease;cursor:pointer;margin-top:8px;border:none;border-radius:8px;background:#007cf8;padding:0 16px;width:100%;height:36px;color:#fff;font-weight:450;font-size:14px;font-family:inherit}.primary-btn:disabled{opacity:.6;cursor:not-allowed}.primary-btn:hover:not(:disabled){background:#06c}.primary-btn.success{cursor:default;background:#00a11b}.primary-btn.success:hover:not(:disabled){background:#00a11b}.primary-btn .fab-checkmark{width:16px;height:16px;color:#fff}.topic-pills-small{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.topic-pill-small{transition:background .15s ease,color .15s ease;cursor:pointer;border:none;border-radius:100px;background:#f3f4f6;padding:6px 12px;color:#374151;font-weight:450;font-size:13px;font-family:inherit}.topic-pill-small:hover,.topic-pill-small.selected{background:#e6f2ff;color:#007cf8}.input-container{display:flex;position:relative;flex-direction:column;transition:border-color .15s ease,box-shadow .15s ease,background .15s ease;border:1px solid #e5e7eb;border-radius:8px;background:#fff}.input-container:focus-within{box-shadow:0 0 0 3px #007cf81a;border-color:#007cf8}.input-container.dragging{box-shadow:0 0 0 3px #007cf826;border-color:#007cf8;background:#f0f7ff}.drag-overlay{display:flex;position:absolute;justify-content:center;align-items:center;z-index:10;animation:fade-in .15s ease;top:4px;right:4px;bottom:4px;left:4px;border:2px dashed #007cf8;border-radius:6px;background:#007cf814;pointer-events:none}.drag-overlay-text{color:#007cf8;font-weight:500;font-size:14px}.feedback-textarea{box-sizing:border-box;outline:none;border:none;border-radius:8px 8px 0 0;background:transparent;padding:12px;width:100%;min-height:48px;resize:none;scrollbar-color:rgb(0 0 0 / 20%) transparent;scrollbar-width:thin;color:#111827;font-size:14px;font-family:inherit}.feedback-textarea::-webkit-scrollbar{width:6px}.feedback-textarea::-webkit-scrollbar-track{background:transparent}.feedback-textarea::-webkit-scrollbar-thumb{border-radius:3px;background:#0003}.feedback-textarea::-webkit-scrollbar-thumb:hover{background:#0000004d}.feedback-textarea::placeholder{color:#9ca3af}.input-bottom-section{display:flex;flex-direction:column;gap:8px;padding:8px 12px}.input-buttons-row{display:flex;align-items:center;gap:4px}.action-btn{display:flex;flex-shrink:0;justify-content:center;align-items:center;transition:background .15s ease,color .15s ease;cursor:pointer;border:none;border-radius:6px;background:transparent;padding:6px;color:#9ca3af;font-family:inherit}.action-btn:disabled{opacity:.5;cursor:not-allowed}.action-btn:hover:not(:disabled){background:#f3f4f6;color:#6b7280}.action-btn.active{background:#e5e7eb;color:#374151}.action-btn.busy{cursor:wait}.spinner-icon{animation:spin 1s linear infinite}@keyframes spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.screenshots-row{display:flex;flex-wrap:wrap;align-items:flex-start;gap:4px}.screenshot-thumbnail-wrapper{position:relative;flex-shrink:0}.screenshot-thumbnail{display:flex;transition:border-color .15s ease,transform .15s ease;cursor:pointer;border:1px solid #e5e7eb;border-radius:8px;background:transparent;padding:0;width:52px;height:52px;overflow:hidden;font-family:inherit}.screenshot-thumbnail:hover{transform:scale(1.05);border-color:#007cf8}.screenshot-thumbnail img{width:100%;height:100%;object-fit:cover}.screenshot-remove-btn{display:flex;position:absolute;top:-8px;right:-8px;justify-content:center;align-items:center;transition:background .15s ease,transform .15s ease;cursor:pointer;box-shadow:0 2px 4px #00000026;border:none;border-radius:50%;background:#fff;width:18px;height:18px;color:#6b7280;font-family:inherit}.screenshot-remove-btn:hover{transform:scale(1.1);background:#f3f4f6;color:#374151}.screenshot-modal-overlay{display:flex;position:fixed;justify-content:center;align-items:center;z-index:2147483647;animation:fade-in .15s ease;top:0;right:0;bottom:0;left:0}.screenshot-modal-backdrop{position:absolute;cursor:pointer;top:0;right:0;bottom:0;left:0;border:none;background:#000000b3;font-family:inherit}@keyframes fade-in{0%{opacity:0}to{opacity:1}}.screenshot-modal{display:flex;position:relative;flex-direction:column;justify-content:center;align-items:center;z-index:1;animation:modal-pop .2s cubic-bezier(.34,1.56,.64,1);box-shadow:0 16px 48px #0000004d,0 0 0 1px #00000014;border-radius:8px;background:#f6f6f6;padding:8px;max-width:min(90vw,900px);max-height:min(85vh,800px)}@keyframes modal-pop{0%{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}.screenshot-modal-close{display:flex;position:absolute;top:-10px;right:-10px;justify-content:center;align-items:center;transition:background .15s ease,transform .15s ease;cursor:pointer;box-shadow:0 2px 6px #0000002e;border:none;border-radius:50%;background:#fff;width:24px;height:24px;color:#6b7280;font-family:inherit}.screenshot-modal-close:hover{transform:scale(1.1);background:#fff;color:#374151}.screenshot-modal-image{display:block;box-shadow:0 2px 8px #0000001a;border:1px solid rgb(0 0 0 / 10%);border-radius:6px;background:#fff;max-width:min(85vw,876px);max-height:min(80vh,776px);object-fit:contain}.error-message{margin-top:8px;border-radius:8px;background:#ffdada;padding:8px;color:#8a0000;font-size:12px;line-height:1.4}.tooltip-wrapper{display:inline-flex;position:relative}.tooltip-wrapper:after{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translate(-50%);visibility:hidden;opacity:0;z-index:10;transition:opacity .15s ease,visibility .15s ease;box-shadow:0 1px 3px #00000014,0 4px 12px #0000000d;border:1px solid rgb(0 0 0 / 10%);border-radius:8px;background:#fff;padding:6px 10px;pointer-events:none;content:attr(data-tooltip);color:#374151;font-weight:400;font-size:12px;white-space:nowrap}.tooltip-wrapper:hover:after{visibility:visible;opacity:1;transition-delay:.7s}@media(max-width:480px){.fab{right:16px;bottom:16px;width:44px;height:44px}.fab.position-bottom-left{right:auto;left:16px}.fab.position-top-right{top:16px;bottom:auto}.fab.position-top-left{inset:16px auto auto 16px}.fab svg{width:20px;height:20px}.card,.feedback-form-card{right:16px;bottom:16px;left:16px;width:auto}.card.position-top-right,.feedback-form-card.position-top-right{top:16px;bottom:auto}.card.position-bottom-left,.feedback-form-card.position-bottom-left{right:16px;left:16px}.card.position-top-left,.feedback-form-card.position-top-left{inset:16px 16px auto}}</style><div><button class="fab position-bottom-right" aria-label="Open feedback"><svg class="fab-logo" viewBox="0 0 23 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.72499C0 0.772305 0.772305 0 1.72499 0H9.77495C10.7276 0 11.4999 0.772305 11.4999 1.72499V9.19996H1.72499C0.772305 9.19996 0 8.42765 0 7.47496V1.72499Z" fill="currentColor"></path><path d="M11.4999 9.19996H21.2749C22.2276 9.19996 22.9999 9.97226 22.9999 10.9249V16.6749C22.9999 17.6276 22.2276 18.3999 21.2749 18.3999H11.4999V9.19996Z" fill="currentColor"></path><path d="M0 20.1249C0 19.1722 0.772305 18.3999 1.72499 18.3999H11.4999V25.8749C11.4999 26.8276 10.7276 27.5999 9.77495 27.5999H1.72499C0.772305 27.5999 0 26.8276 0 25.8749V20.1249Z" fill="currentColor"></path></svg></button></div></template></div><div aria-hidden="true" id="replit-agent-inbox-i18n-mirror" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border: 0px; padding: 0px;"><span data-i18n-key="Close">Close</span><span data-i18n-key="Open feedback">Open feedback</span><span data-i18n-key="Share your feedback">Share your feedback</span><span data-i18n-key="Help improve this app by sharing your feedback with the creator">Help improve this app by sharing your feedback with the creator</span><span data-i18n-key="Sign in">Sign in</span><span data-i18n-key="Feedback form card">Feedback form card</span><span data-i18n-key="Add feedback here…">Add feedback here…</span><span data-i18n-key="Drop images here">Drop images here</span><span data-i18n-key="Maximum 5 attachments reached">Maximum 5 attachments reached</span><span data-i18n-key="Maximum 5 attachments">Maximum 5 attachments</span><span data-i18n-key="Attach image">Attach image</span><span data-i18n-key="Select element to capture">Select element to capture</span><span data-i18n-key="Capturing screenshot…">Capturing screenshot…</span><span data-i18n-key="Maximum screenshots reached">Maximum screenshots reached</span><span data-i18n-key="Cancel selection">Cancel selection</span><span data-i18n-key="Select element">Select element</span><span data-i18n-key="View screenshot">View screenshot</span><span data-i18n-key="Remove screenshot">Remove screenshot</span><span data-i18n-key="Screenshot preview">Screenshot preview</span><span data-i18n-key="Close modal">Close modal</span><span data-i18n-key="Select a topic">Select a topic</span><span data-i18n-key="Bug report">Bug report</span><span data-i18n-key="Feature request">Feature request</span><span data-i18n-key="Design">Design</span><span data-i18n-key="Content">Content</span><span data-i18n-key="Other">Other</span><span data-i18n-key="More options">More options</span><span data-i18n-key="Sign out">Sign out</span><span data-i18n-key="Submit">Submit</span><span data-i18n-key="Sent">Sent</span><span data-i18n-key="Select a topic to submit feedback">Select a topic to submit feedback</span><span data-i18n-key="Enter feedback text">Enter feedback text</span><span data-i18n-key="Submitting…">Submitting…</span><span data-i18n-key="Your session has expired. Please sign in again.">Your session has expired. Please sign in again.</span><span data-i18n-key="There was an issue submitting your feedback. Please try again.">There was an issue submitting your feedback. Please try again.</span></div></body><div id="KerberusLoader" style="z-index: 2147483642; position: fixed; display: none; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%;">
+  
+    <link href="chrome-extension://kglcipoddmbniebnibibkghfijekllbl/ui-loader.css" rel="stylesheet" type="text/css">
+  
+  <div class="kr_loader_container">
+    <div class="kr_popup_area">
+      <div class="kr_loader_content_area">
+        <div class="kr_ring">
+          <img src="chrome-extension://kglcipoddmbniebnibibkghfijekllbl/logo_loader.png">
+          <span></span>
+        </div>
+        <div class="kr_loader_title">Scanning Website....</div>
+        <p class="kr_loader_textup"> Running a security test for</p>
+        <p class="kr_loader_textdown">diyaa-al-quran.replit.app</p>
+      </div>
+      <div class="kr_powered_by">
+        <span>powered by</span>
+        <div class="kr_logo_footer">
+          <svg width="158" height="16" viewBox="0 0 158 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21.5518 0.216214L14.6234 7.07518L21.4903 15.7731H14.8691L10.975 10.6579L8.61636 12.9407V15.7836H3.05156V2.98517L0.766676 0.216214H8.61636V6.21913L14.5865 0.216214H21.5518Z"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.307709 0H8.83287V5.69461L14.4964 0H22.0777L14.9131 7.09286L21.9367 15.9893H14.7617L10.9503 10.9828L8.83287 13.0323V15.9999H2.83505V3.06277L0.307709 0ZM1.22564 0.432428L3.26807 2.90756V15.5674H8.39985V12.8492L10.9996 10.333L14.9765 15.5569H21.0439L14.3337 7.0575L21.0258 0.432428H14.6767L8.39985 6.74365V0.432428H1.22564Z"></path>
+            <path d="M38.6871 3.7975H28.277V6.3359H38.0331V9.72745H28.277V12.2658H38.6871V15.7838H23.4885V0.279558H38.6871V3.7975Z"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M23.272 0.063344H38.9036V4.01372H28.4935V6.11968H38.2497V9.94366H28.4935V12.0496H38.9036V16H23.272V0.063344ZM23.705 0.495772V15.5676H38.4706V12.4821H28.0604V9.51123H37.8166V6.55211H28.0604V3.58129H38.4706V0.495772H23.705Z"></path>
+            <path d="M56.7769 11.5391L59.7196 15.7838H54.5725L51.6088 11.5391H47.6958V15.7838H42.9179V0.279558H57.0933C57.5891 0.279558 58.0215 0.532345 58.3801 1.03792C58.7387 1.54349 58.918 2.14386 58.918 2.83902V8.96909C58.918 9.66425 58.7387 10.2752 58.3801 10.7702C58.0215 11.2758 57.5996 11.5286 57.0933 11.5286H56.7769V11.5391ZM53.9819 7.65249V4.16615H47.6958V7.65249H53.9819Z"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M42.7013 0.063344H57.0933C57.6762 0.063344 58.1685 0.365479 58.5568 0.912942C58.9444 1.45944 59.1345 2.10478 59.1345 2.83902V8.96909C59.1345 9.70168 58.9452 10.3585 58.5561 10.8961C58.1878 11.415 57.7349 11.714 57.1813 11.7425L60.1328 16H54.4596L51.4958 11.7553H47.9123V16H42.7013V0.063344ZM43.1344 0.495772V15.5676H47.4792V11.3229H51.7218L54.6855 15.5676H59.3064L56.5604 11.6066V11.3123H57.0933C57.5117 11.3123 57.874 11.1097 58.2034 10.6452L58.2047 10.6435C58.5324 10.1911 58.7015 9.62644 58.7015 8.96909V2.83902C58.7015 2.18293 58.533 1.62754 58.2034 1.16289C57.8745 0.69921 57.5019 0.495772 57.0933 0.495772H43.1344ZM47.4792 3.94993H54.1984V7.86871H47.4792V3.94993ZM47.9123 4.38236V7.43628H53.7654V4.38236H47.9123Z"></path>
+            <path d="M99.3271 3.7975H88.917V6.3359H98.6732V9.72745H88.917V12.2658H99.3271V15.7838H84.1286V0.279558H99.3271V3.7975Z"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M83.9121 0.063344H99.5436V4.01372H89.1335V6.11968H98.8897V9.94366H89.1335V12.0496H99.5436V16H83.9121V0.063344ZM84.3451 0.495772V15.5676H99.1106V12.4821H88.7005V9.51123H98.4567V6.55211H88.7005V3.58129H99.1106V0.495772H84.3451Z"></path>
+            <path d="M117.416 11.5391L120.359 15.7838H115.212L112.248 11.5391H108.335V15.7838H103.557V0.279558H117.733C118.228 0.279558 118.661 0.532345 119.019 1.03792C119.378 1.54349 119.557 2.14386 119.557 2.83902V8.96909C119.557 9.66425 119.378 10.2752 119.019 10.7702C118.661 11.2758 118.239 11.5286 117.733 11.5286H117.416V11.5391ZM114.621 7.65249V4.16615H108.335V7.65249H114.621Z"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M103.341 0.063344H117.733C118.315 0.063344 118.808 0.365479 119.196 0.912942C119.584 1.45944 119.774 2.10478 119.774 2.83902V8.96909C119.774 9.70167 119.584 10.3585 119.195 10.8961C118.827 11.415 118.374 11.714 117.821 11.7425L120.772 16H115.099L112.135 11.7553H108.551V16H103.341V0.063344ZM103.774 0.495772V15.5676H108.118V11.3229H112.361L115.325 15.5676H119.946L117.2 11.6066V11.3123H117.733C118.151 11.3123 118.513 11.1097 118.843 10.6452L118.844 10.6435C119.172 10.1911 119.341 9.62644 119.341 8.96909V2.83902C119.341 2.18293 119.172 1.62754 118.843 1.16289C118.514 0.69921 118.141 0.495772 117.733 0.495772H103.774ZM108.118 3.94993H114.838V7.86871H108.118V3.94993ZM108.551 4.38236V7.43628H114.405V4.38236H108.551Z"></path>
+            <path d="M134.451 0.279558H139.229V13.2138C139.229 13.93 139.05 14.5409 138.702 15.036C138.354 15.531 137.921 15.7838 137.415 15.7838H125.855C125.349 15.7838 124.916 15.531 124.568 15.036C124.22 14.5409 124.041 13.93 124.041 13.2138V0.279558H128.819V11.8972H134.451V0.279558Z"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M123.825 0.063344H129.035V11.681H134.235V0.063344H139.446V13.2138C139.446 13.967 139.257 14.6231 138.879 15.1602C138.5 15.6994 138.007 16 137.415 16H125.855C125.263 16 124.77 15.6994 124.391 15.1602C124.014 14.6231 123.825 13.967 123.825 13.2138V0.063344ZM124.258 0.495772V13.2138C124.258 13.893 124.427 14.4587 124.746 14.9117C125.063 15.3626 125.434 15.5676 125.855 15.5676H137.415C137.836 15.5676 138.208 15.3626 138.525 14.9117C138.843 14.4587 139.013 13.893 139.013 13.2138V0.495772H134.668V12.1134H128.602V0.495772H124.258Z"></path>
+            <path d="M153.837 7.11532C153.932 7.13639 154.101 7.15745 154.343 7.19958C154.596 7.24172 154.765 7.27331 154.871 7.28385C154.976 7.29438 155.134 7.33651 155.356 7.38917C155.577 7.44184 155.735 7.50503 155.841 7.56823C155.946 7.63143 156.094 7.71569 156.273 7.82102C156.463 7.92634 156.59 8.04221 156.685 8.17913C156.769 8.30553 156.875 8.47405 157.001 8.66364C157.128 8.85323 157.212 9.07442 157.265 9.2956C157.318 9.52732 157.37 9.80118 157.412 10.1172C157.455 10.4331 157.476 10.7807 157.476 11.1599V13.2138C157.476 13.93 157.296 14.5409 156.938 15.036C156.579 15.531 156.157 15.7838 155.651 15.7838H142.794V11.9077H152.687V10.4226C149.46 9.65372 147.287 9.17974 146.169 8.97962C146.085 8.95856 145.969 8.93749 145.821 8.90589C145.505 8.85323 145.273 8.82163 145.114 8.7795C144.956 8.7479 144.745 8.69524 144.471 8.61097C144.197 8.52671 143.986 8.43192 143.838 8.32659C143.691 8.22126 143.522 8.0738 143.332 7.89475C143.142 7.71569 142.994 7.51557 142.889 7.28385C142.783 7.05213 142.699 6.76774 142.625 6.43069C142.551 6.09364 142.52 5.70393 142.52 5.28262V2.83902C142.52 2.14386 142.699 1.53296 143.047 1.03792C143.395 0.532345 143.828 0.279558 144.334 0.279558H157.054V4.15562H147.298V5.64074C150.525 6.40963 152.687 6.89413 153.816 7.10479L153.837 7.11532Z"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M144.334 0.495772C143.914 0.495772 143.543 0.700038 143.226 1.16041L143.224 1.16217C142.906 1.61569 142.736 2.18162 142.736 2.83902V5.28262C142.736 5.69434 142.767 6.06749 142.837 6.38449C142.909 6.71437 142.99 6.98224 143.086 7.19438C143.179 7.39838 143.309 7.57598 143.481 7.73756C143.668 7.91475 143.829 8.05407 143.964 8.15065C144.085 8.23697 144.271 8.3234 144.535 8.40432C144.804 8.48695 145.007 8.53762 145.157 8.56748L145.164 8.56882L145.17 8.57058C145.277 8.59906 145.421 8.62214 145.621 8.65429C145.692 8.66571 145.77 8.67827 145.857 8.69262L145.866 8.69425C145.917 8.70516 145.967 8.71556 146.015 8.72517C146.091 8.74068 146.16 8.75473 146.214 8.76805C147.341 8.97007 149.517 9.44497 152.738 10.2123L152.904 10.2519V12.1239H143.011V15.5676H155.651C156.07 15.5676 156.433 15.3642 156.762 14.9092C157.09 14.4574 157.259 13.893 157.259 13.2138V11.1599C157.259 10.7885 157.239 10.4507 157.198 10.1457C157.157 9.83749 157.105 9.57049 157.054 9.34461C157.005 9.14142 156.93 8.94612 156.821 8.78357C156.757 8.68733 156.698 8.59663 156.645 8.5149C156.64 8.5067 156.635 8.49861 156.63 8.49061C156.583 8.41904 156.542 8.35571 156.506 8.30073C156.432 8.19479 156.332 8.10077 156.168 8.01002L156.164 8.00744C156.088 7.96275 156.016 7.92093 155.95 7.88279C155.864 7.83309 155.789 7.78953 155.73 7.75363C155.649 7.70547 155.514 7.64899 155.306 7.59951C155.255 7.58746 155.209 7.57634 155.167 7.56624C155.014 7.52929 154.917 7.50576 154.849 7.49899C154.764 7.49053 154.643 7.46977 154.487 7.44318C154.431 7.43371 154.372 7.42351 154.308 7.41286C154.21 7.39596 154.118 7.38141 154.037 7.36884C153.933 7.35241 153.846 7.33892 153.79 7.32639L153.764 7.32062L153.746 7.31172C152.604 7.09705 150.446 6.6131 147.247 5.85105L147.081 5.81144V3.9394H156.837V0.495772H144.334ZM142.869 0.914546C143.248 0.36433 143.742 0.063344 144.334 0.063344H157.27V4.37183H147.514V5.47001C150.65 6.21606 152.753 6.68634 153.856 6.89226L153.886 6.89783L153.909 6.90943C153.953 6.91807 154.008 6.92666 154.08 6.93783C154.159 6.94991 154.256 6.965 154.38 6.98644C154.454 6.99886 154.52 7.0101 154.578 7.02005C154.725 7.04503 154.824 7.06185 154.892 7.06871C154.993 7.07874 155.131 7.11222 155.289 7.15064C155.327 7.15984 155.366 7.16933 155.406 7.17884C155.641 7.23469 155.822 7.3046 155.952 7.38283C156.011 7.4179 156.081 7.45861 156.163 7.50644C156.228 7.5441 156.301 7.58616 156.381 7.63335C156.595 7.75252 156.747 7.88937 156.863 8.05606L156.865 8.05918C156.904 8.1174 156.947 8.18415 156.993 8.25568L157.009 8.28047C157.062 8.362 157.119 8.45036 157.181 8.5437C157.326 8.76005 157.419 9.00673 157.475 9.24552L157.476 9.24768C157.53 9.48502 157.584 9.76536 157.627 10.0886C157.671 10.4156 157.692 10.7729 157.692 11.1599V13.2138C157.692 13.9671 157.503 14.6245 157.113 15.1627C156.726 15.6978 156.245 16 155.651 16H142.578V11.6915H152.471V10.5933C149.335 9.8478 147.223 9.38794 146.131 9.19244L146.124 9.19115L146.117 9.18938C146.069 9.1775 146.014 9.1663 145.944 9.15209C145.897 9.14257 145.843 9.13169 145.781 9.11836C145.709 9.10641 145.64 9.09536 145.574 9.08484C145.368 9.0518 145.195 9.02399 145.065 8.9902C144.899 8.95675 144.683 8.9024 144.407 8.81763C144.122 8.73002 143.887 8.62687 143.712 8.50253C143.552 8.38845 143.375 8.23285 143.183 8.05194C142.975 7.8554 142.81 7.63275 142.692 7.37332C142.577 7.12201 142.489 6.82111 142.414 6.4769C142.336 6.11979 142.303 5.71352 142.303 5.28262V2.83902C142.303 2.10649 142.493 1.45094 142.869 0.914546Z"></path>
+            <path d="M63.5076 0.216214H73.9599C78.1999 0.216214 79.7398 1.33269 79.7398 4.34506C79.7398 5.86178 79.4234 6.65173 78.5268 7.1889C77.8624 7.58915 77.3666 7.74714 76.5334 7.84194V7.91567C79.1913 8.10526 80.0562 8.99001 80.0562 11.6021C80.0562 14.7304 78.5585 15.7836 74.0759 15.7836H63.5076V0.216214ZM71.9454 6.45161C73.0985 6.43757 73.7735 6.3849 73.9704 6.29362C74.4345 6.12509 74.6349 5.68272 74.6349 4.96649C74.6349 3.91321 74.2868 3.66043 72.8419 3.66043H68.6863V6.46214H71.9454V6.45161ZM72.1141 12.35C74.3396 12.35 74.9197 12.0445 74.9197 10.907C74.9197 9.96955 74.7193 9.62197 74.1075 9.43238C73.9739 9.38323 73.4255 9.34461 72.4622 9.31652H68.6757V12.35H72.1141Z"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M63.2911 0H73.9599C76.0866 0 77.592 0.277367 78.566 0.975331C79.5604 1.68791 79.9563 2.80291 79.9563 4.34506C79.9563 5.11474 79.8766 5.72496 79.6691 6.21808C79.4581 6.71929 79.1215 7.08469 78.6385 7.37414C78.288 7.58527 77.9803 7.73228 77.6507 7.8387C78.4287 7.9915 79.0228 8.25799 79.4478 8.70083C80.0566 9.33505 80.2727 10.2824 80.2727 11.6021C80.2727 13.1982 79.8895 14.3302 78.8713 15.043C77.8767 15.7393 76.3201 15.9999 74.0759 15.9999H63.2911V0ZM63.7241 0.432428V15.5674H74.0759C76.3143 15.5674 77.7478 15.3014 78.6227 14.6889C79.474 14.093 79.8397 13.1343 79.8397 11.6021C79.8397 10.3098 79.6234 9.50865 79.1352 9.00006C78.6454 8.48976 77.8358 8.22533 76.518 8.13133L76.3169 8.11699V7.64895L76.5089 7.62711C77.3151 7.53539 77.7803 7.38608 78.415 7.00376C78.8284 6.75606 79.0985 6.45768 79.2699 6.05054C79.4447 5.63521 79.5233 5.0921 79.5233 4.34506C79.5233 2.87484 79.1491 1.92541 78.3136 1.32666C77.4576 0.713298 76.0731 0.432428 73.9599 0.432428H63.7241ZM68.4698 3.44421H72.8419C73.2075 3.44421 73.5143 3.46005 73.768 3.50325C74.0214 3.54639 74.2367 3.6192 74.4078 3.74377C74.7664 4.00488 74.8514 4.43038 74.8514 4.96649C74.8514 5.3413 74.7995 5.66784 74.6713 5.93028C74.5405 6.19779 74.3346 6.38925 74.0524 6.4939C73.9763 6.52739 73.8767 6.55029 73.7684 6.56816C73.651 6.58754 73.5054 6.60371 73.3334 6.61714C73.0325 6.64061 72.6416 6.65636 72.1619 6.66467V6.67836H68.4698V3.44421ZM71.7288 6.24593V6.23802L71.9427 6.23541C72.5173 6.22841 72.969 6.21182 73.2996 6.18602C73.4651 6.17311 73.5972 6.15813 73.6978 6.14152C73.8031 6.12414 73.858 6.10738 73.8792 6.09751L73.8877 6.0936L73.8964 6.09042C74.0742 6.02589 74.1979 5.91297 74.2821 5.7406C74.3701 5.56068 74.4184 5.30791 74.4184 4.96649C74.4184 4.44933 74.3293 4.22179 74.1527 4.09319C74.0562 4.02291 73.9135 3.96668 73.6952 3.92952C73.4773 3.89241 73.1988 3.87664 72.8419 3.87664H68.9028V6.24593H71.7288ZM68.4592 9.10031H72.4685C72.9513 9.11439 73.3326 9.13126 73.6112 9.15087C73.7504 9.16067 73.8661 9.17133 73.9572 9.18305C74.0394 9.19362 74.118 9.20693 74.1762 9.22727C74.5113 9.33184 74.7701 9.49231 74.9323 9.78433C75.0871 10.0628 75.1362 10.4313 75.1362 10.907C75.1362 11.2068 75.0985 11.4753 74.9901 11.7046C74.8787 11.9402 74.7005 12.1182 74.4509 12.2471C74.2072 12.373 73.8976 12.4511 73.5185 12.499C73.138 12.547 72.6741 12.5662 72.1141 12.5662H68.4592V9.10031ZM68.8922 9.53274V12.1337H72.1141C72.6669 12.1337 73.11 12.1147 73.4642 12.07C73.8198 12.025 74.0725 11.9557 74.252 11.863C74.4256 11.7733 74.5315 11.6617 74.5985 11.52C74.6684 11.3722 74.7032 11.1759 74.7032 10.907C74.7032 10.4452 74.6521 10.1712 74.5537 9.99415C74.4636 9.83193 74.3178 9.72394 74.0434 9.63888L74.0326 9.63554C74.0326 9.63554 74.0296 9.6342 74.0235 9.63263C74.0169 9.63094 74.008 9.6289 73.9963 9.62661C73.9728 9.622 73.9416 9.61704 73.9019 9.61193C73.8225 9.60171 73.7159 9.59174 73.5808 9.58223C73.3115 9.56327 72.938 9.54673 72.459 9.53274H68.8922Z"></path>
+          </svg>
+        </div>
+      </div>
     </div>
-  </div></html>
+  </div>
+</div></html>
