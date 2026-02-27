@@ -13,7 +13,7 @@ export const colors = {
   },
   text: {
     arabicActive: '#ffffff',
-    arabicDefault: 'rgba(255, 255, 255, 0.65)',
+    arabicDefault: 'rgb(255, 255, 255)',
     label: 'rgba(255, 255, 255, 0.3)',
     muted: 'rgba(255, 255, 255, 0.45)',
     primary: '#ffffff',

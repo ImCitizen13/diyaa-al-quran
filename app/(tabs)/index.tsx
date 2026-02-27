@@ -1,17 +1,35 @@
-import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, Pressable, Platform, Dimensions, Modal } from 'react-native';
-import { router } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import * as Haptics from 'expo-haptics';
-import Animated, { FadeIn, FadeInDown, FadeInLeft, FadeInUp, FadeOut, FadeOutRight } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '@/constants/colors';
-import { useMemorization } from '@/lib/memorization-context';
-import { getAllSurahs, getAllJuz } from '@/lib/quran-data';
-import SkiaOrbGrid, { type OrbData } from '@/components/SkiaOrbGrid';
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
+import React, {
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+  useEffect,
+} from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Pressable,
+  Platform,
+  Modal,
+} from "react-native";
+import { router } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as Haptics from "expo-haptics";
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeInLeft,
+  FadeInUp,
+  FadeOut,
+  FadeOutRight,
+} from "react-native-reanimated";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/constants/colors";
+import { useMemorization } from "@/lib/memorization-context";
+import { getAllSurahs, getAllJuz } from "@/lib/quran-data";
+import SkiaOrbGrid, { type OrbData } from "@/components/SkiaOrbGrid";
 
 function useCountUp(target: number, duration: number = 800, delay: number = 0) {
   const [value, setValue] = useState(0);
@@ -41,19 +59,47 @@ function useCountUp(target: number, duration: number = 800, delay: number = 0) {
   return value;
 }
 
-type ViewMode = 'juz' | 'surah';
+type ViewMode = "juz" | "surah";
 
 const INTENSITY_LEVELS = [
-  { value: 0.25, label: 'Just Started', icon: 'sparkles-outline' as const, color: 'rgba(212, 175, 55, 0.4)' },
-  { value: 0.5, label: 'Learning', icon: 'book-outline' as const, color: 'rgba(212, 175, 55, 0.6)' },
-  { value: 0.75, label: 'Almost There', icon: 'flame-outline' as const, color: 'rgba(212, 175, 55, 0.8)' },
-  { value: 1.0, label: 'Fully Memorized', icon: 'star' as const, color: colors.gold.primary },
+  {
+    value: 0.25,
+    label: "Just Started",
+    icon: "sparkles-outline" as const,
+    color: "rgba(212, 175, 55, 0.4)",
+  },
+  {
+    value: 0.5,
+    label: "Learning",
+    icon: "book-outline" as const,
+    color: "rgba(212, 175, 55, 0.6)",
+  },
+  {
+    value: 0.75,
+    label: "Almost There",
+    icon: "flame-outline" as const,
+    color: "rgba(212, 175, 55, 0.8)",
+  },
+  {
+    value: 1.0,
+    label: "Fully Memorized",
+    icon: "star" as const,
+    color: colors.gold.primary,
+  },
 ];
 
 export default function HomeScreen() {
-  const [viewMode, setViewMode] = useState<ViewMode>('juz');
+  const [viewMode, setViewMode] = useState<ViewMode>("juz");
   const insets = useSafeAreaInsets();
-  const { getSurahProgress, getJuzProgress, getOverallProgress, getStreak, getTodayCount, settings, memorizeAyahs } = useMemorization();
+  const {
+    getSurahProgress,
+    getJuzProgress,
+    getOverallProgress,
+    getStreak,
+    getTodayCount,
+    settings,
+    memorizeAyahs,
+  } = useMemorization();
 
   const overall = useMemo(() => getOverallProgress(), [getOverallProgress]);
   const streak = useMemo(() => getStreak(), [getStreak]);
@@ -62,18 +108,27 @@ export default function HomeScreen() {
   const allSurahs = useMemo(() => getAllSurahs(), []);
   const allJuz = useMemo(() => getAllJuz(), []);
 
-  const [pickerSurah, setPickerSurah] = useState<{ index: number; title: string; titleAr: string; count: number } | null>(null);
+  const [pickerSurah, setPickerSurah] = useState<{
+    index: number;
+    title: string;
+    titleAr: string;
+    count: number;
+  } | null>(null);
   const [selectedIntensity, setSelectedIntensity] = useState(1.0);
-  const [congratsInfo, setCongratsInfo] = useState<{ count: number; title: string } | null>(null);
+  const [congratsInfo, setCongratsInfo] = useState<{
+    count: number;
+    title: string;
+  } | null>(null);
   const congratsTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const toggleView = useCallback(() => {
-    if (Platform.OS !== 'web') Haptics.selectionAsync();
-    setViewMode((prev) => (prev === 'juz' ? 'surah' : 'juz'));
+    if (Platform.OS !== "web") Haptics.selectionAsync();
+    setViewMode((prev) => (prev === "juz" ? "surah" : "juz"));
   }, []);
 
-  const handleSurahLongPress = useCallback((surah: typeof allSurahs[0]) => {
-    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  const handleSurahLongPress = useCallback((surah: (typeof allSurahs)[0]) => {
+    if (Platform.OS !== "web")
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setSelectedIntensity(1.0);
     setPickerSurah(surah);
   }, []);
@@ -87,8 +142,12 @@ export default function HomeScreen() {
         label: `${juz.index}`,
         sublabel: `Juz ${juz.index}`,
         onPress: () => {
-          if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-          router.push({ pathname: '/juz/[id]', params: { id: juz.index.toString() } });
+          if (Platform.OS !== "web")
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          router.push({
+            pathname: "/juz/[id]",
+            params: { id: juz.index.toString() },
+          });
         },
       };
     });
@@ -103,8 +162,12 @@ export default function HomeScreen() {
         label: `${surah.index}`,
         sublabel: surah.titleAr,
         onPress: () => {
-          if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-          router.push({ pathname: '/surah/[id]', params: { id: surah.index.toString() } });
+          if (Platform.OS !== "web")
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          router.push({
+            pathname: "/surah/[id]",
+            params: { id: surah.index.toString() },
+          });
         },
         onLongPress: () => handleSurahLongPress(surah),
       };
@@ -118,7 +181,8 @@ export default function HomeScreen() {
       ayahNumber: i + 1,
     }));
     await memorizeAyahs(entries, selectedIntensity);
-    if (Platform.OS !== 'web') Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    if (Platform.OS !== "web")
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
     const info = { count: pickerSurah.count, title: pickerSurah.titleAr };
     setPickerSurah(null);
@@ -128,18 +192,22 @@ export default function HomeScreen() {
     congratsTimerRef.current = setTimeout(() => setCongratsInfo(null), 3000);
   }, [pickerSurah, selectedIntensity, memorizeAyahs]);
 
-  const webTopInset = Platform.OS === 'web' ? 67 : 0;
+  const webTopInset = Platform.OS === "web" ? 67 : 0;
 
-  const currentLevel = INTENSITY_LEVELS.find(l => l.value === selectedIntensity) || INTENSITY_LEVELS[3];
+  const currentLevel =
+    INTENSITY_LEVELS.find((l) => l.value === selectedIntensity) ||
+    INTENSITY_LEVELS[3];
 
   return (
     <View style={[styles.container, { paddingTop: insets.top + webTopInset }]}>
-      <Animated.View entering={FadeIn.duration(600)} style={styles.header}>
-        <Text style={styles.appTitle}>Diyaa Al-Quran</Text>
-        <Text style={styles.appSubtitle}>ضياء القرآن</Text>
-      </Animated.View>
 
-      <Animated.View entering={FadeInDown.delay(200).duration(500)} style={styles.statsRow}>
+
+    {/* Stats Row */}
+      <Animated.View
+        entering={FadeInDown.delay(200).duration(500)}
+        style={styles.statsRow}
+      >
+        {/* Memorized */}
         <AnimatedStat
           value={Math.round(overall.percentage * 100)}
           suffix="%"
@@ -147,12 +215,10 @@ export default function HomeScreen() {
           delay={400}
         />
         <View style={styles.statDivider} />
-        <AnimatedStat
-          value={streak}
-          label="Day Streak"
-          delay={500}
-        />
+        {/* Day Streak */}
+        <AnimatedStat value={streak} label="Day Streak" delay={500} />
         <View style={styles.statDivider} />
+        {/* Today minutes counter*/}
         <AnimatedStat
           value={todayCount}
           suffix={`/${settings.dailyGoal}m`}
@@ -161,39 +227,58 @@ export default function HomeScreen() {
         />
       </Animated.View>
 
-      <Animated.View entering={FadeInDown.delay(400).duration(400)} style={styles.toggleRow}>
+      <Animated.View
+        entering={FadeInDown.delay(400).duration(400)}
+        style={styles.toggleRow}
+      >
         <Pressable
           onPress={toggleView}
-          style={[styles.toggleBtn, viewMode === 'juz' && styles.toggleActive]}
+          style={[styles.toggleBtn, viewMode === "juz" && styles.toggleActive]}
         >
-          <Text style={[styles.toggleText, viewMode === 'juz' && styles.toggleTextActive]}>Juz</Text>
+          <Text
+            style={[
+              styles.toggleText,
+              viewMode === "juz" && styles.toggleTextActive,
+            ]}
+          >
+            Juz
+          </Text>
         </Pressable>
         <Pressable
           onPress={toggleView}
-          style={[styles.toggleBtn, viewMode === 'surah' && styles.toggleActive]}
+          style={[
+            styles.toggleBtn,
+            viewMode === "surah" && styles.toggleActive,
+          ]}
         >
-          <Text style={[styles.toggleText, viewMode === 'surah' && styles.toggleTextActive]}>Surah</Text>
+          <Text
+            style={[
+              styles.toggleText,
+              viewMode === "surah" && styles.toggleTextActive,
+            ]}
+          >
+            Surah
+          </Text>
         </Pressable>
       </Animated.View>
 
       <ScrollView
         style={styles.scrollView}
-        contentContainerStyle={[styles.gridContainer, { paddingBottom: Platform.OS === 'web' ? 34 + 84 : 100 }]}
+        contentContainerStyle={[
+          styles.gridContainer,
+          { paddingBottom: Platform.OS === "web" ? 34 + 84 : 100 },
+        ]}
         showsVerticalScrollIndicator={false}
       >
-        <Animated.View key={viewMode} entering={FadeInLeft.springify().damping(16).stiffness(140)} exiting={FadeOutRight.duration(150)}>
-          {viewMode === 'juz' ? (
-            <SkiaOrbGrid
-              data={juzOrbData}
-              orbSize={56}
-              showPattern
-            />
+        <Animated.View
+          key={viewMode}
+          entering={FadeInLeft.springify().damping(16).stiffness(140)}
+          exiting={FadeOutRight.duration(150)}
+        >
+          {viewMode === "juz" ? (
+            <SkiaOrbGrid data={juzOrbData} orbSize={56} showPattern />
           ) : (
-            <SkiaOrbGrid
-              data={surahOrbData}
-              orbSize={44}
-              showPattern
-            />
+            <SkiaOrbGrid data={surahOrbData} orbSize={44} showPattern />
           )}
         </Animated.View>
       </ScrollView>
@@ -204,57 +289,99 @@ export default function HomeScreen() {
         animationType="fade"
         onRequestClose={() => setPickerSurah(null)}
       >
-        <Pressable style={styles.modalOverlay} onPress={() => setPickerSurah(null)}>
-          <Pressable style={styles.modalContent} onPress={(e) => e.stopPropagation()}>
+        <Pressable
+          style={styles.modalOverlay}
+          onPress={() => setPickerSurah(null)}
+        >
+          <Pressable
+            style={styles.modalContent}
+            onPress={(e) => e.stopPropagation()}
+          >
             {pickerSurah && (
               <>
                 <View style={styles.modalHeader}>
                   <Text style={styles.modalTitleAr}>{pickerSurah.titleAr}</Text>
                   <Text style={styles.modalTitleEn}>{pickerSurah.title}</Text>
-                  <Text style={styles.modalSubtitle}>{pickerSurah.count} Ayahs</Text>
+                  <Text style={styles.modalSubtitle}>
+                    {pickerSurah.count} Ayahs
+                  </Text>
                 </View>
 
-                <Text style={styles.intensityTitle}>How well do you know this Surah?</Text>
+                <Text style={styles.intensityTitle}>
+                  How well do you know this Surah?
+                </Text>
 
                 <View style={styles.intensityGrid}>
                   {INTENSITY_LEVELS.map((level) => (
                     <Pressable
                       key={level.value}
                       onPress={() => {
-                        if (Platform.OS !== 'web') Haptics.selectionAsync();
+                        if (Platform.OS !== "web") Haptics.selectionAsync();
                         setSelectedIntensity(level.value);
                       }}
                       style={[
                         styles.intensityOption,
-                        selectedIntensity === level.value && styles.intensityOptionActive,
-                        selectedIntensity === level.value && { borderColor: level.color },
+                        selectedIntensity === level.value &&
+                          styles.intensityOptionActive,
+                        selectedIntensity === level.value && {
+                          borderColor: level.color,
+                        },
                       ]}
                     >
                       <Ionicons
                         name={level.icon}
                         size={20}
-                        color={selectedIntensity === level.value ? level.color : colors.text.muted}
+                        color={
+                          selectedIntensity === level.value
+                            ? level.color
+                            : colors.text.muted
+                        }
                       />
-                      <Text style={[
-                        styles.intensityLabel,
-                        selectedIntensity === level.value && { color: level.color },
-                      ]}>
+                      <Text
+                        style={[
+                          styles.intensityLabel,
+                          selectedIntensity === level.value && {
+                            color: level.color,
+                          },
+                        ]}
+                      >
                         {level.label}
                       </Text>
-                      <View style={[styles.intensityBar, { width: `${level.value * 100}%`, backgroundColor: level.color }]} />
+                      <View
+                        style={[
+                          styles.intensityBar,
+                          {
+                            width: `${level.value * 100}%`,
+                            backgroundColor: level.color,
+                          },
+                        ]}
+                      />
                     </Pressable>
                   ))}
                 </View>
 
                 <Pressable
                   onPress={handleConfirm}
-                  style={({ pressed }) => [styles.confirmBtn, { transform: [{ scale: pressed ? 0.97 : 1 }], backgroundColor: currentLevel.color }]}
+                  style={({ pressed }) => [
+                    styles.confirmBtn,
+                    {
+                      transform: [{ scale: pressed ? 0.97 : 1 }],
+                      backgroundColor: currentLevel.color,
+                    },
+                  ]}
                 >
-                  <Ionicons name="checkmark" size={20} color={colors.bg.primary} />
+                  <Ionicons
+                    name="checkmark"
+                    size={20}
+                    color={colors.bg.primary}
+                  />
                   <Text style={styles.confirmText}>Mark Entire Surah</Text>
                 </Pressable>
 
-                <Pressable onPress={() => setPickerSurah(null)} style={styles.cancelBtn}>
+                <Pressable
+                  onPress={() => setPickerSurah(null)}
+                  style={styles.cancelBtn}
+                >
                   <Text style={styles.cancelText}>Cancel</Text>
                 </Pressable>
               </>
@@ -264,15 +391,22 @@ export default function HomeScreen() {
       </Modal>
 
       {congratsInfo && (
-        <Pressable style={styles.congratsOverlay} onPress={() => setCongratsInfo(null)}>
-          <Animated.View entering={FadeIn.duration(300)} exiting={FadeOut.duration(200)} style={styles.congratsCard}>
+        <Pressable
+          style={styles.congratsOverlay}
+          onPress={() => setCongratsInfo(null)}
+        >
+          <Animated.View
+            entering={FadeIn.duration(300)}
+            exiting={FadeOut.duration(200)}
+            style={styles.congratsCard}
+          >
             <Ionicons name="star" size={48} color={colors.gold.bright} />
             <Text style={styles.congratsTitle}>MashaAllah!</Text>
             <Text style={styles.congratsSubtitle}>
               You memorized {congratsInfo.title}
             </Text>
             <Text style={styles.congratsDetail}>
-              {congratsInfo.count} {congratsInfo.count === 1 ? 'Ayah' : 'Ayahs'}
+              {congratsInfo.count} {congratsInfo.count === 1 ? "Ayah" : "Ayahs"}
             </Text>
             <Text style={styles.congratsDismiss}>Tap to dismiss</Text>
           </Animated.View>
@@ -284,7 +418,7 @@ export default function HomeScreen() {
 
 function AnimatedStat({
   value,
-  suffix = '',
+  suffix = "",
   label,
   delay,
 }: {
@@ -296,9 +430,13 @@ function AnimatedStat({
   const displayValue = useCountUp(value, 800, delay);
 
   return (
-    <Animated.View entering={FadeInUp.delay(delay).duration(400)} style={styles.statItem}>
+    <Animated.View
+      entering={FadeInUp.delay(delay).duration(400)}
+      style={styles.statItem}
+    >
       <Text style={styles.statValue}>
-        {displayValue}{suffix}
+        {displayValue}
+        {suffix}
       </Text>
       <Text style={styles.statLabel}>{label}</Text>
     </Animated.View>
@@ -310,26 +448,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.bg.primary,
   },
-  header: {
-    alignItems: 'center',
-    paddingVertical: 16,
-  },
-  appTitle: {
-    fontSize: 22,
-    fontWeight: '700' as const,
-    color: colors.gold.primary,
-    letterSpacing: 1,
-  },
-  appSubtitle: {
-    fontSize: 16,
-    color: colors.gold.dim,
-    fontFamily: 'Amiri_700Bold',
-    marginTop: 2,
-  },
+
   statsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     marginHorizontal: 24,
     paddingVertical: 12,
     paddingHorizontal: 16,
@@ -340,11 +463,11 @@ const styles = StyleSheet.create({
   },
   statItem: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
   },
   statValue: {
     fontSize: 18,
-    fontWeight: '700' as const,
+    fontWeight: "700" as const,
     color: colors.gold.bright,
   },
   statLabel: {
@@ -355,10 +478,10 @@ const styles = StyleSheet.create({
   statDivider: {
     width: 1,
     height: 28,
-    backgroundColor: 'rgba(212, 175, 55, 0.15)',
+    backgroundColor: "rgba(212, 175, 55, 0.15)",
   },
   toggleRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginHorizontal: 24,
     marginTop: 16,
     marginBottom: 8,
@@ -369,7 +492,7 @@ const styles = StyleSheet.create({
   toggleBtn: {
     flex: 1,
     paddingVertical: 8,
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 10,
   },
   toggleActive: {
@@ -379,7 +502,7 @@ const styles = StyleSheet.create({
   },
   toggleText: {
     fontSize: 14,
-    fontWeight: '600' as const,
+    fontWeight: "600" as const,
     color: colors.text.muted,
   },
   toggleTextActive: {
@@ -394,13 +517,13 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    justifyContent: "center",
+    alignItems: "center",
     padding: 24,
   },
   modalContent: {
-    width: '100%',
+    width: "100%",
     maxWidth: 360,
     backgroundColor: colors.bg.card,
     borderRadius: 24,
@@ -409,14 +532,14 @@ const styles = StyleSheet.create({
     borderColor: colors.glow.cardBorder,
   },
   modalHeader: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 20,
   },
   modalTitleAr: {
     fontSize: 28,
     color: colors.gold.primary,
-    fontFamily: 'Amiri_700Bold',
-    textAlign: 'center' as const,
+    fontFamily: "Amiri_700Bold",
+    textAlign: "center" as const,
   },
   modalTitleEn: {
     fontSize: 14,
@@ -431,46 +554,46 @@ const styles = StyleSheet.create({
   },
   intensityTitle: {
     fontSize: 15,
-    fontWeight: '600' as const,
+    fontWeight: "600" as const,
     color: colors.text.primary,
-    textAlign: 'center' as const,
+    textAlign: "center" as const,
     marginBottom: 12,
   },
   intensityGrid: {
     gap: 6,
   },
   intensityOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 10,
     paddingVertical: 12,
     paddingHorizontal: 14,
     borderRadius: 12,
     backgroundColor: colors.bg.elevated,
     borderWidth: 1.5,
-    borderColor: 'transparent',
-    overflow: 'hidden',
+    borderColor: "transparent",
+    overflow: "hidden",
   },
   intensityOptionActive: {
-    backgroundColor: 'rgba(212, 175, 55, 0.08)',
+    backgroundColor: "rgba(212, 175, 55, 0.08)",
   },
   intensityLabel: {
     fontSize: 14,
-    fontWeight: '500' as const,
+    fontWeight: "500" as const,
     color: colors.text.muted,
     flex: 1,
   },
   intensityBar: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     height: 2,
     borderRadius: 1,
   },
   confirmBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 8,
     paddingVertical: 14,
     borderRadius: 14,
@@ -478,11 +601,11 @@ const styles = StyleSheet.create({
   },
   confirmText: {
     fontSize: 15,
-    fontWeight: '700' as const,
+    fontWeight: "700" as const,
     color: colors.bg.primary,
   },
   cancelBtn: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 12,
     marginTop: 4,
   },
@@ -492,13 +615,13 @@ const styles = StyleSheet.create({
   },
   congratsOverlay: {
     ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
     zIndex: 100,
   },
   congratsCard: {
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: colors.bg.card,
     borderRadius: 24,
     paddingVertical: 32,
@@ -509,15 +632,15 @@ const styles = StyleSheet.create({
   },
   congratsTitle: {
     fontSize: 24,
-    fontWeight: '700' as const,
+    fontWeight: "700" as const,
     color: colors.gold.bright,
     marginTop: 8,
   },
   congratsSubtitle: {
     fontSize: 18,
     color: colors.text.primary,
-    fontFamily: 'Amiri_700Bold',
-    textAlign: 'center' as const,
+    fontFamily: "Amiri_700Bold",
+    textAlign: "center" as const,
   },
   congratsDetail: {
     fontSize: 14,
